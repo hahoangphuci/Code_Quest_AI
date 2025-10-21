@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeQuest - Đặc Trưng</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/contact.css" />
+  </head>
+
+  <body>
+    <!-- Header giữ nguyên -->
+    <header class="site_header">
+      <div class="container_header">
+        <div class="logo_header">
+          <img src="../assets/image/logo.png" alt="Logo" class="logo-animate" />
+          <a href="#" class="">CodeQuest</a>
+        </div>
+        <nav class="nav_header">
+          <button class="nav_btn" onclick="location.href='home.html'">
+            Trang Chủ
+          </button>
+          <button
+            id="about-btn"
+            class="nav_btn"
+            onclick="location.href='about.html'"
+          >
+            Giới Thiệu
+          </button>
+          <button class="nav_btn" onclick="location.href='features.html'">
+            Đặc Trưng
+          </button>
+          <button class="nav_btn" onclick="location.href='contact.html'">
+            Liên Hệ
+          </button>
+        </nav>
+        <div class="auth_header">
+          <button class="login_btn">Đăng Nhập</button>
+          <button class="register_btn">Đăng Ký</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="site_main">
+      <!-- Contact Info Cards -->
+      <section class="contact_info_section">
+        <div class="contact_info_grid">
+          <div class="contact_info_card">
+            <div class="info_icon_wrapper">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <h3>Email Hỗ Trợ</h3>
+            <p class="info_detail">support@codequest.com</p>
+            <p class="info_note">Phản hồi trong 24 giờ</p>
+          </div>
+
+          <div class="contact_info_card">
+            <div class="info_icon_wrapper">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <h3>Hotline</h3>
+            <p class="info_detail">+84 123 456 789</p>
+            <p class="info_note">T2-CN: 8:00 - 22:00</p>
+          </div>
+
+          <div class="contact_info_card">
+            <div class="info_icon_wrapper">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <h3>Địa Chỉ</h3>
+            <p class="info_detail">Cần Thơ, Việt Nam</p>
+            <p class="info_note">Văn phòng chính</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Contact Form -->
+      <section class="contact_form_section">
+        <div class="form_container">
+          <div class="form_content">
+            <div class="form_left">
+              <h2>Gửi Tin Nhắn Cho Chúng Tôi</h2>
+              <p class="form_description">
+                Bạn có câu hỏi về CodeQuest? Điền form bên cạnh và chúng tôi sẽ
+                liên hệ lại trong thời gian sớm nhất.
+              </p>
+
+              <div class="contact_features">
+                <div class="feature_item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Hỗ trợ miễn phí 24/7</span>
+                </div>
+                <div class="feature_item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Phản hồi nhanh chóng</span>
+                </div>
+                <div class="feature_item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Tư vấn chuyên nghiệp</span>
+                </div>
+              </div>
+
+              <div class="social_section">
+                <h4>Kết nối với chúng tôi</h4>
+                <div class="social_links">
+                  <a href="#" class="social_link facebook">
+                    <i class="fab fa-facebook-f"></i>
+                  </a>
+                  <a href="#" class="social_link twitter">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                  <a href="#" class="social_link github">
+                    <i class="fab fa-github"></i>
+                  </a>
+                  <a href="#" class="social_link discord">
+                    <i class="fab fa-discord"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="form_right">
+              <form class="contact_form" id="contactForm">
+                <div class="form_row">
+                  <div class="form_group">
+                    <label>Họ và Tên</label>
+                    <input type="text" placeholder="Nguyễn Văn A" required />
+                  </div>
+                </div>
+
+                <div class="form_row">
+                  <div class="form_group">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      placeholder="example@email.com"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form_row">
+                  <div class="form_group">
+                    <label>Số Điện Thoại</label>
+                    <input type="tel" placeholder="+84 123 456 789" />
+                  </div>
+                </div>
+
+                <div class="form_row">
+                  <div class="form_group">
+                    <label>Chủ Đề</label>
+                    <select required>
+                      <option value="">Chọn chủ đề</option>
+                      <option value="support">Hỗ trợ kỹ thuật</option>
+                      <option value="account">Tài khoản</option>
+                      <option value="billing">Thanh toán</option>
+                      <option value="feature">Tính năng mới</option>
+                      <option value="partnership">Hợp tác</option>
+                      <option value="other">Khác</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form_row">
+                  <div class="form_group">
+                    <label>Nội Dung</label>
+                    <textarea
+                      rows="5"
+                      placeholder="Nhập nội dung tin nhắn của bạn..."
+                      required
+                    ></textarea>
+                  </div>
+                </div>
+
+                <button type="submit" class="submit_btn">
+                  <span>Gửi Tin Nhắn</span>
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="faq_section">
+        <div class="faq_container">
+          <div class="faq_header">
+            <h2>Câu Hỏi Thường Gặp</h2>
+            <p>Tìm câu trả lời nhanh chóng cho các câu hỏi phổ biến</p>
+          </div>
+
+          <div class="faq_grid">
+            <div class="faq_item">
+              <div class="faq_question">
+                <i class="fas fa-question-circle"></i>
+                <h3>Làm thế nào để bắt đầu học trên CodeQuest?</h3>
+              </div>
+              <p>
+                Chỉ cần đăng ký tài khoản miễn phí và chọn khóa học phù hợp với
+                trình độ của bạn. Hệ thống sẽ tự động gợi ý lộ trình học tập.
+              </p>
+            </div>
+
+            <div class="faq_item">
+              <div class="faq_question">
+                <i class="fas fa-question-circle"></i>
+                <h3>CodeQuest có miễn phí không?</h3>
+              </div>
+              <p>
+                CodeQuest có gói miễn phí với đầy đủ tính năng cơ bản. Gói
+                Premium có thêm nhiều tính năng nâng cao và nội dung độc quyền.
+              </p>
+            </div>
+
+            <div class="faq_item">
+              <div class="faq_question">
+                <i class="fas fa-question-circle"></i>
+                <h3>Tôi có thể học những ngôn ngữ nào?</h3>
+              </div>
+              <p>
+                CodeQuest hỗ trợ Python, JavaScript, Java, C++, Rust và nhiều
+                ngôn ngữ khác với nội dung được cập nhật thường xuyên.
+              </p>
+            </div>
+
+            <div class="faq_item">
+              <div class="faq_question">
+                <i class="fas fa-question-circle"></i>
+                <h3>Có chứng chỉ sau khi hoàn thành không?</h3>
+              </div>
+              <p>
+                Có, bạn sẽ nhận được chứng chỉ khi hoàn thành khóa học. Chứng
+                chỉ có thể chia sẻ trên LinkedIn và CV.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="contact_cta">
+        <div class="cta_content">
+          <h2>Bắt Đầu Hành Trình Học Lập Trình</h2>
+          <p>
+            Tham gia CodeQuest ngay hôm nay và trải nghiệm phương pháp học lập
+            trình hiện đại nhất
+          </p>
+          <button class="cta_button">Thử Ngay Miễn Phí</button>
+        </div>
+      </section>
+    </main>
+    <!-- Footer Section -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <!-- Thông tin liên hệ -->
+        <div class="footer-contact">
+          <p><strong>CodeQuest</strong></p>
+          <p>Email: support@codequest.com</p>
+          <p>Hotline: +84 123 456 789</p>
+          <div class="footer-socials">
+            <a href="#"
+              ><i
+                class="fab fa-facebook"
+                style="font-size: 20px; color: #4267b2"
+              ></i
+            ></a>
+            <a href="#"
+              ><i class="fab fa-github" style="font-size: 20px; color: #333"></i
+            ></a>
+            <a href="#"
+              ><i
+                class="fab fa-twitter"
+                style="font-size: 20px; color: #1da1f2"
+              ></i
+            ></a>
+          </div>
+        </div>
+
+        <!-- Liên kết nhanh -->
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Sản phẩm</h4>
+            <ul>
+              <li><a href="home.html">Trang Chủ</a></li>
+              <li><a href="about.html">Giới Thiệu</a></li>
+              <li><a href="features.html">Đặc Trưng</a></li>
+              <li><a href="contact.html">Liên Hệ</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>Công ty</h4>
+            <ul>
+              <li><a href="about.html">Về chúng tôi</a></li>
+              <li><a href="careers.html">Cơ hội nghề nghiệp</a></li>
+              <li><a href="clients.html">Khách hàng</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Pháp lý</h4>
+            <ul>
+              <li><a href="terms.html">Điều khoản</a></li>
+              <li><a href="privacy.html">Chính sách bảo mật</a></li>
+              <li><a href="security.html">Bảo mật</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Phần dưới -->
+        <div class="footer-bottom">
+          <select class="footer-language">
+            <option value="en">English</option>
+            <option value="vi">Tiếng Việt</option>
+          </select>
+          <div class="footer-theme">
+            <button>🌞</button>
+            <button>🌙</button>
+          </div>
+          <p class="footer-certification">Chứng nhận SOC 2</p>
+          <p class="footer-copyright">&copy; 2025 Được tạo bởi CodeQuest</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

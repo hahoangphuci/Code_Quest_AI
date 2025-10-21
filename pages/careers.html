@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cơ hội nghề nghiệp · CodeQuest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #000000;
+        --panel: #0f172a;
+        --panel-2: #1e293b;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --white: #ffffff;
+        --accent1: #667eea; /* indigo */
+        --accent2: #764ba2; /* purple */
+        --glass: rgba(255, 255, 255, 0.06);
+        --glass-border: rgba(255, 255, 255, 0.12);
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+        line-height: 1.6;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* layout */
+      .careers_main {
+        width: 90%;
+        max-width: 1660px;
+        margin: 0 auto;
+        padding: 20px 24px 60px;
+      }
+
+      /* hero */
+      .careers_hero {
+        border-radius: 20px;
+        padding: 56px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        background: radial-gradient(
+            circle at top left,
+            #9333ea55,
+            transparent 40%
+          ),
+          radial-gradient(circle at bottom left, #22c55e55, transparent 40%),
+          radial-gradient(circle at bottom right, #3b82f655, transparent 40%);
+        background-color: var(--panel);
+      }
+      .hero_content {
+        max-width: 920px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .hero_content h1 {
+        font-size: clamp(2.2rem, 3.6vw, 3.2rem);
+        font-weight: 800;
+        line-height: 1.1;
+        background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .hero_content p {
+        color: var(--text);
+        font-size: 1.1rem;
+        max-width: 720px;
+      }
+      .hero_actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+      }
+
+      .btn_primary,
+      .btn_secondary,
+      .btn_ghost {
+        display: inline-block;
+        padding: 14px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        border: 1px solid transparent;
+      }
+      .btn_primary {
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
+        color: var(--white);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+      }
+      .btn_primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.55);
+      }
+      .btn_secondary {
+        background: transparent;
+        color: var(--white);
+        border-color: #a6a6a6;
+      }
+      .btn_secondary:hover {
+        background: #dedede;
+        color: #000;
+        border-color: #dedede;
+      }
+      .btn_ghost {
+        background: transparent;
+        color: var(--text);
+        border-color: #334155;
+      }
+      .btn_ghost:hover {
+        background: #111827;
+        border-color: #475569;
+      }
+
+      .hero_badges {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .badge {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        color: #cbd5e1;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 0.9rem;
+      }
+
+      /* skills */
+      .skills_section {
+        margin-top: 36px;
+        padding: 36px 24px 28px;
+        border-radius: 20px;
+        background: linear-gradient(
+          135deg,
+          var(--panel) 0%,
+          var(--panel-2) 100%
+        );
+      }
+      .section_head {
+        text-align: center;
+        margin-bottom: 14px;
+      }
+      .section_head h2 {
+        font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+        background: linear-gradient(135deg, #ffffff, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .section_head p {
+        color: #cbd5e1;
+      }
+      .grid_cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+        margin-top: 22px;
+      }
+      .card {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 22px;
+        transition: 0.25s ease;
+      }
+      .card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(147, 197, 253, 0.35);
+        box-shadow: 0 16px 44px rgba(0, 0, 0, 0.35);
+      }
+      .card .icon {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25));
+      }
+      .card h3 {
+        color: #fff;
+        margin-bottom: 6px;
+        font-size: 1.1rem;
+      }
+      .card p {
+        color: #94a3b8;
+        font-size: 0.98rem;
+      }
+
+      /* roles */
+      .roles_section {
+        margin-top: 28px;
+        padding: 30px 24px;
+        border-radius: 20px;
+        background: linear-gradient(
+          135deg,
+          var(--panel) 0%,
+          var(--panel-2) 100%
+        );
+      }
+      .grid_roles {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+        margin-top: 18px;
+      }
+      .role_item {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 22px;
+        transition: 0.25s ease;
+      }
+      .role_item:hover {
+        transform: translateY(-6px);
+        border-color: rgba(147, 197, 253, 0.35);
+        box-shadow: 0 16px 44px rgba(0, 0, 0, 0.35);
+      }
+      .role_icon {
+        font-size: 1.6rem;
+        display: block;
+        margin-bottom: 8px;
+      }
+      .role_item h3 {
+        color: #fff;
+        margin-bottom: 6px;
+        font-size: 1.1rem;
+      }
+      .role_item p {
+        color: #94a3b8;
+      }
+
+      /* roadmap */
+      .roadmap_section {
+        margin-top: 28px;
+        padding: 28px 24px;
+        border-radius: 20px;
+        background: radial-gradient(
+            circle at 25% 75%,
+            rgba(102, 126, 234, 0.12),
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 75% 25%,
+            rgba(118, 75, 162, 0.12),
+            transparent 50%
+          ),
+          var(--panel);
+      }
+      .timeline {
+        list-style: none;
+        max-width: 900px;
+        margin: 10px auto 0;
+        display: grid;
+        gap: 14px;
+      }
+      .timeline li {
+        display: grid;
+        grid-template-columns: 40px 1fr;
+        gap: 12px;
+        align-items: start;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 14px;
+        padding: 14px;
+      }
+      .step {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
+        color: #fff;
+        font-weight: 700;
+      }
+      .step_body h4 {
+        color: #fff;
+        margin: 2px 0 4px;
+      }
+      .step_body p {
+        color: #94a3b8;
+      }
+
+      /* metrics */
+      .metrics_section {
+        margin-top: 28px;
+      }
+      .metrics_grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+      }
+      .metric {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 18px;
+        text-align: center;
+      }
+      .metric_value {
+        font-size: 1.4rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #ffffff, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .metric_label {
+        color: #94a3b8;
+        margin-top: 6px;
+      }
+
+      /* cta */
+      .cta_section_solo {
+        margin-top: 36px;
+        padding: 40px 24px;
+        border-radius: 20px;
+        text-align: center;
+        background: radial-gradient(
+            circle at top left,
+            #9333ea55,
+            transparent 40%
+          ),
+          radial-gradient(circle at bottom left, #22c55e55, transparent 40%),
+          radial-gradient(circle at bottom right, #3b82f655, transparent 40%),
+          var(--panel);
+      }
+      .cta_section_solo h2 {
+        font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+        background: linear-gradient(135deg, #ffffff, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 6px;
+      }
+      .cta_section_solo p {
+        color: #94a3b8;
+        margin-bottom: 16px;
+      }
+      .cta_actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      /* responsive */
+      @media (max-width: 640px) {
+        .timeline li {
+          grid-template-columns: 36px 1fr;
+        }
+        .step {
+          width: 36px;
+          height: 36px;
+          border-radius: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Không header và footer theo yêu cầu -->
+    <main class="careers_main">
+      <!-- HERO -->
+      <section class="careers_hero">
+        <div class="hero_content">
+          <h1>Cơ hội nghề nghiệp bắt đầu từ đây</h1>
+          <p>
+            Sử dụng CodeQuest hằng ngày, bạn tích lũy kỹ năng thực chiến để tự
+            tin ứng tuyển. Luyện tập qua thử thách, làm dự án nhỏ, xây dựng
+            portfolio – sẵn sàng đi làm.
+          </p>
+          <div class="hero_actions">
+            <a class="btn_primary" href="features.html">Khám phá thử thách</a>
+            <a class="btn_secondary" href="home.html">Bắt đầu miễn phí</a>
+          </div>
+        </div>
+        <div class="hero_badges">
+          <div class="badge">⚡ Luyện kĩ năng nhanh</div>
+          <div class="badge">🧠 Mentor AI 24/7</div>
+          <div class="badge">📈 Lộ trình rõ ràng</div>
+        </div>
+      </section>
+
+      <!-- KỸ NĂNG ĐẠT ĐƯỢC -->
+      <section class="skills_section">
+        <div class="section_head">
+          <h2>Kỹ năng bạn sẽ có</h2>
+          <p>Những năng lực thực tế giúp bạn “đi làm được việc”.</p>
+        </div>
+        <div class="grid_cards">
+          <article class="card">
+            <div class="icon">🧩</div>
+            <h3>Tư duy giải quyết vấn đề</h3>
+            <p>Phân tích yêu cầu, chia nhỏ bài toán, tối ưu thuật toán.</p>
+          </article>
+          <article class="card">
+            <div class="icon">📚</div>
+            <h3>Cấu trúc dữ liệu & thuật toán</h3>
+            <p>List, Hash Map, Stack/Queue, Tree/Graph, DP ở mức ứng dụng.</p>
+          </article>
+          <article class="card">
+            <div class="icon">🧪</div>
+            <h3>Debug & Testing</h3>
+            <p>Đọc lỗi, viết test cơ bản, nâng chất lượng code bền vững.</p>
+          </article>
+          <article class="card">
+            <div class="icon">🌐</div>
+            <h3>Web end‑to‑end</h3>
+            <p>Hiểu frontend/backed cơ bản, kết nối API, xử lý dữ liệu.</p>
+          </article>
+          <article class="card">
+            <div class="icon">🧭</div>
+            <h3>Git & GitHub</h3>
+            <p>
+              Quy trình commit, pull request, review – làm việc nhóm hiệu quả.
+            </p>
+          </article>
+          <article class="card">
+            <div class="icon">✨</div>
+            <h3>Clean Code</h3>
+            <p>Đặt tên, tách hàm, cấu trúc dự án – dễ đọc, dễ mở rộng.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- VỊ TRÍ MỤC TIÊU -->
+      <section class="roles_section">
+        <div class="section_head">
+          <h2>Vị trí bạn có thể hướng tới</h2>
+          <p>Lộ trình sát với thị trường tuyển dụng hiện nay.</p>
+        </div>
+        <div class="grid_roles">
+          <div class="role_item">
+            <span class="role_icon">🎨</span>
+            <h3>Frontend Developer</h3>
+            <p>HTML/CSS/JS, React cơ bản, giao tiếp API, tối ưu UI/UX.</p>
+          </div>
+          <div class="role_item">
+            <span class="role_icon">🛠️</span>
+            <h3>Backend Developer</h3>
+            <p>Xây API, CRUD, auth, database, triển khai nhỏ gọn.</p>
+          </div>
+          <div class="role_item">
+            <span class="role_icon">🤖</span>
+            <h3>QA Automation</h3>
+            <p>Viết test, tự động hóa kiểm thử, đảm bảo chất lượng.</p>
+          </div>
+          <div class="role_item">
+            <span class="role_icon">📊</span>
+            <h3>Data/Analytics</h3>
+            <p>Xử lý dữ liệu cơ bản, script hóa, trực quan & báo cáo.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- LỘ TRÌNH HỌC → ĐI LÀM -->
+      <section class="roadmap_section">
+        <div class="section_head">
+          <h2>Lộ trình: Học trên CodeQuest → Đi làm</h2>
+        </div>
+        <ol class="timeline">
+          <li>
+            <span class="step">1</span>
+            <div class="step_body">
+              <h4>Nền tảng vững</h4>
+              <p>Ôn cú pháp, cấu trúc dữ liệu cơ bản, thói quen clean code.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step">2</span>
+            <div class="step_body">
+              <h4>Thử thách thực chiến</h4>
+              <p>
+                Luyện bài từ dễ → khó, có gợi ý AI, giải thích sau mỗi lần nộp.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="step">3</span>
+            <div class="step_body">
+              <h4>Dự án nhỏ</h4>
+              <p>Ghép nhiều kiến thức thành sản phẩm mini – đưa lên GitHub.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step">4</span>
+            <div class="step_body">
+              <h4>Portfolio & CV</h4>
+              <p>Chuẩn bị profile, mô tả bài học, dự án, highlights kỹ năng.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step">5</span>
+            <div class="step_body">
+              <h4>Phỏng vấn & bài test</h4>
+              <p>
+                Ôn câu hỏi thường gặp, luyện coding challenge tương tự thực tế.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- CHỨNG THỰC GIÁ TRỊ -->
+      <section class="metrics_section">
+        <div class="metrics_grid">
+          <div class="metric">
+            <div class="metric_value">500+</div>
+            <div class="metric_label">Thử thách luyện tập</div>
+          </div>
+          <div class="metric">
+            <div class="metric_value">Hàng tuần</div>
+            <div class="metric_label">Cập nhật nội dung</div>
+          </div>
+          <div class="metric">
+            <div class="metric_value">24/7</div>
+            <div class="metric_label">Hỗ trợ AI đồng hành</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA CUỐI TRANG -->
+      <section class="cta_section_solo">
+        <h2>Sẵn sàng mở khóa cơ hội nghề nghiệp?</h2>
+        <p>
+          Tham gia CodeQuest miễn phí, học theo lộ trình rõ ràng và thực chiến.
+        </p>
+        <div class="cta_actions">
+          <a class="btn_primary" href="home.html">Bắt đầu ngay</a>
+          <a class="btn_ghost" href="about.html">Tìm hiểu thêm</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

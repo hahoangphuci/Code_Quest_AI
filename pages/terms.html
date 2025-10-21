@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Điều khoản sử dụng - CodeQuest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        color: #e2e8f0;
+        min-height: 100vh;
+        line-height: 1.8;
+      }
+
+      .header {
+        background: #000000;
+        border-bottom: 1px solid #334155;
+        padding: 20px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-decoration: none;
+      }
+
+      .back-btn {
+        background: rgba(96, 165, 250, 0.1);
+        color: #60a5fa;
+        border: 1px solid #60a5fa;
+        padding: 10px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .back-btn:hover {
+        background: #60a5fa;
+        color: #ffffff;
+        transform: translateY(-2px);
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 0 24px;
+      }
+
+      .page-title {
+        font-size: 3rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 12px;
+        text-align: center;
+      }
+
+      .last-updated {
+        text-align: center;
+        color: #94a3b8;
+        font-size: 14px;
+        margin-bottom: 48px;
+      }
+
+      .content-box {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 48px;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      .intro {
+        font-size: 1.1rem;
+        color: #cbd5e1;
+        margin-bottom: 32px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .section {
+        margin-bottom: 36px;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #60a5fa;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .section-number {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .section p {
+        color: #cbd5e1;
+        margin-bottom: 12px;
+      }
+
+      .section ul {
+        margin-left: 24px;
+        color: #cbd5e1;
+      }
+
+      .section li {
+        margin-bottom: 8px;
+      }
+
+      .highlight-box {
+        background: rgba(96, 165, 250, 0.1);
+        border-left: 4px solid #60a5fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 24px 0;
+      }
+
+      .highlight-box p {
+        color: #e5e7eb;
+        margin: 0;
+      }
+
+      .contact-info {
+        background: rgba(102, 126, 234, 0.1);
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        border-radius: 12px;
+        padding: 24px;
+        margin-top: 48px;
+        text-align: center;
+      }
+
+      .contact-info h3 {
+        color: #ffffff;
+        margin-bottom: 12px;
+      }
+
+      .contact-info a {
+        color: #60a5fa;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .contact-info a:hover {
+        color: #93c5fd;
+        text-decoration: underline;
+      }
+
+      @media (max-width: 768px) {
+        .page-title {
+          font-size: 2rem;
+        }
+
+        .content-box {
+          padding: 24px;
+        }
+
+        .section-title {
+          font-size: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- header -->
+    <header class="site_header">
+      <div class="container_header">
+        <div class="logo_header">
+          <img
+            onclick="location.href='home.html'"
+            src="../assets/image/logo.png"
+            alt="Logo"
+            class="logo-animate"
+          />
+          <a href="home.html" class="">CodeQuest</a>
+        </div>
+        <nav class="nav_header">
+          <button class="nav_btn" onclick="location.href='home.html'">
+            Trang Chủ
+          </button>
+          <button
+            id="about-btn"
+            class="nav_btn"
+            onclick="location.href='about.html'"
+          >
+            Giới Thiệu
+          </button>
+          <button class="nav_btn" onclick="location.href='features.html'">
+            Đặc Trưng
+          </button>
+          <button class="nav_btn" onclick="location.href='contact.html'">
+            Liên Hệ
+          </button>
+        </nav>
+
+        <div class="auth_header">
+          <button class="login_btn">Đăng Nhập</button>
+          <button class="register_btn">Đăng Ký</button>
+        </div>
+      </div>
+    </header>
+    <!-- end header -->
+    <!-- main content -->
+
+    <div class="container">
+      <h1 class="page-title">Điều khoản sử dụng</h1>
+      <p class="last-updated">Cập nhật lần cuối: Tháng 10, 2025</p>
+
+      <div class="content-box">
+        <p class="intro">
+          Chào mừng bạn đến với CodeQuest! Bằng việc truy cập và sử dụng nền
+          tảng của chúng tôi, bạn đồng ý tuân thủ các điều khoản và điều kiện
+          được nêu dưới đây. Vui lòng đọc kỹ trước khi sử dụng dịch vụ.
+        </p>
+
+        <div class="section">
+          <h2 class="section-title">
+            <span class="section-number">1</span>
+            Chấp nhận điều khoản
+          </h2>
+          <p>
+            Khi truy cập và sử dụng CodeQuest, bạn xác nhận rằng bạn đã đọc,
+            hiểu và đồng ý bị ràng buộc bởi các Điều khoản sử dụng này. Nếu bạn
+            không đồng ý với bất kỳ phần nào của các điều khoản này, vui lòng
+            không sử dụng dịch vụ của chúng tôi.
+          </p>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">
+            <span class="section-number">2</span>
+            Quyền sử dụng
+          </h2>
+          <p>
+            CodeQuest cấp cho bạn quyền truy cập có giới hạn, không độc quyền,
+            không thể chuyển nhượng để sử dụng nền tảng cho các mục đích sau:
+          </p>
+          <ul>
+            <li>Học tập và phát triển kỹ năng lập trình cá nhân</li>
+            <li>Tham gia các thử thách và bài tập trên nền tảng</li>
+            <li>Tương tác với cộng đồng người học</li>
+            <li>Truy cập tài liệu học tập và tài nguyên được cung cấp</li>
+          </ul>
+          <div class="highlight-box">
+            <p>
+              <strong>Lưu ý quan trọng:</strong> Bạn không được sử dụng
+              CodeQuest cho các mục đích thương mại mà không có sự đồng ý bằng
+              văn bản từ chúng tôi.
+            </p>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">
+            <span class="section-number">3</span>
+            Tài khoản người dùng
+          </h2>
+          <p>
+            Để sử dụng đầy đủ các tính năng của CodeQuest, bạn cần tạo một tài
+            khoản. Bạn có trách nhiệm:
+          </p>
+          <ul>
+            <li>Cung cấp thông tin chính xác và đầy đủ khi đăng ký</li>
+            <li>Bảo mật thông tin đăng nhập của bạn</li>
+            <li>
+              Thông báo ngay cho chúng tôi nếu phát hiện truy cập trái phép
+            </li>
+            <li>
+              Chịu trách nhiệm về mọi hoạt động diễn ra dưới tài khoản của bạn
+            </li>
+          </ul>
+          <p>
+            Chúng tôi có quyền đình chỉ hoặc chấm dứt tài khoản của bạn nếu phát
+            hiện vi phạm điều khoản.
+          </p>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">
+            <span class="section-number">4</span>
+            Nội dung và sở hữu trí tuệ
+          </h2>
+          <p>
+            <strong>Nội dung của CodeQuest:</strong> Tất cả nội dung trên nền
+            tảng (bài học, video, bài tập, giao diện) thuộc quyền sở hữu của
+            CodeQuest và được bảo vệ bởi luật bản quyền.
+          </p>
+          <p>
+            <strong>Nội dung của bạn:</strong> Bạn giữ quyền sở hữu đối với code
+            và nội dung bạn tạo ra. Tuy nhiên, bằng cách đăng tải lên nền tảng,
+            bạn cấp cho CodeQuest quyền sử dụng nội dung đó cho mục đích:
+          </p>
+          <ul>
+            <li>Cải thiện và phát triển dịch vụ</li>
+            <li>Chia sẻ với cộng đồng (nếu bạn đồng ý)</li>
+            <li>Phân tích và tối ưu hóa trải nghiệm học tập</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">
+            <span class="section-number">5</span>
+            Hành vi cấm
+          </h2>
+          <p>
+            Khi sử dụng CodeQuest, bạn đồng ý KHÔNG thực hiện các hành vi sau:
+          </p>
+          <ul>
+            <li>❌ Gian lận trong bài tập hoặc thử thách</li>
+            <li>❌ Spam, quấy rối hoặc lạm dụng người dùng khác</li>
+            <li>❌ Vi phạm bản quyền hoặc quyền sở hữu trí tuệ</li>
+            <li>❌ Phát tán virus, malware hoặc mã độc</li>
+            <li>❌ Cố gắng xâm nhập hệ thống hoặc làm gián đoạn dịch vụ</li>
+            <li>❌ Sử dụng bot hoặc công cụ tự động không được phép</li>
+            <li>❌ Chia sẻ tài khoản hoặc bán tài khoản</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">
+            <span class="section-number">6</span>
+            Thanh toán và hoàn tiền
+          </h2>
+          <p>
+            <strong>Đối với gói miễn phí:</strong> Bạn có thể sử dụng các tính
+            năng cơ bản hoàn toàn miễn phí.
+          </p>
+          <p>
+            <strong>Đối với gói trả phí:</strong> Thanh toán được xử lý an toàn
+            qua các cổng thanh toán đáng tin cậy. Chính sách hoàn tiền áp dụng
+            trong vòng 14 ngày đầu tiên nếu bạn chưa sử dụng quá 30% nội dung
+            khóa học.
+          </p>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">
+            <span class="section-number">7</span>
+            Giới hạn trách nhiệm
+          </h2>
+          <p>
+            CodeQuest cung cấp dịch vụ "như hiện tại" và không đảm bảo rằng dịch
+            vụ sẽ không bị gián đoạn hoặc không có lỗi. Chúng tôi không chịu
+            trách nhiệm về:
+          </p>
+          <ul>
+            <li>Mất mát dữ liệu do lỗi kỹ thuật</li>
+            <li>Thiệt hại gián tiếp phát sinh từ việc sử dụng dịch vụ</li>
+            <li>Nội dung do người dùng khác tạo ra</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">
+            <span class="section-number">8</span>
+            Thay đổi điều khoản
+          </h2>
+          <p>
+            Chúng tôi có quyền cập nhật các Điều khoản sử dụng này bất kỳ lúc
+            nào. Các thay đổi quan trọng sẽ được thông báo qua email hoặc thông
+            báo trên nền tảng. Việc bạn tiếp tục sử dụng dịch vụ sau khi thay
+            đổi có hiệu lực đồng nghĩa với việc bạn chấp nhận các điều khoản
+            mới.
+          </p>
+        </div>
+
+        <div class="contact-info">
+          <h3>Có câu hỏi về điều khoản?</h3>
+          <p>
+            Liên hệ với chúng tôi qua email:
+            <a href="mailto:legal@codequest.com">legal@codequest.com</a>
+          </p>
+          <p>Hoặc gọi hotline: <strong>+84 123 456 789</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <!-- Thông tin liên hệ -->
+        <div class="footer-contact">
+          <p><strong>CodeQuest</strong></p>
+          <p>Email: support@codequest.com</p>
+          <p>Hotline: +84 123 456 789</p>
+          <div class="footer-socials">
+            <a href="#"
+              ><i
+                class="fab fa-facebook"
+                style="font-size: 20px; color: #4267b2"
+              ></i
+            ></a>
+            <a href="#"
+              ><i class="fab fa-github" style="font-size: 20px; color: #333"></i
+            ></a>
+            <a href="#"
+              ><i
+                class="fab fa-twitter"
+                style="font-size: 20px; color: #1da1f2"
+              ></i
+            ></a>
+          </div>
+        </div>
+
+        <!-- Liên kết nhanh -->
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Sản phẩm</h4>
+            <ul>
+              <li><a href="home.html">Trang Chủ</a></li>
+              <li><a href="about.html">Giới Thiệu</a></li>
+              <li><a href="features.html">Đặc Trưng</a></li>
+              <li><a href="contact.html">Liên Hệ</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>Công ty</h4>
+            <ul>
+              <li><a href="about.html">Về chúng tôi</a></li>
+              <li><a href="careers.html">Cơ hội nghề nghiệp</a></li>
+              <li><a href="clients.html">Khách hàng</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Pháp lý</h4>
+            <ul>
+              <li><a href="terms.html">Điều khoản</a></li>
+              <li><a href="privacy.html">Chính sách bảo mật</a></li>
+              <li><a href="security.html">Bảo mật</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Phần dưới -->
+        <div class="footer-bottom">
+          <select class="footer-language">
+            <option value="en">English</option>
+            <option value="vi">Tiếng Việt</option>
+          </select>
+          <div class="footer-theme">
+            <button>🌞</button>
+            <button>🌙</button>
+          </div>
+          <p class="footer-certification">Chứng nhận SOC 2</p>
+          <p class="footer-copyright">&copy; 2025 Được tạo bởi CodeQuest</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

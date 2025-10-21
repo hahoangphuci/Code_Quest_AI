@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Khách hàng & Đối tác · CodeQuest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --bg: #000;
+        --panel: #0f172a;
+        --panel2: #1e293b;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --white: #fff;
+        --accent1: #667eea;
+        --accent2: #764ba2;
+        --glass: rgba(255, 255, 255, 0.06);
+        --glass-bd: rgba(255, 255, 255, 0.12);
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+        line-height: 1.6;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .page {
+        width: 90%;
+        max-width: 1660px;
+        margin: 0 auto;
+        padding: 20px 24px 64px;
+      }
+
+      /* HERO */
+      .hero {
+        border-radius: 20px;
+        padding: 56px 28px;
+        background: radial-gradient(
+            circle at top left,
+            #9333ea55,
+            transparent 40%
+          ),
+          radial-gradient(circle at bottom left, #22c55e55, transparent 40%),
+          radial-gradient(circle at bottom right, #3b82f655, transparent 40%),
+          var(--panel);
+        display: grid;
+        gap: 18px;
+      }
+      .hero h1 {
+        font-size: clamp(2rem, 3.5vw, 3rem);
+        font-weight: 800;
+        line-height: 1.1;
+        background: linear-gradient(135deg, #fff, #e0e7ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .hero p {
+        max-width: 860px;
+        color: var(--text);
+        font-size: 1.08rem;
+      }
+      .hero_actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 4px;
+      }
+      .btn {
+        display: inline-block;
+        padding: 14px 22px;
+        border-radius: 12px;
+        font-weight: 600;
+        border: 1px solid transparent;
+        transition: 0.25s ease;
+        cursor: pointer;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
+        color: var(--white);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.55);
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--text);
+        border-color: #334155;
+      }
+      .btn-ghost:hover {
+        background: #111827;
+        border-color: #475569;
+      }
+
+      /* LOGO WALL */
+      .logos {
+        margin-top: 28px;
+        padding: 24px;
+        border-radius: 20px;
+        background: linear-gradient(
+          135deg,
+          var(--panel) 0%,
+          var(--panel2) 100%
+        );
+      }
+      .logos h2 {
+        font-size: clamp(1.4rem, 2.2vw, 2rem);
+        text-align: center;
+        background: linear-gradient(135deg, #fff, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+      }
+      .logo_grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 16px;
+        align-items: center;
+      }
+      .logo_card {
+        background: var(--glass);
+        border: 1px solid var(--glass-bd);
+        border-radius: 14px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.25s;
+      }
+      .logo_card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(147, 197, 253, 0.35);
+        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+      }
+      .logo_card img {
+        max-width: 120px;
+        max-height: 42px;
+        filter: invert(1) grayscale(1) brightness(1.4);
+      }
+
+      /* CASE STUDIES */
+      .studies {
+        margin-top: 28px;
+        padding: 28px;
+        border-radius: 20px;
+        background: var(--panel);
+      }
+      .studies_head {
+        text-align: center;
+        margin-bottom: 12px;
+      }
+      .studies_head h2 {
+        font-size: clamp(1.4rem, 2.2vw, 2rem);
+        background: linear-gradient(135deg, #fff, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .study_grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+        margin-top: 16px;
+      }
+      .study {
+        background: var(--glass);
+        border: 1px solid var(--glass-bd);
+        border-radius: 16px;
+        padding: 20px;
+        transition: 0.25s;
+      }
+      .study:hover {
+        transform: translateY(-6px);
+        border-color: rgba(147, 197, 253, 0.35);
+        box-shadow: 0 16px 44px rgba(0, 0, 0, 0.35);
+      }
+      .study .tag {
+        display: inline-block;
+        background: #0b1220;
+        border: 1px solid #334155;
+        color: #cbd5e1;
+        font-size: 0.8rem;
+        border-radius: 999px;
+        padding: 4px 10px;
+        margin-bottom: 10px;
+      }
+      .study h3 {
+        color: #fff;
+        margin-bottom: 6px;
+        font-size: 1.1rem;
+      }
+      .study p {
+        color: #94a3b8;
+      }
+      .study .result {
+        margin-top: 10px;
+        color: #e2e8f0;
+        font-weight: 600;
+      }
+
+      /* TESTIMONIALS */
+      .testimonials {
+        margin-top: 28px;
+        border-radius: 20px;
+        padding: 26px;
+        background: radial-gradient(
+            circle at top left,
+            #9333ea55,
+            transparent 40%
+          ),
+          radial-gradient(circle at bottom right, #3b82f655, transparent 40%),
+          var(--panel);
+      }
+      .ts_grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+      }
+      .ts {
+        background: var(--glass);
+        border: 1px solid var(--glass-bd);
+        border-radius: 16px;
+        padding: 16px;
+        transition: 0.25s;
+      }
+      .ts:hover {
+        transform: translateY(-4px);
+        border-color: rgba(147, 197, 253, 0.35);
+      }
+      .ts_head {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .ts_head img {
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+      }
+      .ts_name {
+        color: #fff;
+        font-weight: 700;
+      }
+      .ts_role {
+        color: #9ca3af;
+        font-size: 0.9rem;
+      }
+      .ts_text {
+        color: #cbd5e1;
+      }
+
+      /* METRICS */
+      .metrics {
+        margin-top: 28px;
+      }
+      .m_grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+      }
+      .m {
+        background: var(--glass);
+        border: 1px solid var(--glass-bd);
+        border-radius: 16px;
+        padding: 18px;
+        text-align: center;
+      }
+      .m_value {
+        font-size: 1.4rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #fff, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .m_label {
+        color: #94a3b8;
+        margin-top: 6px;
+      }
+
+      /* USE CASES */
+      .usecases {
+        margin-top: 28px;
+        padding: 28px;
+        border-radius: 20px;
+        background: linear-gradient(
+          135deg,
+          var(--panel) 0%,
+          var(--panel2) 100%
+        );
+      }
+      .uc_head {
+        text-align: center;
+        margin-bottom: 12px;
+      }
+      .uc_head h2 {
+        font-size: clamp(1.4rem, 2.2vw, 2rem);
+        background: linear-gradient(135deg, #fff, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .uc_grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .uc {
+        background: var(--glass);
+        border: 1px solid var(--glass-bd);
+        border-radius: 16px;
+        padding: 18px;
+        transition: 0.25s;
+      }
+      .uc:hover {
+        transform: translateY(-4px);
+        border-color: rgba(147, 197, 253, 0.35);
+      }
+      .uc_title {
+        color: #fff;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .uc_desc {
+        color: #94a3b8;
+      }
+
+      /* ENTERPRISE FEATURES */
+      .enterprise {
+        margin-top: 28px;
+        padding: 28px;
+        border-radius: 20px;
+        background: var(--panel);
+      }
+      .ent_head {
+        text-align: center;
+        margin-bottom: 12px;
+      }
+      .ent_head h2 {
+        font-size: clamp(1.4rem, 2.2vw, 2rem);
+        background: linear-gradient(135deg, #fff, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .ent_grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .ent {
+        background: var(--glass);
+        border: 1px solid var(--glass-bd);
+        border-radius: 16px;
+        padding: 18px;
+        transition: 0.25s;
+      }
+      .ent:hover {
+        transform: translateY(-4px);
+        border-color: rgba(147, 197, 253, 0.35);
+      }
+      .ent_icon {
+        font-size: 1.4rem;
+        margin-bottom: 6px;
+        display: block;
+      }
+      .ent_title {
+        color: #fff;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .ent_desc {
+        color: #94a3b8;
+      }
+
+      /* ROLLOUT PROGRAM */
+      .program {
+        margin-top: 28px;
+        padding: 28px;
+        border-radius: 20px;
+        background: radial-gradient(
+            circle at 25% 75%,
+            rgba(102, 126, 234, 0.12),
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 75% 25%,
+            rgba(118, 75, 162, 0.12),
+            transparent 50%
+          ),
+          var(--panel);
+      }
+      .prog_head {
+        text-align: center;
+        margin-bottom: 12px;
+      }
+      .prog_head h2 {
+        font-size: clamp(1.4rem, 2.2vw, 2rem);
+        background: linear-gradient(135deg, #fff, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .prog_steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        margin-top: 16px;
+      }
+      .step_card {
+        background: var(--glass);
+        border: 1px solid var(--glass-bd);
+        border-radius: 16px;
+        padding: 18px;
+        display: grid;
+        grid-template-columns: 42px 1fr;
+        gap: 12px;
+        align-items: start;
+      }
+      .step_num {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
+        color: #fff;
+        font-weight: 800;
+      }
+      .step_title {
+        color: #fff;
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .step_desc {
+        color: #94a3b8;
+      }
+
+      /* FAQ */
+      .faq {
+        margin-top: 28px;
+        padding: 28px;
+        border-radius: 20px;
+        background: linear-gradient(
+          135deg,
+          var(--panel) 0%,
+          var(--panel2) 100%
+        );
+      }
+      .faq_head {
+        text-align: center;
+        margin-bottom: 12px;
+      }
+      .faq_head h2 {
+        font-size: clamp(1.4rem, 2.2vw, 2rem);
+        background: linear-gradient(135deg, #fff, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .faq_list {
+        max-width: 1000px;
+        margin: 12px auto 0;
+        display: grid;
+        gap: 10px;
+      }
+      details {
+        background: var(--glass);
+        border: 1px solid var(--glass-bd);
+        border-radius: 12px;
+        padding: 12px;
+      }
+      summary {
+        cursor: pointer;
+        color: #fff;
+        font-weight: 700;
+      }
+      details p {
+        color: #94a3b8;
+        margin-top: 8px;
+      }
+
+      /* CTA */
+      .cta {
+        margin-top: 36px;
+        padding: 40px 24px;
+        border-radius: 20px;
+        text-align: center;
+        background: radial-gradient(
+            circle at top left,
+            #9333ea55,
+            transparent 40%
+          ),
+          radial-gradient(circle at bottom left, #22c55e55, transparent 40%),
+          radial-gradient(circle at bottom right, #3b82f655, transparent 40%),
+          var(--panel);
+      }
+      .cta h2 {
+        font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+        background: linear-gradient(135deg, #fff, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 6px;
+      }
+      .cta p {
+        color: #94a3b8;
+        margin-bottom: 16px;
+      }
+      .cta_actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Không sử dụng header/footer theo yêu cầu -->
+    <main class="page">
+      <!-- HERO -->
+      <section class="hero">
+        <h1>Khách hàng & đối tác tin dùng CodeQuest</h1>
+        <p>
+          Nền tảng luyện code gamified giúp đội ngũ phát triển nâng cấp kỹ năng
+          nhanh chóng, chuẩn hóa quy trình học – đánh giá – thực hành. Tối ưu
+          chi phí đào tạo và rút ngắn thời gian onboarding.
+        </p>
+        <div class="hero_actions">
+          <a class="btn btn-primary" href="features.html">Khám phá tính năng</a>
+          <a class="btn btn-ghost" href="contact.html">Liên hệ demo</a>
+        </div>
+      </section>
+
+      <!-- LOGO WALL (không tiêu đề theo yêu cầu) -->
+      <section class="logos">
+        <div class="logo_grid">
+          <div class="logo_card">
+            <img src="../assets/image/fb.png" alt="Facebook" />
+          </div>
+          <div class="logo_card">
+            <img src="../assets/image/github.png" alt="GitHub" />
+          </div>
+          <div class="logo_card">
+            <img src="../assets/image/logo.png" alt="CodeQuest" />
+          </div>
+          <div class="logo_card">
+            <img src="../assets/image/image.png" alt="Brand" />
+          </div>
+          <div class="logo_card">
+            <img src="../assets/image/fb.png" alt="Facebook" />
+          </div>
+          <div class="logo_card">
+            <img src="../assets/image/github.png" alt="GitHub" />
+          </div>
+        </div>
+      </section>
+
+      <!-- USE CASES -->
+      <section class="usecases">
+        <div class="uc_head"><h2>Tình huống sử dụng điển hình</h2></div>
+        <div class="uc_grid">
+          <div class="uc">
+            <div class="uc_title">Training liên tục (L&D)</div>
+            <div class="uc_desc">
+              Lập kế hoạch học theo quý, nhắc lịch tự động, báo cáo tiến độ theo
+              team.
+            </div>
+          </div>
+          <div class="uc">
+            <div class="uc_title">Onboarding dev mới</div>
+            <div class="uc_desc">
+              Lộ trình vai trò, thử thách theo stack dự án, đánh giá cuối kỳ.
+            </div>
+          </div>
+          <div class="uc">
+            <div class="uc_title">Đánh giá trước tuyển dụng</div>
+            <div class="uc_desc">
+              Bộ bài test chuẩn hóa, chống gian lận cơ bản, phân tích năng lực.
+            </div>
+          </div>
+          <div class="uc">
+            <div class="uc_title">Hackathon nội bộ</div>
+            <div class="uc_desc">
+              Tạo giải đấu coding, xếp hạng, huy hiệu – gắn kết văn hóa kỹ
+              thuật.
+            </div>
+          </div>
+          <div class="uc">
+            <div class="uc_title">Nâng cấp DSA/CS fundamentals</div>
+            <div class="uc_desc">
+              Củng cố nền tảng, luyện thói quen giải quyết vấn đề mỗi tuần.
+            </div>
+          </div>
+          <div class="uc">
+            <div class="uc_title">Khóa học tùy chỉnh</div>
+            <div class="uc_desc">
+              Định nghĩa track nội bộ, import tài liệu, gắn bài kiểm tra.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ENTERPRISE FEATURES -->
+      <section class="enterprise">
+        <div class="ent_head"><h2>Tính năng cho tổ chức</h2></div>
+        <div class="ent_grid">
+          <div class="ent">
+            <span class="ent_icon">🏢</span>
+            <div class="ent_title">Quản trị tổ chức</div>
+            <div class="ent_desc">
+              Tạo workspace, team, mời thành viên, đặt chính sách học.
+            </div>
+          </div>
+          <div class="ent">
+            <span class="ent_icon">🧭</span>
+            <div class="ent_title">Lộ trình tùy chỉnh</div>
+            <div class="ent_desc">
+              Tạo track riêng theo vai trò/stack, tiêu chí hoàn thành rõ ràng.
+            </div>
+          </div>
+          <div class="ent">
+            <span class="ent_icon">📊</span>
+            <div class="ent_title">Báo cáo & Analytics</div>
+            <div class="ent_desc">
+              Tiến độ, điểm mạnh/yếu, phân tích theo cá nhân và team.
+            </div>
+          </div>
+          <div class="ent">
+            <span class="ent_icon">🔐</span>
+            <div class="ent_title">SSO / SAML</div>
+            <div class="ent_desc">
+              Đăng nhập một lần, quản lý danh tính tập trung. Xem thêm ở
+              <a href="security.html">Bảo mật</a>.
+            </div>
+          </div>
+          <div class="ent">
+            <span class="ent_icon">🧑‍💼</span>
+            <div class="ent_title">Phân quyền vai trò</div>
+            <div class="ent_desc">
+              Admin, Manager, Mentor, Member – rõ trách nhiệm và quyền hạn.
+            </div>
+          </div>
+          <div class="ent">
+            <span class="ent_icon">🔗</span>
+            <div class="ent_title">Tích hợp</div>
+            <div class="ent_desc">
+              Kết nối Slack, GitHub, Jira (roadmap); webhooks cho workflow.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ROLLOUT PROGRAM -->
+      <section class="program">
+        <div class="prog_head"><h2>Chương trình triển khai 4 bước</h2></div>
+        <div class="prog_steps">
+          <div class="step_card">
+            <div class="step_num">1</div>
+            <div>
+              <div class="step_title">Khảo sát mục tiêu</div>
+              <div class="step_desc">
+                Phỏng vấn nhanh về kỹ năng, KPI, thời gian triển khai mong muốn.
+              </div>
+            </div>
+          </div>
+          <div class="step_card">
+            <div class="step_num">2</div>
+            <div>
+              <div class="step_title">Thiết kế lộ trình</div>
+              <div class="step_desc">
+                Chọn track, mức độ, tiêu chí hoàn thành và lịch học phù hợp.
+              </div>
+            </div>
+          </div>
+          <div class="step_card">
+            <div class="step_num">3</div>
+            <div>
+              <div class="step_title">Thí điểm (2–4 tuần)</div>
+              <div class="step_desc">
+                Chạy pilot trên 1 nhóm nhỏ, thu thập phản hồi, tinh chỉnh.
+              </div>
+            </div>
+          </div>
+          <div class="step_card">
+            <div class="step_num">4</div>
+            <div>
+              <div class="step_title">Nhân rộng & báo cáo</div>
+              <div class="step_desc">
+                Mở rộng toàn team, cung cấp báo cáo định kỳ cho quản lý.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq">
+        <div class="faq_head"><h2>Câu hỏi thường gặp</h2></div>
+        <div class="faq_list">
+          <details>
+            <summary>CodeQuest phù hợp team quy mô nào?</summary>
+            <p>
+              Chúng tôi hỗ trợ từ nhóm nhỏ 5–10 người đến tổ chức hàng trăm dev.
+              Bạn có thể bắt đầu nhỏ và mở rộng sau.
+            </p>
+          </details>
+          <details>
+            <summary>Có hỗ trợ nội dung theo stack riêng không?</summary>
+            <p>
+              Có. Bạn có thể tạo lộ trình riêng theo React, Node, Java, Python…
+              hoặc nhập tài liệu nội bộ.
+            </p>
+          </details>
+          <details>
+            <summary>Việc chống gian lận khi làm bài test?</summary>
+            <p>
+              Có giám sát thời gian, random test bank, và phân tích bất thường;
+              ngoài ra khuyến nghị kết hợp phỏng vấn kỹ thuật.
+            </p>
+          </details>
+          <details>
+            <summary>Thanh toán và bảo mật dữ liệu?</summary>
+            <p>
+              Hóa đơn linh hoạt theo tháng/quý/năm. Dữ liệu được bảo vệ theo
+              tiêu chuẩn công nghiệp, xem thêm tại
+              <a href="security.html">Bảo mật</a>.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <!-- CASE STUDIES -->
+      <section class="studies">
+        <div class="studies_head">
+          <h2>Case study tiêu biểu</h2>
+        </div>
+        <div class="study_grid">
+          <article class="study">
+            <span class="tag">Onboarding nhanh</span>
+            <h3>Tăng tốc hòa nhập dev mới 30%</h3>
+            <p>
+              Thiết kế lộ trình học theo vai trò, đo tiến độ tự động, bài thực
+              hành sát công việc.
+            </p>
+            <div class="result">
+              Kết quả: thời gian onboard rút ngắn 2→3 tuần.
+            </div>
+          </article>
+          <article class="study">
+            <span class="tag">Tiết kiệm chi phí</span>
+            <h3>Giảm 40% thời gian training nội bộ</h3>
+            <p>
+              Kho thử thách có sẵn, AI mentor 24/7, tiêu chuẩn hóa nội dung theo
+              team.
+            </p>
+            <div class="result">
+              Kết quả: tiết kiệm giờ mentor và chi phí lớp học.
+            </div>
+          </article>
+          <article class="study">
+            <span class="tag">Chất lượng code</span>
+            <h3>Nâng cao chuẩn coding & testing</h3>
+            <p>
+              Tự động chấm điểm, gợi ý refactor, tracking bug pattern theo cá
+              nhân.
+            </p>
+            <div class="result">Kết quả: PR ổn định hơn, ít lỗi lặp lại.</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section class="testimonials">
+        <div class="ts_grid">
+          <div class="ts">
+            <div class="ts_head">
+              <img src="https://i.pravatar.cc/50?img=9" alt="avatar" />
+              <div>
+                <div class="ts_name">Minh Đức</div>
+                <div class="ts_role">Engineering Manager</div>
+              </div>
+            </div>
+            <p class="ts_text">
+              “Team mình dùng CodeQuest để chuẩn hóa kiến thức nền và luyện DSA
+              mỗi tuần. Hiệu suất review code tăng thấy rõ.”
+            </p>
+          </div>
+          <div class="ts">
+            <div class="ts_head">
+              <img src="https://i.pravatar.cc/50?img=14" alt="avatar" />
+              <div>
+                <div class="ts_name">An Nguyễn</div>
+                <div class="ts_role">Tech Lead</div>
+              </div>
+            </div>
+            <p class="ts_text">
+              “Onboarding dev mới thuận lợi hơn nhờ lộ trình và thử thách thực
+              chiến, không còn phụ thuộc quá nhiều vào 1 kèm 1.”
+            </p>
+          </div>
+          <div class="ts">
+            <div class="ts_head">
+              <img src="https://i.pravatar.cc/50?img=11" alt="avatar" />
+              <div>
+                <div class="ts_name">Quốc Bảo</div>
+                <div class="ts_role">QA Lead</div>
+              </div>
+            </div>
+            <p class="ts_text">
+              “Các bài kiểm thử và gợi ý fix bug theo pattern giúp đội QA - Dev
+              nói chuyện cùng một ngôn ngữ, giảm lỗi trùng lặp.”
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- METRICS -->
+      <section class="metrics">
+        <div class="m_grid">
+          <div class="m">
+            <div class="m_value">200+ team</div>
+            <div class="m_label">đang sử dụng</div>
+          </div>
+          <div class="m">
+            <div class="m_value">95%</div>
+            <div class="m_label">mức độ hài lòng</div>
+          </div>
+          <div class="m">
+            <div class="m_value">20%+</div>
+            <div class="m_label">tăng tốc ra release</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta">
+        <h2>Sẵn sàng nâng cấp đội ngũ?</h2>
+        <p>
+          Nhận demo miễn phí và bản đề xuất phù hợp mục tiêu đào tạo của bạn.
+        </p>
+        <div class="cta_actions">
+          <a class="btn btn-primary" href="contact.html">Liên hệ đội ngũ</a>
+          <a class="btn btn-ghost" href="home.html">Xem thêm về CodeQuest</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

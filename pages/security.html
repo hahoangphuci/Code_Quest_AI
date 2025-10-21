@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bảo mật - CodeQuest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 50%,
+          #0f3460 100%
+        );
+        color: #e2e8f0;
+        min-height: 100vh;
+        line-height: 1.8;
+      }
+
+      .header {
+        background: #000000;
+        border-bottom: 1px solid #334155;
+        padding: 20px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-decoration: none;
+      }
+
+      .back-btn {
+        background: rgba(96, 165, 250, 0.1);
+        color: #60a5fa;
+        border: 1px solid #60a5fa;
+        padding: 10px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .back-btn:hover {
+        background: #60a5fa;
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(96, 165, 250, 0.3);
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 60px auto;
+        padding: 0 24px;
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .page-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #ffffff 0%, #22c55e 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 16px;
+      }
+
+      .page-subtitle {
+        font-size: 1.2rem;
+        color: #94a3b8;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .security-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+        margin-bottom: 60px;
+      }
+
+      .security-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 36px;
+        backdrop-filter: blur(20px);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .security-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #22c55e, #10b981);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+      }
+
+      .security-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .security-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(34, 197, 94, 0.2);
+        border-color: rgba(34, 197, 94, 0.3);
+      }
+
+      .security-icon {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        display: block;
+      }
+
+      .security-card h3 {
+        font-size: 1.5rem;
+        color: #22c55e;
+        margin-bottom: 16px;
+        font-weight: 700;
+      }
+
+      .security-card p {
+        color: #cbd5e1;
+        margin-bottom: 12px;
+        line-height: 1.7;
+      }
+
+      .security-card ul {
+        margin-left: 20px;
+        color: #cbd5e1;
+      }
+
+      .security-card li {
+        margin-bottom: 8px;
+      }
+
+      .compliance-section {
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-radius: 20px;
+        padding: 48px;
+        margin-bottom: 60px;
+      }
+
+      .compliance-section h2 {
+        font-size: 2rem;
+        color: #60a5fa;
+        margin-bottom: 24px;
+        text-align: center;
+      }
+
+      .badges-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+        margin-top: 32px;
+      }
+
+      .badge-item {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(96, 165, 250, 0.3);
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .badge-item:hover {
+        transform: scale(1.05);
+        border-color: rgba(96, 165, 250, 0.6);
+        box-shadow: 0 10px 30px rgba(96, 165, 250, 0.2);
+      }
+
+      .badge-icon {
+        font-size: 3rem;
+        margin-bottom: 12px;
+      }
+
+      .badge-item h4 {
+        color: #ffffff;
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+      }
+
+      .badge-item p {
+        color: #94a3b8;
+        font-size: 0.9rem;
+      }
+
+      .vulnerability-section {
+        background: linear-gradient(
+          135deg,
+          rgba(239, 68, 68, 0.1) 0%,
+          rgba(220, 38, 38, 0.1) 100%
+        );
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 20px;
+        padding: 48px;
+        margin-bottom: 60px;
+      }
+
+      .vulnerability-section h2 {
+        font-size: 2rem;
+        color: #f87171;
+        margin-bottom: 20px;
+      }
+
+      .vulnerability-section p {
+        color: #cbd5e1;
+        margin-bottom: 16px;
+      }
+
+      .vulnerability-section strong {
+        color: #fca5a5;
+      }
+
+      .contact-box {
+        background: rgba(34, 197, 94, 0.1);
+        border: 2px solid rgba(34, 197, 94, 0.3);
+        border-radius: 16px;
+        padding: 24px;
+        margin-top: 24px;
+      }
+
+      .contact-box h4 {
+        color: #22c55e;
+        margin-bottom: 12px;
+      }
+
+      .contact-box a {
+        color: #22c55e;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+      }
+
+      .contact-box a:hover {
+        color: #4ade80;
+        text-decoration: underline;
+      }
+
+      .best-practices {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 48px;
+      }
+
+      .best-practices h2 {
+        font-size: 2rem;
+        color: #ffffff;
+        margin-bottom: 32px;
+        text-align: center;
+        background: linear-gradient(135deg, #ffffff 0%, #a78bfa 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .practice-item {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 24px;
+        padding: 20px;
+        background: rgba(167, 139, 250, 0.05);
+        border-left: 4px solid #a78bfa;
+        border-radius: 8px;
+      }
+
+      .practice-number {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+      }
+
+      .practice-content h4 {
+        color: #a78bfa;
+        margin-bottom: 8px;
+      }
+
+      .practice-content p {
+        color: #cbd5e1;
+      }
+
+      @media (max-width: 768px) {
+        .page-title {
+          font-size: 2.5rem;
+        }
+
+        .security-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .badges-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .compliance-section,
+        .vulnerability-section,
+        .best-practices {
+          padding: 32px 24px;
+        }
+      }
+      .mt-16 {
+        margin-top: 16px;
+      }
+
+      .compliance-note {
+        margin-top: 32px;
+        padding: 24px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+      }
+
+      .muted-center {
+        color: #cbd5e1;
+        text-align: center;
+        margin-bottom: 8px;
+      }
+
+      .accent-strong {
+        color: #60a5fa;
+      }
+
+      .accent-heading {
+        color: #fca5a5;
+        margin-top: 24px;
+        margin-bottom: 12px;
+      }
+
+      .indented-list {
+        margin-left: 24px;
+        color: #cbd5e1;
+      }
+
+      .small-muted {
+        color: #cbd5e1;
+        margin-top: 12px;
+        font-size: 0.9rem;
+      }
+
+      .final-contact {
+        background: linear-gradient(
+          135deg,
+          rgba(34, 197, 94, 0.1) 0%,
+          rgba(16, 185, 129, 0.1) 100%
+        );
+        border: 2px solid rgba(34, 197, 94, 0.3);
+        border-radius: 20px;
+        padding: 48px;
+        text-align: center;
+        margin-top: 60px;
+      }
+
+      .final-contact-title {
+        font-size: 2rem;
+        color: #22c55e;
+        margin-bottom: 16px;
+      }
+
+      .final-contact-desc {
+        color: #cbd5e1;
+        font-size: 1.1rem;
+        margin-bottom: 24px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .contact-cards {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 32px;
+      }
+
+      .contact-card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 16px 24px;
+        border-radius: 12px;
+        min-width: 250px;
+      }
+
+      .contact-card .icon {
+        color: #22c55e;
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+      }
+
+      .contact-link {
+        color: #22c55e;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .social-icon {
+        font-size: 20px;
+      }
+
+      .social-icon.fb {
+        color: #4267b2;
+      }
+
+      .social-icon.github {
+        color: #333;
+      }
+
+      .social-icon.twitter {
+        color: #1da1f2;
+      }
+      .no-margin {
+        margin: 0;
+      }
+
+      .center-muted {
+        text-align: center;
+        color: #94a3b8;
+        margin-bottom: 32px;
+      }
+
+      .card-label {
+        color: #94a3b8;
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+      }
+
+      .card-value {
+        color: #ffffff;
+        font-weight: 600;
+      }
+
+      .small-muted-md {
+        color: #94a3b8;
+        font-size: 0.9rem;
+        margin-top: 32px;
+      }
+
+      .accent-green {
+        color: #22c55e;
+      }
+
+      .link-accent {
+        color: #4ade80;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="site_header">
+      <div class="container_header">
+        <div class="logo_header">
+          <img
+            onclick="location.href='home.html'"
+            src="../assets/image/logo.png"
+            alt="Logo"
+            class="logo-animate"
+          />
+          <a href="home.html" class="">CodeQuest</a>
+        </div>
+        <nav class="nav_header">
+          <button class="nav_btn" onclick="location.href='home.html'">
+            Trang Chủ
+          </button>
+          <button
+            id="about-btn"
+            class="nav_btn"
+            onclick="location.href='about.html'"
+          >
+            Giới Thiệu
+          </button>
+          <button class="nav_btn" onclick="location.href='features.html'">
+            Đặc Trưng
+          </button>
+          <button class="nav_btn" onclick="location.href='contact.html'">
+            Liên Hệ
+          </button>
+        </nav>
+
+        <div class="auth_header">
+          <button class="login_btn">Đăng Nhập</button>
+          <button class="register_btn">Đăng Ký</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+      <div class="page-header">
+        <h1 class="page-title">🛡️ Bảo mật CodeQuest</h1>
+        <p class="page-subtitle">
+          Chúng tôi áp dụng các biện pháp bảo mật tiên tiến nhất để bảo vệ dữ
+          liệu và tài khoản của bạn. An toàn của bạn là ưu tiên hàng đầu của
+          chúng tôi.
+        </p>
+      </div>
+
+      <!-- Security Features Grid -->
+      <div class="security-grid">
+        <div class="security-card">
+          <span class="security-icon">🔐</span>
+          <h3>Mã hóa dữ liệu</h3>
+          <p><strong>Bảo vệ toàn diện:</strong></p>
+          <ul>
+            <li>
+              <strong>TLS 1.3:</strong> Mã hóa dữ liệu khi truyền tải giữa thiết
+              bị và máy chủ
+            </li>
+            <li>
+              <strong>AES-256:</strong> Mã hóa dữ liệu khi lưu trữ trên hệ thống
+            </li>
+            <li><strong>Bcrypt:</strong> Hash mật khẩu với độ phức tạp cao</li>
+          </ul>
+          <p class="mt-16">
+            Mọi thông tin nhạy cảm của bạn đều được mã hóa ở cả hai trạng thái:
+            đang truyền và đang lưu trữ.
+          </p>
+        </div>
+
+        <div class="security-card">
+          <span class="security-icon">🔑</span>
+          <h3>Xác thực đa yếu tố (2FA)</h3>
+          <p>Tăng cường bảo mật tài khoản với xác thực 2 lớp:</p>
+          <ul>
+            <li><strong>SMS OTP:</strong> Mã xác thực qua tin nhắn</li>
+            <li><strong>Email OTP:</strong> Mã xác thực qua email</li>
+            <li>
+              <strong>Authenticator App:</strong> Google Authenticator, Authy
+            </li>
+            <li><strong>Biometric:</strong> Vân tay, Face ID (mobile)</li>
+          </ul>
+          <p class="mt-16">Khuyến nghị bật 2FA để bảo vệ tài khoản tốt nhất.</p>
+        </div>
+
+        <div class="security-card">
+          <span class="security-icon">🛡️</span>
+          <h3>Firewall & DDoS Protection</h3>
+          <p>Hệ thống phòng thủ đa lớp:</p>
+          <ul>
+            <li>
+              <strong>Web Application Firewall:</strong> Chặn các cuộc tấn công
+              web phổ biến
+            </li>
+            <li>
+              <strong>DDoS Mitigation:</strong> Ngăn chặn tấn công từ chối dịch
+              vụ
+            </li>
+            <li>
+              <strong>Rate Limiting:</strong> Giới hạn số lượng request bất
+              thường
+            </li>
+            <li><strong>IP Blocking:</strong> Chặn các IP độc hại tự động</li>
+          </ul>
+        </div>
+
+        <div class="security-card">
+          <span class="security-icon">👁️</span>
+          <h3>Giám sát 24/7</h3>
+          <p>Theo dõi và phát hiện mối đe dọa liên tục:</p>
+          <ul>
+            <li>
+              <strong>Real-time Monitoring:</strong> Giám sát hệ thống theo thời
+              gian thực
+            </li>
+            <li>
+              <strong>Intrusion Detection:</strong> Phát hiện xâm nhập tự động
+            </li>
+            <li>
+              <strong>Anomaly Detection:</strong> AI phát hiện hành vi bất
+              thường
+            </li>
+            <li>
+              <strong>Alert System:</strong> Cảnh báo ngay lập tức khi có sự cố
+            </li>
+          </ul>
+          <p class="mt-16">
+            Đội ngũ bảo mật on-call 24/7 sẵn sàng xử lý sự cố.
+          </p>
+        </div>
+
+        <div class="security-card">
+          <span class="security-icon">💾</span>
+          <h3>Sao lưu & Khôi phục</h3>
+          <p>Đảm bảo dữ liệu luôn an toàn:</p>
+          <ul>
+            <li><strong>Daily Backup:</strong> Sao lưu dữ liệu hàng ngày</li>
+            <li>
+              <strong>Multi-region Storage:</strong> Lưu trữ ở nhiều khu vực địa
+              lý
+            </li>
+            <li>
+              <strong>Disaster Recovery:</strong> Kế hoạch khôi phục sau thảm
+              họa
+            </li>
+            <li>
+              <strong>Point-in-time Recovery:</strong> Khôi phục về thời điểm cụ
+              thể
+            </li>
+          </ul>
+        </div>
+
+        <div class="security-card">
+          <span class="security-icon">🔍</span>
+          <h3>Kiểm tra bảo mật định kỳ</h3>
+          <p>Đánh giá và cải thiện liên tục:</p>
+          <ul>
+            <li>
+              <strong>Penetration Testing:</strong> Kiểm tra thâm nhập hàng quý
+            </li>
+            <li><strong>Code Review:</strong> Rà soát code trước khi deploy</li>
+            <li>
+              <strong>Vulnerability Scanning:</strong> Quét lỗ hổng tự động hàng
+              tuần
+            </li>
+            <li>
+              <strong>Third-party Audit:</strong> Kiểm toán bởi bên thứ ba độc
+              lập
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Compliance Section -->
+      <div class="compliance-section">
+        <h2>✅ Tuân thủ & Chứng nhận</h2>
+        <p class="muted-center">
+          CodeQuest đạt các tiêu chuẩn bảo mật và tuân thủ quốc tế hàng đầu
+        </p>
+
+        <div class="badges-grid">
+          <div class="badge-item">
+            <div class="badge-icon">🏆</div>
+            <h4>SOC 2 Type II</h4>
+            <p>
+              Chứng nhận kiểm soát bảo mật, tính khả dụng và bảo mật dữ liệu
+            </p>
+          </div>
+
+          <div class="badge-item">
+            <div class="badge-icon">🌍</div>
+            <h4>GDPR Compliant</h4>
+            <p>Tuân thủ quy định bảo vệ dữ liệu của Liên minh Châu Âu</p>
+          </div>
+
+          <div class="badge-item">
+            <div class="badge-icon">🔐</div>
+            <h4>ISO 27001</h4>
+            <p>Tiêu chuẩn quản lý bảo mật thông tin quốc tế (Đang xử lý)</p>
+          </div>
+
+          <div class="badge-item">
+            <div class="badge-icon">🛡️</div>
+            <h4>PCI DSS</h4>
+            <p>Bảo mật dữ liệu thẻ thanh toán (cho giao dịch)</p>
+          </div>
+        </div>
+
+        <div class="compliance-note">
+          <p class="muted-center no-margin">
+            <strong class="accent-strong">Kiểm toán lần cuối:</strong> Tháng 9,
+            2025 |
+            <strong class="accent-strong">Kiểm toán tiếp theo:</strong> Tháng 3,
+            2026
+          </p>
+        </div>
+      </div>
+
+      <!-- Vulnerability Disclosure Section -->
+      <div class="vulnerability-section">
+        <h2>🚨 Báo cáo lỗ hổng bảo mật</h2>
+        <p>
+          CodeQuest tin tưởng vào sức mạnh của cộng đồng bảo mật. Nếu bạn phát
+          hiện bất kỳ lỗ hổng bảo mật nào trong hệ thống của chúng tôi, chúng
+          tôi khuyến khích bạn báo cáo một cách có trách nhiệm.
+        </p>
+
+        <h3 class="accent-heading">Quy trình báo cáo:</h3>
+        <ul class="indented-list">
+          <li>
+            <strong>KHÔNG</strong> công khai lỗ hổng trước khi chúng tôi xác
+            nhận và sửa chữa
+          </li>
+          <li>
+            <strong>KHÔNG</strong> khai thác lỗ hổng để gây thiệt hại hoặc truy
+            cập dữ liệu không được phép
+          </li>
+          <li>
+            <strong>GỬI</strong> báo cáo chi tiết với các bước tái hiện lỗi
+          </li>
+          <li>
+            <strong>CHỜ</strong> phản hồi từ đội ngũ bảo mật của chúng tôi
+          </li>
+        </ul>
+
+        <h3 class="accent-heading">Cam kết của chúng tôi:</h3>
+        <ul class="indented-list">
+          <li>✅ Phản hồi trong vòng <strong>24 giờ</strong></li>
+          <li>
+            ✅ Xác nhận và đánh giá mức độ nghiêm trọng trong
+            <strong>72 giờ</strong>
+          </li>
+          <li>✅ Thông báo tiến độ sửa chữa định kỳ</li>
+          <li>✅ Ghi nhận công lao (nếu bạn đồng ý) trên trang Hall of Fame</li>
+          <li>
+            ✅ Phần thưởng cho các lỗ hổng nghiêm trọng (tùy theo đánh giá)
+          </li>
+        </ul>
+
+        <div class="contact-box">
+          <h4>📧 Liên hệ đội ngũ bảo mật:</h4>
+          <p>
+            Email:
+            <a class="contact-link" href="mailto:security@codequest.com"
+              >security@codequest.com</a
+            >
+          </p>
+          <p class="small-muted">
+            Vui lòng sử dụng PGP key của chúng tôi để mã hóa thông tin nhạy cảm.
+            <a href="#" class="link-accent">Tải PGP key →</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Best Practices Section -->
+      <div class="best-practices">
+        <h2>🎯 Hướng dẫn bảo mật cho người dùng</h2>
+        <p class="center-muted">
+          Bảo mật là trách nhiệm chung. Hãy làm theo các khuyến nghị sau để bảo
+          vệ tài khoản của bạn:
+        </p>
+
+        <div class="practice-item">
+          <div class="practice-number">1</div>
+          <div class="practice-content">
+            <h4>Sử dụng mật khẩu mạnh</h4>
+            <p>
+              Tạo mật khẩu dài ít nhất 12 ký tự, kết hợp chữ hoa, chữ thường, số
+              và ký tự đặc biệt. Tránh sử dụng thông tin cá nhân dễ đoán. Sử
+              dụng trình quản lý mật khẩu như 1Password, LastPass hoặc
+              Bitwarden.
+            </p>
+          </div>
+        </div>
+
+        <div class="practice-item">
+          <div class="practice-number">2</div>
+          <div class="practice-content">
+            <h4>Bật xác thực hai yếu tố (2FA)</h4>
+            <p>
+              Thêm lớp bảo vệ thứ hai cho tài khoản của bạn. Ngay cả khi ai đó
+              có được mật khẩu, họ vẫn không thể truy cập mà không có mã 2FA.
+              Vào <strong>Cài đặt > Bảo mật > 2FA</strong>
+              để kích hoạt.
+            </p>
+          </div>
+        </div>
+
+        <div class="practice-item">
+          <div class="practice-number">3</div>
+          <div class="practice-content">
+            <h4>Cẩn thận với Phishing</h4>
+            <p>
+              Không click vào link lạ trong email. CodeQuest sẽ KHÔNG BAO GIỜ
+              yêu cầu mật khẩu qua email hoặc tin nhắn. Luôn kiểm tra URL là
+              <strong>codequest.com</strong> trước khi đăng nhập. Cảnh giác với
+              các email giả mạo.
+            </p>
+          </div>
+        </div>
+
+        <div class="practice-item">
+          <div class="practice-number">4</div>
+          <div class="practice-content">
+            <h4>Cập nhật phần mềm thường xuyên</h4>
+            <p>
+              Giữ trình duyệt, hệ điều hành và phần mềm antivirus luôn được cập
+              nhật. Các bản cập nhật thường chứa các bản vá bảo mật quan trọng
+              để bảo vệ bạn khỏi các mối đe dọa mới.
+            </p>
+          </div>
+        </div>
+
+        <div class="practice-item">
+          <div class="practice-number">5</div>
+          <div class="practice-content">
+            <h4>Không chia sẻ tài khoản</h4>
+            <p>
+              Mỗi người nên có tài khoản riêng. Việc chia sẻ tài khoản không chỉ
+              vi phạm điều khoản sử dụng mà còn tạo ra rủi ro bảo mật. Nếu cần
+              nhiều người truy cập, hãy sử dụng tính năng Team của chúng tôi.
+            </p>
+          </div>
+        </div>
+
+        <div class="practice-item">
+          <div class="practice-number">6</div>
+          <div class="practice-content">
+            <h4>Đăng xuất trên thiết bị công cộng</h4>
+            <p>
+              Luôn đăng xuất khi sử dụng CodeQuest trên máy tính công cộng hoặc
+              thiết bị dùng chung. Không chọn "Ghi nhớ đăng nhập" trên các thiết
+              bị không phải của bạn. Sử dụng chế độ duyệt ẩn danh nếu cần.
+            </p>
+          </div>
+        </div>
+
+        <div class="practice-item">
+          <div class="practice-number">7</div>
+          <div class="practice-content">
+            <h4>Kiểm tra hoạt động tài khoản</h4>
+            <p>
+              Thường xuyên xem lại lịch sử đăng nhập và hoạt động tài khoản
+              trong phần
+              <strong>Cài đặt > Bảo mật > Lịch sử hoạt động</strong>. Nếu thấy
+              điều gì bất thường, thay đổi mật khẩu ngay lập tức và liên hệ với
+              chúng tôi.
+            </p>
+          </div>
+        </div>
+
+        <div class="practice-item">
+          <div class="practice-number">8</div>
+          <div class="practice-content">
+            <h4>Sử dụng mạng an toàn</h4>
+            <p>
+              Tránh truy cập tài khoản qua WiFi công cộng không được bảo vệ. Nếu
+              cần thiết, hãy sử dụng VPN để mã hóa kết nối của bạn. Các mạng
+              WiFi miễn phí tại quán cà phê, sân bay có thể bị tấn công
+              man-in-the-middle.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Final Contact Section -->
+      <div class="final-contact">
+        <h2 class="final-contact-title">🤝 Có thắc mắc về bảo mật?</h2>
+        <p class="final-contact-desc">
+          Đội ngũ bảo mật của chúng tôi luôn sẵn sàng hỗ trợ bạn. Đừng ngần ngại
+          liên hệ nếu bạn có bất kỳ câu hỏi hoặc lo ngại nào về bảo mật tài
+          khoản.
+        </p>
+        <div class="contact-cards">
+          <div class="contact-card">
+            <div class="icon">📧</div>
+            <div class="card-label">Email</div>
+            <a class="contact-link" href="mailto:security@codequest.com"
+              >security@codequest.com</a
+            >
+          </div>
+          <div class="contact-card">
+            <div class="icon">📞</div>
+            <div class="card-label">Hotline khẩn cấp</div>
+            <div class="card-value">+84 123 456 789</div>
+          </div>
+          <div class="contact-card">
+            <div class="icon">⏰</div>
+            <div class="card-label">Thời gian hỗ trợ</div>
+            <div class="card-value">24/7 (cả cuối tuần)</div>
+          </div>
+        </div>
+        <p class="small-muted-md">
+          Cam kết phản hồi các vấn đề bảo mật khẩn cấp trong vòng
+          <strong class="accent-green">1 giờ</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <!-- Thông tin liên hệ -->
+        <div class="footer-contact">
+          <p><strong>CodeQuest</strong></p>
+          <p>Email: support@codequest.com</p>
+          <p>Hotline: +84 123 456 789</p>
+          <div class="footer-socials">
+            <a href="#"
+              ><i
+                class="fab fa-facebook"
+                style="font-size: 20px; color: #4267b2"
+              ></i
+            ></a>
+            <a href="#"
+              ><i class="fab fa-github" style="font-size: 20px; color: #333"></i
+            ></a>
+            <a href="#"
+              ><i
+                class="fab fa-twitter"
+                style="font-size: 20px; color: #1da1f2"
+              ></i
+            ></a>
+          </div>
+        </div>
+
+        <!-- Liên kết nhanh -->
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>Sản phẩm</h4>
+            <ul>
+              <li><a href="home.html">Trang Chủ</a></li>
+              <li><a href="about.html">Giới Thiệu</a></li>
+              <li><a href="features.html">Đặc Trưng</a></li>
+              <li><a href="contact.html">Liên Hệ</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>Công ty</h4>
+            <ul>
+              <li><a href="about.html">Về chúng tôi</a></li>
+              <li><a href="careers.html">Cơ hội nghề nghiệp</a></li>
+              <li><a href="clients.html">Khách hàng</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Pháp lý</h4>
+            <ul>
+              <li><a href="terms.html">Điều khoản</a></li>
+              <li><a href="privacy.html">Chính sách bảo mật</a></li>
+              <li><a href="security.html">Bảo mật</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Phần dưới -->
+        <div class="footer-bottom">
+          <select class="footer-language">
+            <option value="en">English</option>
+            <option value="vi">Tiếng Việt</option>
+          </select>
+          <div class="footer-theme">
+            <button>🌞</button>
+            <button>🌙</button>
+          </div>
+          <p class="footer-certification">Chứng nhận SOC 2</p>
+          <p class="footer-copyright">&copy; 2025 Được tạo bởi CodeQuest</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
