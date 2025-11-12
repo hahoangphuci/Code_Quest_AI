@@ -1,2 +1,0 @@
-# Test file for git commit
-This file is created to test git add, commit, and push.
