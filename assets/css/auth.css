@@ -1,0 +1,178 @@
+/* Toàn bộ thanh header */
+.container_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1e1e1e; /* nền tối hiện đại */
+  padding: 14px 40px;
+  border-bottom: 1px solid #2f2f2f;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Logo + tên */
+.logo_header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+/* Ảnh logo */
+.logo_header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+/* Hiệu ứng hover logo */
+.logo_header img:hover {
+  transform: scale(1.08) rotate(3deg);
+}
+
+/* Tên website */
+.logo_header a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: color 0.2s ease;
+}
+
+/* Khi hover vào chữ CodeQuest */
+.logo_header a:hover {
+  color: #00c4ff; /* màu xanh neon nhẹ */
+}
+
+body {
+  background-color: #0f0f0f;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  color: #fff;
+}
+
+/* Hộp đăng nhập */
+.auth-modal {
+  background-color: #1e1e1e;
+  width: 460px; /* 🔹 tăng từ 380px → 460px */
+  padding: 40px; /* 🔹 tăng padding */
+  border-radius: 16px;
+  box-shadow: 0 0 35px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+/* Tiêu đề */
+.auth-modal h1 {
+  font-size: 26px; /* 🔹 to hơn */
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* Mô tả */
+.auth-modal p {
+  color: #bbb;
+  font-size: 15px; /* 🔹 to hơn */
+  margin-bottom: 30px;
+}
+
+/* Ô nhập email */
+.email-form input {
+  width: 100%;
+  padding: 14px; /* 🔹 dày hơn */
+  border-radius: 30px;
+  border: 1px solid #444;
+  background-color: #2a2a2a;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+  margin-bottom: 12px;
+  transition: border 0.2s;
+}
+
+.email-form input:focus {
+  border: 1px solid #888;
+}
+
+/* Nút Tiếp tục (email) */
+.email_btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 30px;
+  background-color: #fff;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-size: 16px; /* 🔹 chữ to hơn */
+  transition: opacity 0.2s;
+}
+
+.email_btn:hover {
+  opacity: 0.9;
+}
+
+/* Dòng chữ “Hoặc” */
+.or {
+  color: #888;
+  font-size: 14px;
+  position: relative;
+  margin: 20px 0;
+}
+
+.or::before,
+.or::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background-color: #333;
+}
+
+.or::before {
+  left: 0;
+}
+.or::after {
+  right: 0;
+}
+
+/* Các nút Google, Phone */
+.auth-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-buttons button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 30px;
+  background-color: #2a2a2a;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.auth-buttons button:hover {
+  background-color: #3a3a3a;
+  transform: translateY(-1px);
+}
+
+/* Icon */
+.auth-buttons img {
+  width: 22px; /* 🔹 to hơn chút */
+  height: 22px;
+}
