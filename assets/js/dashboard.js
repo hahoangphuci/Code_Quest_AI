@@ -18,7 +18,7 @@ let userStats = {
 // AI Service Configuration - OpenRouter Multi-Model Support
 const AI_CONFIG = {
   API_KEY:
-    "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",
+    "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",
   PROVIDER: "openrouter",
   MODEL: "openai/gpt-4o-mini", // Default model
   AVAILABLE_MODELS: [
