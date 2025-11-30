@@ -1,50 +1,464 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng Nhập Và Đăng ký</title>
+    <title>Đăng Nhập | CodeQuest AI</title>
     <link rel="stylesheet" href="../assets/css/auth.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
   </head>
   <body>
-    <header class="site_header">
-      <div class="container_header">
-        <div class="logo_header">
+    <!-- Back to Home Button -->
+    <div style="position: absolute; top: 20px; left: 20px; z-index: 100">
+      <a
+        href="/home"
+        style="
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 16px;
+          background: var(--bg-tertiary);
+          color: var(--text-primary);
+          text-decoration: none;
+          border-radius: var(--radius);
+          border: 1px solid var(--border);
+          transition: all 0.2s;
+          font-size: 14px;
+        "
+        onmouseover="this.style.background='var(--border)'"
+        onmouseout="this.style.background='var(--bg-tertiary)'"
+      >
+        ← Về Trang Chủ
+      </a>
+    </div>
+
+    <div class="auth-container">
+      <!-- Welcome Panel -->
+      <div class="welcome-panel">
+        <div
+          class="logo_header"
+          style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+          "
+        >
           <img
-            onclick="location.href='home.html'"
+            onclick="location.href='/home'"
             src="../assets/image/logo.png"
             alt="Logo"
             class="logo-animate"
+            style="height: 50px; width: auto; cursor: pointer"
           />
-          <a href="home.html" class="">CodeQuest</a>
+          <a
+            href="/home"
+            style="
+              color: inherit;
+              text-decoration: none;
+              cursor: pointer;
+              font-size: 28px;
+              font-weight: bold;
+            "
+            >CodeQuest</a
+          >
+        </div>
+        <h1>
+          <span style="color: inherit">Chào mừng đến với CodeQuest AI</span>
+        </h1>
+        <p class="welcome-text">
+          Nền tảng học lập trình được tối ưu bởi trí tuệ nhân tạo. Học nhanh
+          hơn, thông minh hơn cùng AI mentor cá nhân.
+        </p>
+        <ul class="feature-list">
+          <li>AI Mentor 24/7</li>
+          <li>Học Tập Cá Nhân Hóa</li>
+          <li>Thực Hành Tương Tác</li>
+        </ul>
+      </div>
+
+      <!-- Auth Panel -->
+      <div class="auth-panel">
+        <!-- Tabs -->
+        <div class="auth-tabs">
+          <button class="tab-btn active" onclick="switchTab('login')">
+            Đăng Nhập
+          </button>
+          <button class="tab-btn" onclick="switchTab('register')">
+            Đăng Ký
+          </button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login" class="tab-content active">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-input"
+              placeholder="Nhập email của bạn"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mật khẩu</label>
+            <input
+              type="password"
+              class="form-input"
+              placeholder="Nhập mật khẩu"
+              required
+            />
+          </div>
+          <div class="checkbox-wrapper">
+            <input type="checkbox" id="remember" class="checkbox" />
+            <label for="remember" class="checkbox-label"
+              >Ghi nhớ đăng nhập</label
+            >
+            <a
+              href="javascript:void(0)"
+              class="forgot-link"
+              onclick="alert('Chức năng đặt lại mật khẩu sẽ được cập nhật sớm!')"
+              >Quên mật khẩu?</a
+            >
+          </div>
+          <button type="submit" class="btn-primary">Đăng Nhập</button>
+
+          <div class="divider">
+            <span>hoặc</span>
+          </div>
+
+          <button class="btn-secondary"><span>🔍</span> Google</button>
+        </div>
+
+        <!-- Register Form -->
+        <div id="register" class="tab-content">
+          <div class="form-group">
+            <label class="form-label">Họ và tên</label>
+            <input
+              type="text"
+              class="form-input"
+              placeholder="Nhập họ và tên"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-input"
+              placeholder="Nhập email của bạn"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mật khẩu</label>
+            <input
+              type="password"
+              class="form-input"
+              placeholder="Nhập mật khẩu (tối thiểu 8 ký tự)"
+              required
+            />
+            <div class="password-strength">
+              <div class="strength-bar">
+                <div class="strength-fill"></div>
+              </div>
+              <span class="strength-text">Độ mạnh mật khẩu</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Xác nhận mật khẩu</label>
+            <input
+              type="password"
+              class="form-input"
+              placeholder="Nhập lại mật khẩu"
+              required
+            />
+          </div>
+          <div class="checkbox-wrapper">
+            <input type="checkbox" id="terms" class="checkbox" required />
+            <label for="terms" class="checkbox-label"
+              >Tôi đồng ý với Điều khoản sử dụng</label
+            >
+          </div>
+          <button type="submit" class="btn-primary">Tạo Tài Khoản</button>
+
+          <div class="divider">
+            <span>hoặc</span>
+          </div>
+
+          <button class="btn-secondary"><span>🔍</span> Google</button>
         </div>
       </div>
-    </header>
-
-    <div class="auth-modal">
-      <h1>Đăng Nhập hoặc Đăng Ký</h1>
-      <p>Bạn sẽ sử dụng được các chức năng thông minh và hay hơn.</p>
-
-      <div class="email-form">
-        <input type="email" placeholder="Nhập địa chỉ email" required />
-        <button class="email_btn">Tiếp tục</button>
-      </div>
-      <p class="or">Hoặc</p>
-
-      <div class="auth-buttons">
-        <button class="btn-google">
-          <i class="fa-brands fa-google"></i>
-          Tiếp tục với Google
-        </button>
-        <button class="btn-phone">
-          <i class="fa-solid fa-phone"></i>
-          Tiếp tục với điện thoại
-        </button>
-      </div>
     </div>
+
+    <script>
+      // Tab switching function
+      function switchTab(tabName) {
+        // Update active tab button
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+
+        // Find and activate the correct tab button
+        const buttons = document.querySelectorAll(".tab-btn");
+        if (tabName === "login") {
+          buttons[0].classList.add("active");
+        } else if (tabName === "register") {
+          buttons[1].classList.add("active");
+        }
+
+        // Update active tab content
+        document.querySelectorAll(".tab-content").forEach((content) => {
+          content.classList.remove("active");
+        });
+        document.getElementById(tabName).classList.add("active");
+      }
+
+      // Utility functions
+      function showMessage(message, type = "info") {
+        // Tạo thông báo tạm thời
+        const messageDiv = document.createElement("div");
+        messageDiv.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          padding: 12px 20px;
+          border-radius: 8px;
+          color: white;
+          font-weight: 500;
+          z-index: 10000;
+          max-width: 400px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        `;
+
+        if (type === "success") {
+          messageDiv.style.background = "#10b981";
+        } else if (type === "error") {
+          messageDiv.style.background = "#ef4444";
+        } else {
+          messageDiv.style.background = "#3b82f6";
+        }
+
+        messageDiv.textContent = message;
+        document.body.appendChild(messageDiv);
+
+        setTimeout(() => {
+          document.body.removeChild(messageDiv);
+        }, 5000);
+      }
+
+      function setLoading(formType, isLoading) {
+        const button = document.querySelector(
+          `#${formType} button[type="submit"]`
+        );
+        if (button) {
+          button.disabled = isLoading;
+          button.textContent = isLoading
+            ? "Đang xử lý..."
+            : formType === "login"
+            ? "Đăng Nhập"
+            : "Tạo Tài Khoản";
+        }
+      }
+
+      // API functions
+      async function handleLogin(event) {
+        event.preventDefault();
+
+        const form = event.target.closest("#login");
+        const email = form.querySelector('input[type="email"]').value.trim();
+        const password = form.querySelector('input[type="password"]').value;
+        const remember = form.querySelector("#remember").checked;
+
+        if (!email || !password) {
+          showMessage("Vui lòng nhập đầy đủ thông tin", "error");
+          return;
+        }
+
+        setLoading("login", true);
+
+        try {
+          const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email,
+              password: password,
+              remember: remember,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showMessage(data.message, "success");
+            setTimeout(() => {
+              window.location.href = "/dashboard";
+            }, 1500);
+          } else {
+            showMessage(data.message, "error");
+          }
+        } catch (error) {
+          console.error("Login error:", error);
+          showMessage("Có lỗi xảy ra, vui lòng thử lại", "error");
+        } finally {
+          setLoading("login", false);
+        }
+      }
+
+      async function handleRegister(event) {
+        event.preventDefault();
+
+        const form = event.target.closest("#register");
+        const fullName = form.querySelector('input[type="text"]').value.trim();
+        const email = form.querySelector('input[type="email"]').value.trim();
+        const password = form.querySelectorAll('input[type="password"]')[0]
+          .value;
+        const confirmPassword = form.querySelectorAll(
+          'input[type="password"]'
+        )[1].value;
+        const agreeTerms = form.querySelector("#terms").checked;
+
+        // Validation
+        if (!fullName) {
+          showMessage("Vui lòng nhập họ và tên", "error");
+          return;
+        }
+
+        if (!email) {
+          showMessage("Vui lòng nhập email", "error");
+          return;
+        }
+
+        if (!password) {
+          showMessage("Vui lòng nhập mật khẩu", "error");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          showMessage("Mật khẩu xác nhận không khớp", "error");
+          return;
+        }
+
+        if (!agreeTerms) {
+          showMessage("Vui lòng đồng ý với điều khoản sử dụng", "error");
+          return;
+        }
+
+        setLoading("register", true);
+
+        try {
+          const response = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              full_name: fullName,
+              email: email,
+              password: password,
+              confirm_password: confirmPassword,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showMessage(data.message, "success");
+            // Chuyển sang tab đăng nhập sau 2 giây
+            setTimeout(() => {
+              switchTab("login");
+              // Clear form
+              form.reset();
+            }, 2000);
+          } else {
+            showMessage(data.message, "error");
+          }
+        } catch (error) {
+          console.error("Register error:", error);
+          showMessage("Có lỗi xảy ra, vui lòng thử lại", "error");
+        } finally {
+          setLoading("register", false);
+        }
+      }
+
+      // Check URL parameter for initial tab
+      document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tab = urlParams.get("tab");
+        if (tab === "register") {
+          switchTab("register");
+        }
+
+        // Add event listeners to forms
+        const loginForm = document.querySelector("#login");
+        const registerForm = document.querySelector("#register");
+
+        if (loginForm) {
+          const loginButton = loginForm.querySelector('button[type="submit"]');
+          if (loginButton) {
+            loginButton.addEventListener("click", handleLogin);
+          }
+        }
+
+        if (registerForm) {
+          const registerButton = registerForm.querySelector(
+            'button[type="submit"]'
+          );
+          if (registerButton) {
+            registerButton.addEventListener("click", handleRegister);
+          }
+        }
+
+        // Password strength indicator
+        const passwordInput = document.querySelector(
+          '#register input[type="password"]'
+        );
+        if (passwordInput) {
+          passwordInput.addEventListener("input", (e) => {
+            const password = e.target.value;
+            const strengthEl = document.querySelector(".password-strength");
+
+            if (strengthEl) {
+              let strength = "weak";
+              if (
+                password.length >= 8 &&
+                /[A-Z]/.test(password) &&
+                /[0-9]/.test(password)
+              ) {
+                strength = "strong";
+              } else if (password.length >= 6) {
+                strength = "good";
+              } else if (password.length >= 4) {
+                strength = "fair";
+              }
+
+              strengthEl.className = `password-strength strength-${strength}`;
+            }
+          });
+        }
+
+        // Check if user is already logged in
+        checkAuthStatus();
+      });
+
+      // Check authentication status
+      async function checkAuthStatus() {
+        try {
+          const response = await fetch("/api/auth/check-session");
+          const data = await response.json();
+
+          if (data.success && data.authenticated) {
+            // User is already logged in, redirect to dashboard
+            window.location.href = "/dashboard";
+          }
+        } catch (error) {
+          // Ignore errors, user is not logged in
+          console.log("Not authenticated");
+        }
+      }
+    </script>
   </body>
 </html>

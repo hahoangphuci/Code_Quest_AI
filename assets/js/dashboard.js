@@ -375,11 +375,8 @@ async function selectLanguageWithAI(language) {
     aiEditor.setValue(sampleCode[language] || sampleCode["Python"]);
   }
 
-  // AI notification
-  showAINotification(
-    `🤖 Đã chuyển sang ${language}! AI sẽ điều chỉnh nội dung phù hợp với ngôn ngữ này.`,
-    "success"
-  );
+  // Chỉ log ngôn ngữ thay đổi
+  console.log(`Language changed to: ${language}`);
 
   // Get AI recommendations for the language
   try {
@@ -388,9 +385,8 @@ async function selectLanguageWithAI(language) {
       additionalContext: `Focus on beginner tips for ${language}`,
     });
 
-    setTimeout(() => {
-      showAINotification(`💡 AI gợi ý: ${aiResponse}`, "info", 8000);
-    }, 2000);
+    // Loại bỏ gợi ý tự động để tránh spam
+    console.log("AI language recommendations:", aiResponse);
   } catch (error) {
     console.error("Error getting AI language recommendations:", error);
   }
@@ -439,16 +435,8 @@ function activateAIMode(mode) {
       break;
   }
 
-  // AI notification
-  const modeNames = {
-    learning: "Giảng Dạy Thông Minh",
-    practice: "Thách Đấu Coding",
-    quiz: "Quiz Thông Minh",
-    analysis: "Phân Tích Tiến Độ",
-    leaderboard: "Bảng Xếp Hạng",
-  };
-
-  showAINotification(`🤖 Đã kích hoạt chế độ ${modeNames[mode]}!`, "success");
+  // Chỉ log mode change, không thông báo
+  console.log(`Mode changed to: ${mode}`);
 }
 
 // ==================== LEARNING MODE ====================
@@ -568,29 +556,36 @@ function initializePracticeMode() {
 }
 
 async function generateAIChallenge(difficulty) {
-  showAINotification(`🤖 AI đang tạo thử thách ${difficulty}...`, "info");
+  showAINotification(`🤖 Đang tạo thử thách...`, "info");
 
-  const difficultyMap = {
-    easy: "dễ, phù hợp cho người mới bắt đầu",
-    medium: "trung bình, cần có kiến thức cơ bản",
-    hard: "khó, đòi hỏi tư duy logic cao",
+  // Tạo challenge đơn giản và ngắn gọn
+  const challenges = {
+    easy: {
+      title: "Tính tổng hai số",
+      description: "Viết hàm tính tổng của hai số a và b.",
+      example: "Input: a=5, b=3\nOutput: 8",
+      hint: "Sử dụng phép cộng đơn giản",
+    },
+    medium: {
+      title: "Tìm số lớn nhất trong mảng",
+      description: "Viết hàm tìm số lớn nhất trong một mảng số nguyên.",
+      example: "Input: [3, 7, 2, 9, 1]\nOutput: 9",
+      hint: "Dùng vòng lặp hoặc hàm max()",
+    },
+    hard: {
+      title: "Kiểm tra số nguyên tố",
+      description: "Viết hàm kiểm tra một số có phải số nguyên tố không.",
+      example: "Input: 7\nOutput: True",
+      hint: "Kiểm tra chia hết từ 2 đến sqrt(n)",
+    },
   };
 
-  try {
-    const prompt = `Tạo một thử thách coding ${difficultyMap[difficulty]} bằng ${currentLanguage}. Bao gồm: 1) Mô tả bài toán, 2) Input/Output mẫu, 3) Gợi ý hướng giải. Hãy trình bày rõ ràng và thú vị.`;
-    const aiResponse = await callAI(prompt, {
-      additionalContext: `Generate coding challenge with difficulty: ${difficulty}, language: ${currentLanguage}`,
-    });
-
-    displayChallenge(aiResponse, difficulty);
-    showAINotification(`✨ Thử thách ${difficulty} đã sẵn sàng!`, "success");
-  } catch (error) {
-    console.error("Error generating AI challenge:", error);
-    showAINotification("❌ Có lỗi khi tạo thử thách. Hãy thử lại!", "warning");
-  }
+  const challenge = challenges[difficulty];
+  displayChallenge(challenge, difficulty);
+  showAINotification(`✨ Challenge sẵn sàng!`, "success");
 }
 
-function displayChallenge(challengeContent, difficulty) {
+function displayChallenge(challenge, difficulty) {
   const challengeDisplay = document.getElementById("challenge-display");
   if (!challengeDisplay) return;
 
@@ -603,7 +598,7 @@ function displayChallenge(challengeContent, difficulty) {
   challengeDisplay.innerHTML = `
     <div class="challenge-content">
       <div class="challenge-header">
-        <h4>🎯 AI Challenge</h4>
+        <h4>🎯 ${challenge.title}</h4>
         <span class="challenge-difficulty" style="color: ${
           difficultyColors[difficulty]
         }">
@@ -611,55 +606,248 @@ function displayChallenge(challengeContent, difficulty) {
         </span>
       </div>
       <div class="challenge-description">
-        ${challengeContent.replace(/\n/g, "<br>")}
+        <p><strong>Yêu cầu:</strong> ${challenge.description}</p>
+        <div class="example-box">
+          <strong>Ví dụ:</strong><br>
+          <code>${challenge.example}</code>
+        </div>
+        <p><strong>Gợi ý:</strong> ${challenge.hint}</p>
       </div>
       <div class="challenge-actions">
-        <button class="challenge-btn" onclick="startCoding()">🚀 Bắt Đầu Code</button>
-        <button class="challenge-btn" onclick="getAIHint()">💡 Gợi Ý</button>
-        <button class="challenge-btn" onclick="generateAIChallenge('${difficulty}')">🔄 Tạo Mới</button>
+        <button class="challenge-btn primary" onclick="startCoding()">🚀 Bắt Đầu Code</button>
+        <button class="challenge-btn secondary" onclick="generateAIChallenge('${difficulty}')">🔄 Thử Khác</button>
       </div>
     </div>
   `;
 }
 
 function startCoding() {
-  if (aiEditor) {
+  console.log("🎯 Starting coding session...");
+
+  if (!aiEditor) {
+    console.log("🔄 No editor found, creating one...");
+    createFallbackEditor();
+
+    // Wait a moment for editor to be created
+    setTimeout(() => {
+      if (aiEditor) {
+        aiEditor.focus();
+        console.log("✅ Editor focused after creation");
+      }
+    }, 100);
+    return;
+  }
+
+  try {
+    // Chỉ focus vào editor, KHÔNG xóa code hiện tại
     aiEditor.focus();
-    showAINotification(
-      "🎯 Hãy bắt đầu viết code! AI sẽ theo dõi và đưa ra phản hồi.",
-      "info"
-    );
+
+    // Kiểm tra xem có code chưa, nếu chưa thì mới set template
+    const currentCode = aiEditor.getValue ? aiEditor.getValue() : "";
+
+    if (!currentCode || currentCode.trim().length < 5) {
+      // Chỉ set template khi editor trống
+      if (aiEditor.isFallback) {
+        aiEditor.setValue(
+          '# Bắt đầu viết code của bạn ở đây\nprint("Hello CodeQuest! 🚀")\n\n# Your code here...'
+        );
+      } else {
+        // Monaco Editor
+        aiEditor.setValue(
+          '# Bắt đầu viết code của bạn ở đây\nprint("Hello CodeQuest! 🚀")\n\n# Your code here...'
+        );
+      }
+
+      showAINotification("💡 Template code đã được thêm vào editor!", "info");
+    } else {
+      showAINotification("✅ Tiếp tục code với nội dung hiện tại!", "success");
+    }
+
+    console.log("✅ Coding session started successfully");
+  } catch (error) {
+    console.error("Error in startCoding:", error);
+    // Fallback: just focus the editor
+    try {
+      aiEditor.focus();
+    } catch (focusError) {
+      console.error("Could not focus editor:", focusError);
+    }
   }
 }
 
 async function runCodeWithAI() {
-  if (!aiEditor) return;
+  // Lấy code từ Monaco Editor hoặc fallback editor
+  let codeContent = "";
 
-  const code = aiEditor.getValue();
-  if (!code.trim()) {
-    showAINotification("⚠️ Hãy viết code trước khi chạy!", "warning");
+  if (aiEditor && aiEditor.getValue) {
+    // Monaco Editor
+    codeContent = aiEditor.getValue();
+  } else {
+    // Fallback editor hoặc textarea
+    const codeEditor = document.getElementById("ai-code-editor");
+    if (codeEditor) {
+      codeContent =
+        codeEditor.value ||
+        codeEditor.textContent ||
+        codeEditor.innerText ||
+        "";
+    }
+  }
+
+  if (!codeContent || codeContent.trim().length < 5) {
+    showAINotification(
+      "⚠️ Không có code để chạy! Hãy viết code trước.",
+      "warning"
+    );
+    updateAIFeedback("❌ Editor trống! Hãy viết code trong ô editor để test.");
     return;
   }
 
-  showAINotification("🤖 AI đang phân tích và chạy code...", "info");
+  showAINotification("▶️ Đang chạy code...", "info");
 
+  setTimeout(() => {
+    try {
+      // Thực thi code và lấy kết quả
+      const result = executeCode(codeContent);
+
+      const feedback = `
+        ✅ Code đã chạy thành công!
+        
+        📋 Code của bạn:
+        ${codeContent
+          .split("\n")
+          .map((line) => `        ${line}`)
+          .join("\n")}
+        
+        📤 Kết quả output:
+        ${result.output || "Không có output"}
+        
+        ${result.error ? `🐛 Có lỗi: ${result.error}` : "✅ Chạy không có lỗi"}
+        
+        💡 Gợi ý: ${result.suggestion || "Code chạy tốt!"}
+      `;
+
+      updateAIFeedback(feedback);
+      showAINotification(
+        result.error ? "⚠️ Code có lỗi!" : "✅ Code chạy thành công!",
+        result.error ? "warning" : "success"
+      );
+
+      if (!result.error) {
+        updateUserStats({ xp: userStats.xp + 5 });
+      }
+    } catch (error) {
+      const feedback = `
+        ❌ Lỗi khi chạy code!
+        
+        🐛 Chi tiết lỗi: ${error.message}
+        
+        💡 Hãy kiểm tra lại cú pháp code
+      `;
+      updateAIFeedback(feedback);
+      showAINotification("❌ Code có lỗi!", "warning");
+    }
+  }, 1000);
+}
+
+// Hàm thực thi code thực tế
+function executeCode(code) {
   try {
-    const prompt = `Phân tích đoạn code ${currentLanguage} sau và đưa ra nhận xét: \n\n${code}\n\nHãy kiểm tra: 1) Syntax, 2) Logic, 3) Hiệu suất, 4) Đề xuất cải thiện.`;
-    const aiResponse = await callAI(prompt, {
-      additionalContext: `Analyze code for language: ${currentLanguage}, provide feedback in Vietnamese`,
+    let output = "";
+    let error = null;
+    let suggestion = "";
+
+    // Giả lập thực thi code Python đơn giản
+    if (code.includes("print(")) {
+      // Tìm và thực thi các lệnh print
+      const printMatches = code.match(/print\(([^)]+)\)/g);
+      if (printMatches) {
+        printMatches.forEach((printCmd) => {
+          const expression = printCmd.match(/print\(([^)]+)\)/)[1];
+          try {
+            // Thực thi biểu thức đơn giản
+            const result = evaluateExpression(expression, code);
+            output += result + "\n";
+          } catch (e) {
+            output += `Error evaluating: ${expression}\n`;
+          }
+        });
+      }
+    } else {
+      // Không có print, thử tính kết quả cuối cùng
+      const result = evaluateSimpleCode(code);
+      if (result !== null) {
+        output = `Kết quả: ${result}`;
+        suggestion = "Thêm print() để hiển thị kết quả";
+      } else {
+        output = "Code chạy nhưng không có output";
+        suggestion = "Thêm print() để xem kết quả";
+      }
+    }
+
+    return {
+      output: output.trim(),
+      error: error,
+      suggestion: suggestion,
+    };
+  } catch (e) {
+    return {
+      output: "",
+      error: e.message,
+      suggestion: "Kiểm tra lại cú pháp code",
+    };
+  }
+}
+
+// Đánh giá biểu thức đơn giản
+function evaluateExpression(expr, fullCode) {
+  // Tìm các biến từ code
+  const variables = {};
+  const varMatches = fullCode.match(/(\w+)\s*=\s*(\d+)/g);
+  if (varMatches) {
+    varMatches.forEach((match) => {
+      const [, varName, value] = match.match(/(\w+)\s*=\s*(\d+)/);
+      variables[varName] = parseInt(value);
     });
+  }
 
-    updateAIFeedback(aiResponse);
-    showAINotification(
-      "✅ AI đã phân tích xong! Xem phản hồi bên dưới.",
-      "success"
+  // Thay thế biến bằng giá trị
+  let processedExpr = expr.trim();
+  for (const [varName, value] of Object.entries(variables)) {
+    processedExpr = processedExpr.replace(
+      new RegExp(`\\b${varName}\\b`, "g"),
+      value
     );
+  }
 
-    // Add coding XP
-    updateUserStats({ xp: userStats.xp + 10 });
-  } catch (error) {
-    console.error("Error running code with AI:", error);
-    showAINotification("❌ Có lỗi khi phân tích code!", "warning");
+  // Đánh giá biểu thức toán học đơn giản
+  if (/^[\d\s+\-*/()]+$/.test(processedExpr)) {
+    return eval(processedExpr);
+  }
+
+  return processedExpr;
+}
+
+// Đánh giá code đơn giản không có print
+function evaluateSimpleCode(code) {
+  try {
+    // Tìm phép tính cuối cùng
+    const lines = code.split("\n");
+    const lastLine = lines[lines.length - 1].trim();
+
+    if (
+      /^[\w\s+\-*/()]+$/.test(lastLine) &&
+      (lastLine.includes("+") ||
+        lastLine.includes("-") ||
+        lastLine.includes("*") ||
+        lastLine.includes("/"))
+    ) {
+      return evaluateExpression(lastLine, code);
+    }
+
+    return null;
+  } catch (e) {
+    return null;
   }
 }
 
@@ -681,41 +869,184 @@ function updateAIFeedback(feedback) {
 }
 
 async function submitToAI() {
-  if (!aiEditor) return;
+  // Lấy code từ Monaco Editor hoặc fallback editor
+  let codeContent = "";
 
-  const code = aiEditor.getValue();
-  if (!code.trim()) {
-    showAINotification("⚠️ Hãy viết code trước khi nộp!", "warning");
+  if (aiEditor && aiEditor.getValue) {
+    // Monaco Editor
+    codeContent = aiEditor.getValue();
+  } else {
+    // Fallback editor hoặc textarea
+    const codeEditor = document.getElementById("ai-code-editor");
+    if (codeEditor) {
+      codeContent =
+        codeEditor.value ||
+        codeEditor.textContent ||
+        codeEditor.innerText ||
+        "";
+    }
+  }
+
+  if (!codeContent || codeContent.trim().length < 5) {
+    showAINotification(
+      "⚠️ Bạn chưa viết code gì cả! Hãy code trước khi nộp.",
+      "warning"
+    );
+    updateAIFeedback(`
+      ❌ Không có code để chấm!
+      
+      📝 Hướng dẫn:
+      • Hãy viết code giải bài toán trong ô editor
+      • Code phải có ít nhất 5 ký tự
+      • Thử giải quyết challenge ở bên trái
+      
+      💡 Mẹo: Bắt đầu với hàm đơn giản như def solve():
+    `);
     return;
   }
 
-  showAINotification("🤖 AI đang chấm bài...", "info");
+  showAINotification("🤖 AI đang phân tích và chấm điểm...", "info");
 
+  // Gọi AI thực sự để chấm điểm
   try {
-    const prompt = `Chấm điểm đoạn code ${currentLanguage} sau theo thang điểm 100: \n\n${code}\n\nCho điểm dựa trên: 1) Đúng đắn (40%), 2) Hiệu quả (30%), 3) Code style (20%), 4) Sáng tạo (10%). Giải thích chi tiết.`;
-    const aiResponse = await callAI(prompt);
+    const aiPrompt = `
+Bạn là một AI giáo viên chấm bài lập trình. Hãy chấm điểm code sau theo thang điểm 100:
 
-    // Extract score (assuming AI returns score in format)
-    const scoreMatch = aiResponse.match(/(\d+)\/100|(\d+) điểm/i);
-    const score = scoreMatch ? parseInt(scoreMatch[1] || scoreMatch[2]) : 75;
+BÀI TẬP: Tính tổng hai số a và b
 
-    showSubmissionResult(score, aiResponse);
+CODE CỦA HỌC SINH:
+\`\`\`
+${codeContent}
+\`\`\`
 
-    // Update stats based on score
-    const xpGain = Math.floor(score / 2);
-    const pointsGain = score * 10;
-    updateUserStats({
-      xp: userStats.xp + xpGain,
-      points: userStats.points + pointsGain,
-    });
+HÃY ĐÁNH GIÁ:
+1. Code có giải quyết đúng bài toán không? (40 điểm)
+2. Cú pháp có chính xác không? (20 điểm) 
+3. Code có dễ đọc, gọn gàng không? (20 điểm)
+4. Có hiển thị kết quả không? (20 điểm)
 
-    showAINotification(
-      `🎉 Bạn được ${score} điểm! +${xpGain} XP, +${pointsGain} Points!`,
-      "success"
+Trả về JSON format:
+{
+  "score": số_điểm_từ_0_đến_100,
+  "evaluation": [
+    "✅ hoặc ❌ Chi tiết đánh giá từng tiêu chí",
+    "..."
+  ],
+  "comment": "Nhận xét tổng thể ngắn gọn",
+  "correct": true/false
+}
+    `;
+
+    // Gọi AI API
+    const response = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${AI_CONFIG.API_KEY}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": AI_CONFIG.HEADERS["HTTP-Referer"],
+          "X-Title": AI_CONFIG.HEADERS["X-Title"],
+        },
+        body: JSON.stringify({
+          model: AI_CONFIG.MODEL,
+          messages: [
+            {
+              role: "user",
+              content: aiPrompt,
+            },
+          ],
+          temperature: 0.3,
+        }),
+      }
     );
+
+    const data = await response.json();
+    const aiResponse = data.choices[0].message.content;
+
+    // Parse AI response
+    let aiResult;
+    try {
+      const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        aiResult = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error("No JSON found");
+      }
+    } catch (e) {
+      // Fallback nếu AI không trả về JSON đúng format
+      aiResult = {
+        score: 70,
+        evaluation: ["🤖 AI đã phân tích code của bạn"],
+        comment: aiResponse.slice(0, 200) + "...",
+        correct: true,
+      };
+    }
+
+    const score = Math.max(20, Math.min(aiResult.score, 95));
+    const feedback_details = aiResult.evaluation || [
+      "AI đã đánh giá code của bạn",
+    ];
+    const solvesProblem = aiResult.correct;
+
+    const feedback = `
+      📊 Kết quả AI chấm bài: ${score}/100 điểm
+      
+      🔍 Chi tiết đánh giá:
+      ${feedback_details.map((detail) => `• ${detail}`).join("\n      ")}
+      
+      💬 Nhận xét AI: ${aiResult.comment || "Code đã được phân tích"}
+      
+      ${
+        score >= 80
+          ? "🎉 Xuất sắc! Code hoàn hảo và giải quyết chính xác."
+          : score >= 60
+          ? "✅ Tốt! Code đúng hướng và có logic rõ ràng."
+          : score >= 40
+          ? "⚠️ Khá ổn, nhưng cần hoàn thiện để đạt điểm cao hơn."
+          : "❌ Code cần sửa lại để giải quyết đúng bài toán."
+      }
+      
+      ${solvesProblem ? "🎯 Bài làm: CHÍNH XÁC" : "⚠️ Bài làm: CẦN CẢI THIỆN"}
+    `;
+
+    updateAIFeedback(feedback);
+    showAINotification(
+      `${score >= 60 ? "✅" : "❌"} AI chấm: ${score}/100`,
+      score >= 60 ? "success" : "warning"
+    );
+
+    if (score >= 40) {
+      const xpGain = Math.floor(score / 3);
+      const pointsGain = score * 5;
+      updateUserStats({
+        xp: userStats.xp + xpGain,
+        points: userStats.points + pointsGain,
+      });
+
+      showAINotification(`🎉 +${xpGain} XP, +${pointsGain} Points!`, "success");
+    }
   } catch (error) {
-    console.error("Error submitting to AI:", error);
-    showAINotification("❌ Có lỗi khi nộp bài!", "warning");
+    console.error("AI grading error:", error);
+    showAINotification("❌ Lỗi kết nối AI, thử lại sau", "error");
+
+    // Fallback scoring khi AI lỗi
+    let fallbackScore = 50;
+    if (
+      codeContent.includes("a") &&
+      codeContent.includes("b") &&
+      codeContent.includes("+")
+    ) {
+      fallbackScore = 75;
+    }
+
+    const fallbackFeedback = `
+      📊 Kết quả tạm thời: ${fallbackScore}/100 điểm
+      ⚠️ AI hiện không khả dụng, đây là đánh giá cơ bản
+      🔄 Hãy thử lại để được AI chấm điểm chính xác
+    `;
+
+    updateAIFeedback(fallbackFeedback);
   }
 }
 
@@ -756,19 +1087,42 @@ function showSubmissionResult(score, feedback) {
 }
 
 async function getAIHelp() {
+  console.log("💡 Getting AI help...");
+
+  // Check if editor exists
+  if (!aiEditor) {
+    console.log("⚠️ No editor found for AI help");
+    showAINotification("⚠️ Editor chưa sẵn sàng. Hãy thử lại!", "warning");
+    return;
+  }
+
   showAINotification("🤖 AI đang chuẩn bị trợ giúp...", "info");
 
-  const code = aiEditor ? aiEditor.getValue() : "";
+  const code = aiEditor.getValue() || "";
+  console.log("Code for AI help:", code.length, "characters");
 
   try {
     const prompt = code.trim()
       ? `Tôi đang gặp khó khăn với đoạn code này: \n\n${code}\n\nHãy đưa ra gợi ý để cải thiện hoặc sửa lỗi.`
-      : `Tôi cần trợ giúp để bắt đầu viết code ${currentLanguage}. Hãy đưa ra hướng dẫn từng bước.`;
+      : `Tôi cần trợ giúp để bắt đầu viết code ${currentLanguage}. Hãy đưa ra hướng dẫn từng bước và ví dụ cơ bản.`;
 
     const aiResponse = await callAI(prompt);
-    showAINotification(`🆘 AI trợ giúp: ${aiResponse}`, "info", 12000);
+
+    if (aiResponse && aiResponse.length > 0) {
+      showAINotification(`🆘 AI trợ giúp: ${aiResponse}`, "info", 15000);
+      console.log("✅ AI help provided successfully");
+    } else {
+      showAINotification(
+        "⚠️ AI không thể trợ giúp lúc này. Hãy thử lại sau!",
+        "warning"
+      );
+    }
   } catch (error) {
     console.error("Error getting AI help:", error);
+    showAINotification(
+      "❌ Có lỗi khi liên hệ AI. Hãy kiểm tra kết nối!",
+      "warning"
+    );
   }
 }
 
@@ -1394,8 +1748,7 @@ async function testAIConnection() {
     "🔍 Testing OpenRouter connection with API key:",
     AI_CONFIG.API_KEY.substring(0, 15) + "..."
   );
-  showAINotification("🔍 Đang test kết nối OpenRouter...", "info");
-  updateTutorStatus("Đang kiểm tra OpenRouter API...");
+  updateTutorStatus("Đang kiểm tra API...");
 
   try {
     // First, try to get available models and test them
@@ -1411,8 +1764,8 @@ async function testAIConnection() {
       }
     }
 
-    showAINotification(`✅ OpenRouter API hoạt động tốt!`, "success");
-    updateTutorStatus(`Đang test với ${AI_CONFIG.MODEL}...`);
+    console.log("✅ OpenRouter API working");
+    updateTutorStatus("Đang test model...");
 
     // Test with actual Vietnamese content
     const testPrompt =
@@ -1436,13 +1789,7 @@ async function testAIConnection() {
       !testResponse.includes("[OFFLINE MODE]")
     ) {
       console.log("✅ Real OpenRouter AI connection successful!");
-      showAINotification(
-        `✅ AI hoạt động hoàn hảo!\n🤖 Model: ${
-          AI_CONFIG.MODEL
-        }\n💬 Phản hồi: "${testResponse.substring(0, 100)}..."`,
-        "success",
-        12000
-      );
+      showAINotification(`✅ API hoạt động tốt!`, "success", 5000);
       updateTutorStatus(`AI sẵn sàng! ${AI_CONFIG.MODEL} 🤖✨`);
       return true;
     } else {
@@ -1452,11 +1799,7 @@ async function testAIConnection() {
     }
   } catch (error) {
     console.error("❌ OpenRouter connection test failed:", error);
-    showAINotification(
-      `❌ Test thất bại: ${error.message}. Sử dụng offline mode.`,
-      "warning",
-      8000
-    );
+    showAINotification(`❌ API không hoạt động`, "warning", 5000);
     updateTutorStatus("OpenRouter không khả dụng - Offline mode");
     return false;
   }
@@ -1472,16 +1815,13 @@ async function demoAIFeatures() {
 
   // Demo different AI features
   setTimeout(async () => {
-    showAINotification("🎯 Demo: Đang tạo thử thách Python...", "info");
+    console.log("🎯 Demo: Creating Python challenge...");
     try {
       const challenge = await generateText(
         `Tạo một thử thách Python đơn giản: viết hàm tính giai thừa. Bao gồm mô tả và ví dụ input/output.`
       );
       console.log("Demo challenge:", challenge);
-      showAINotification(
-        "✨ Demo thành công! AI có thể tạo thử thách coding.",
-        "success"
-      );
+      console.log("✨ Demo successful! AI can create coding challenges.");
     } catch (error) {
       console.error("Demo failed:", error);
     }
@@ -1492,7 +1832,7 @@ async function demoAIFeatures() {
  * Test OpenRouter models and get available models list
  */
 async function testAPIVersions() {
-  showAINotification("🔍 Đang test OpenRouter models...", "info");
+  console.log("🔍 Testing OpenRouter models...");
 
   try {
     // First, get available models from OpenRouter
@@ -1519,10 +1859,7 @@ async function testAPIVersions() {
 
       if (workingModels.length > 0) {
         AI_CONFIG.AVAILABLE_MODELS = workingModels;
-        showAINotification(
-          `✅ Tìm thấy ${workingModels.length} models khả dụng`,
-          "success"
-        );
+        console.log(`✅ Found ${workingModels.length} available models`);
         return { provider: "openrouter", models: workingModels };
       }
     }
@@ -1549,7 +1886,6 @@ async function testAPIVersions() {
 
         if (response.ok) {
           console.log(`✅ SUCCESS: ${model} works!`);
-          showAINotification(`✅ Model hoạt động: ${model}`, "success");
           AI_CONFIG.MODEL = model;
           return { provider: "openrouter", model: model };
         } else {
@@ -1568,7 +1904,7 @@ async function testAPIVersions() {
     console.error("❌ Error testing OpenRouter:", error);
   }
 
-  showAINotification("❌ Không tìm thấy model nào hoạt động", "warning");
+  console.log("❌ No working models found");
   return null;
 }
 
@@ -1577,27 +1913,21 @@ async function testAPIVersions() {
  */
 async function switchAIModel(newModel) {
   if (!AI_CONFIG.AVAILABLE_MODELS.includes(newModel)) {
-    showAINotification(`❌ Model ${newModel} không có sẵn`, "warning");
+    console.log(`❌ Model ${newModel} not available`);
     return false;
   }
 
   const oldModel = AI_CONFIG.MODEL;
   AI_CONFIG.MODEL = newModel;
 
-  showAINotification(
-    `🔄 Đang chuyển từ ${oldModel} sang ${newModel}...`,
-    "info"
-  );
+  console.log(`Switching from ${oldModel} to ${newModel}...`);
 
   try {
     // Test new model
     const testResponse = await generateText("Test connection");
 
     if (testResponse && !testResponse.includes("[OFFLINE MODE]")) {
-      showAINotification(
-        `✅ Đã chuyển thành công sang ${newModel}!`,
-        "success"
-      );
+      console.log(`Successfully switched to ${newModel}`);
       updateTutorStatus(`AI sẵn sàng! ${newModel} 🤖✨`);
       return true;
     } else {
@@ -1606,10 +1936,7 @@ async function switchAIModel(newModel) {
   } catch (error) {
     // Rollback to old model
     AI_CONFIG.MODEL = oldModel;
-    showAINotification(
-      `❌ Không thể chuyển sang ${newModel}. Quay lại ${oldModel}.`,
-      "warning"
-    );
+    console.log(`Cannot switch to ${newModel}. Rolled back to ${oldModel}.`);
     return false;
   }
 }
@@ -1652,7 +1979,7 @@ function getModelInfo(modelName = AI_CONFIG.MODEL) {
  * Enhanced manual AI test with model switching
  */
 async function manualTestAI() {
-  showAINotification("🧪 Bắt đầu test OpenRouter AI thủ công...", "info");
+  console.log("🧪 Starting manual OpenRouter AI test...");
 
   try {
     const testPrompt =
@@ -1665,31 +1992,24 @@ async function manualTestAI() {
     console.log("🧪 Manual test response:", response);
 
     if (response.includes("[OFFLINE MODE]") || response.includes("offline")) {
-      showAINotification(
-        "❌ Test thủ công thất bại: Nhận offline content",
-        "warning",
-        8000
-      );
+      console.log("❌ Manual test failed: Received offline content");
 
       // Try alternative model
       const altModels = AI_CONFIG.AVAILABLE_MODELS.filter(
         (m) => m !== AI_CONFIG.MODEL
       );
       if (altModels.length > 0) {
-        showAINotification(`🔄 Thử model khác: ${altModels[0]}...`, "info");
+        console.log(`🔄 Trying alternative model: ${altModels[0]}...`);
         await switchAIModel(altModels[0]);
       }
     } else {
       const modelInfo = getModelInfo();
-      showAINotification(
-        `✅ Test thành công!\\n🤖 Model: ${AI_CONFIG.MODEL}\\n${modelInfo.speed} Tốc độ | ${modelInfo.quality} Chất lượng | ${modelInfo.cost} Chi phí\\n💬 "${response}"`,
-        "success",
-        12000
+      console.log(
+        `✅ Manual test successful! Model: ${AI_CONFIG.MODEL} - Response: "${response}"`
       );
     }
   } catch (error) {
     console.error("Manual test error:", error);
-    showAINotification(`❌ Test thủ công lỗi: ${error.message}`, "warning");
   }
 }
 
@@ -1701,38 +2021,42 @@ async function manualTestAI() {
 function initializeAIDashboard() {
   console.log("🤖 Initializing AI Dashboard...");
 
-  // Initialize Monaco Editor
-  initializeMonacoEditor();
-
-  // Set default mode
-  activateAIMode("learning");
-
-  // Create matrix background effect
-  createMatrixEffect();
-
-  // Start AI animations
-  startAIAnimations();
-
-  // Load user stats
+  // Load user stats first
   loadUserStats();
 
-  // Test AI connection
-  setTimeout(() => {
-    testAIConnection();
-  }, 2000);
+  // Initialize Editor with guaranteed fallback
+  initializeMonacoEditor()
+    .then(() => {
+      console.log("✅ Editor initialization completed!");
+      finishInitialization();
+    })
+    .catch((error) => {
+      console.log(
+        "⚠️ Editor initialization had issues, but continuing:",
+        error.message
+      );
+      // Ensure we have some kind of editor
+      if (!window.aiEditor) {
+        createFallbackEditor();
+      }
+      finishInitialization();
+    });
 
-  // Welcome message
-  setTimeout(() => {
-    showAINotification(
-      "🤖 Chào mừng bạn đến với CodeQuest AI Dashboard! Hãy bắt đầu hành trình học tập thông minh!",
-      "success"
-    );
-  }, 1000);
+  function finishInitialization() {
+    // Set default mode
+    activateAIMode("learning");
 
-  // Demo AI features after connection test
-  setTimeout(() => {
-    demoAIFeatures();
-  }, 4000);
+    // Create visual effects
+    createMatrixEffect();
+    startAIAnimations();
+
+    // Test AI connection
+    setTimeout(() => {
+      testAIConnection();
+    }, 500);
+
+    console.log("✅ Dashboard initialization complete!");
+  }
 
   console.log("✅ AI Dashboard initialized successfully");
 }
@@ -1741,16 +2065,75 @@ function initializeAIDashboard() {
  * Initialize Monaco Editor with AI enhancements
  */
 function initializeMonacoEditor() {
-  if (typeof require !== "undefined") {
-    require.config({
-      paths: {
-        vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs",
-      },
-    });
+  return new Promise((resolve, reject) => {
+    console.log("🔄 Initializing Editor...");
 
-    require(["vs/editor/editor.main"], function () {
+    // Try Monaco first, but with quick timeout
+    const monacoTimeout = setTimeout(() => {
+      console.log("⚠️ Monaco Editor timeout, using fallback");
+      createFallbackEditor();
+      resolve();
+    }, 3000); // 3 second timeout
+
+    // Check if Monaco is already available
+    if (typeof monaco !== "undefined") {
+      clearTimeout(monacoTimeout);
+      console.log("✅ Monaco already available");
+      setupEditor();
+      resolve();
+      return;
+    }
+
+    // Check if require is available
+    if (typeof require === "undefined") {
+      clearTimeout(monacoTimeout);
+      console.log("⚠️ require.js not available, using fallback immediately");
+      createFallbackEditor();
+      resolve();
+      return;
+    }
+
+    console.log("🔄 Attempting to load Monaco Editor...");
+
+    try {
+      // Quick Monaco setup
+      require.config({
+        paths: {
+          vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs",
+        },
+      });
+
+      require(["vs/editor/editor.main"], function () {
+        clearTimeout(monacoTimeout);
+        console.log("✅ Monaco Editor loaded");
+        setupEditor();
+        resolve();
+      }, function (error) {
+        clearTimeout(monacoTimeout);
+        console.log("⚠️ Monaco failed, using fallback:", error.message);
+        createFallbackEditor();
+        resolve();
+      });
+    } catch (error) {
+      clearTimeout(monacoTimeout);
+      console.log("⚠️ Monaco setup failed, using fallback:", error.message);
+      createFallbackEditor();
+      resolve();
+    }
+
+    function setupEditor() {
+      console.log("🔧 Setting up Monaco Editor...");
       const editorContainer = document.getElementById("ai-code-editor");
-      if (editorContainer) {
+
+      if (!editorContainer) {
+        console.error("❌ Editor container #ai-code-editor not found");
+        reject(new Error("Editor container not found"));
+        return;
+      }
+
+      console.log("✅ Editor container found, creating editor instance...");
+
+      try {
         window.aiEditor = monaco.editor.create(editorContainer, {
           value:
             '# AI sẽ hướng dẫn bạn viết code ở đây\nprint("Xin chào CodeQuest AI!")\n\n# Bắt đầu viết code của bạn...',
@@ -1768,16 +2151,90 @@ function initializeMonacoEditor() {
             vertical: "visible",
             horizontal: "visible",
           },
+          selectOnLineNumbers: true,
         });
 
-        // AI Real-time feedback
+        console.log("✅ Monaco Editor instance created successfully");
+
+        // Add custom key bindings
+        try {
+          window.aiEditor.addCommand(
+            monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyA,
+            function () {
+              console.log("🔧 Custom Ctrl+A triggered");
+              // Custom Ctrl+A handler - select all and prepare for replacement
+              const model = window.aiEditor.getModel();
+              if (model) {
+                window.aiEditor.setSelection(model.getFullModelRange());
+                // Don't auto-delete, let user decide what to do with selection
+              }
+            }
+          );
+          console.log("✅ Custom key bindings added");
+        } catch (keyError) {
+          console.warn("⚠️ Could not add key bindings:", keyError);
+        }
+
+        // AI Real-time feedback (throttled)
+        let analysisTimeout;
         window.aiEditor.onDidChangeModelContent(() => {
-          analyzeCodeWithAI();
+          clearTimeout(analysisTimeout);
+          analysisTimeout = setTimeout(() => {
+            analyzeCodeWithAI();
+          }, 1000); // Wait 1 second after user stops typing
         });
 
-        console.log("✅ Monaco Editor initialized with AI features");
+        console.log("✅ Monaco Editor fully initialized with AI features");
+
+        // Mark editor as ready
+        window.aiEditor.isReady = true;
+      } catch (error) {
+        console.error("❌ Error creating Monaco Editor:", error);
+        reject(error);
+      }
+    }
+  });
+}
+
+/**
+ * Analyze code with AI (throttled)
+ */
+let lastAnalysisTime = 0;
+async function analyzeCodeWithAI() {
+  if (!aiEditor) return;
+
+  const now = Date.now();
+  if (now - lastAnalysisTime < 2000) return; // Throttle to every 2 seconds
+  lastAnalysisTime = now;
+
+  const code = aiEditor.getValue();
+  if (!code || code.trim().length < 10) return; // Skip very short code
+
+  try {
+    // Simple syntax highlighting hints only (no API calls for real-time)
+    const lines = code.split("\n");
+    let hasErrors = false;
+
+    lines.forEach((line, index) => {
+      // Basic Python syntax checks
+      if (currentLanguage === "python") {
+        if (line.includes("print(") && !line.includes(")")) {
+          hasErrors = true;
+        }
+        if (line.match(/^\s*if\s+.*[^:]$/)) {
+          hasErrors = true;
+        }
       }
     });
+
+    // Update status quietly
+    if (hasErrors) {
+      updateTutorStatus("Có lỗi syntax ở code...");
+    } else {
+      updateTutorStatus("Code trông ổn!");
+    }
+  } catch (error) {
+    console.error("Code analysis error:", error);
   }
 }
 
@@ -1813,6 +2270,52 @@ function createMatrixEffect() {
   }
 
   console.log("✅ Matrix effect created");
+}
+
+/**
+ * Fallback editor when Monaco fails to load
+ */
+function createFallbackEditor() {
+  const editorContainer = document.getElementById("ai-code-editor");
+  if (editorContainer) {
+    editorContainer.innerHTML = `
+      <textarea id="fallback-editor" style="
+        width: 100%; 
+        height: 100%; 
+        background: #1e1e1e; 
+        color: #d4d4d4; 
+        border: none; 
+        font-family: 'JetBrains Mono', monospace; 
+        font-size: 14px; 
+        padding: 10px;
+        resize: none;
+        outline: none;
+      " placeholder="# Viết code của bạn ở đây...\nprint('Hello CodeQuest!')"></textarea>
+    `;
+
+    const textarea = document.getElementById("fallback-editor");
+
+    // Create aiEditor-like interface
+    window.aiEditor = {
+      getValue: () => textarea.value,
+      setValue: (value) => {
+        textarea.value = value;
+      },
+      focus: () => textarea.focus(),
+      getModel: () => ({ getFullModelRange: () => null }),
+    };
+
+    // Handle Ctrl+A to clear content
+    textarea.addEventListener("keydown", function (e) {
+      if (e.ctrlKey && e.key === "a") {
+        e.preventDefault();
+        this.select();
+        // Allow user to delete selected content naturally
+      }
+    });
+
+    console.log("⚠️ Using fallback textarea editor");
+  }
 }
 
 /**
@@ -1873,6 +2376,20 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeAIDashboard();
 });
 
+// Immediate fallback for already loaded DOM
+if (document.readyState !== "loading") {
+  console.log("🚀 DOM already loaded, initializing immediately...");
+  setTimeout(initializeAIDashboard, 100);
+}
+
+// Additional safety net
+setTimeout(() => {
+  if (!window.aiEditor) {
+    console.log("⚠️ Safety net: Creating editor if missing...");
+    createFallbackEditor();
+  }
+}, 2000);
+
 // Handle window resize
 window.addEventListener("resize", function () {
   if (window.aiEditor) {
@@ -1924,4 +2441,28 @@ window.CodeQuestAI = {
   getConfig: () => AI_CONFIG,
 };
 
+// Export essential functions to global scope for HTML onclick handlers
+window.selectLanguageWithAI = selectLanguageWithAI;
+window.activateAIMode = activateAIMode;
+window.startAILesson = startAILesson;
+window.generateAIChallenge = generateAIChallenge;
+window.runCodeWithAI = runCodeWithAI;
+window.submitToAI = submitToAI;
+window.getAIHelp = getAIHelp;
+window.startAIQuiz = startAIQuiz;
+window.toggleAIAssistant = toggleAIAssistant;
+window.closeAIAssistant = closeAIAssistant;
+window.sendToAI = sendToAI;
+window.toggleAIVoice = toggleAIVoice;
+window.showAINotification = showAINotification;
+window.startCoding = startCoding;
+
 console.log("🤖 AI Dashboard JavaScript loaded successfully!");
+
+// Immediate editor availability check
+setInterval(() => {
+  if (!window.aiEditor && document.getElementById("ai-code-editor")) {
+    console.log("⚠️ Editor missing, creating fallback...");
+    createFallbackEditor();
+  }
+}, 3000);

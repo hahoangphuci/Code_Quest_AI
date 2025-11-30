@@ -14,19 +14,49 @@
         <header class="site_header">
            <div class="container_header">
               <div class="logo_header">
-                    <img onclick="location.href='home.html'" src="../assets/image/logo.png" alt="Logo" class="logo-animate" />
-                    <a href="home.html" class="">CodeQuest</a>
+                    <img onclick="location.href='/home'" src="../assets/image/logo.png" alt="Logo" class="logo-animate" />
+                    <a href="/home" class="">CodeQuest</a>
               </div>
               <nav class="nav_header">
-                <button class="nav_btn" onclick="location.href='home.html'">Trang Chủ</button>
-                <button id="about-btn" class="nav_btn" onclick="location.href='about.html'">Giới Thiệu</button>
-                <button class="nav_btn" onclick="location.href='features.html'">Đặc Trưng</button>
-                <button class="nav_btn" onclick="location.href='contact.html'">Liên Hệ</button>
+                <button class="nav_btn" onclick="location.href='/home'">Trang Chủ</button>
+                <button id="about-btn" class="nav_btn" onclick="location.href='/about'">Giới Thiệu</button>
+                <button class="nav_btn" onclick="location.href='/features'">Đặc Trưng</button>
+                <button class="nav_btn" onclick="location.href='/contact'">Liên Hệ</button>
               </nav>
               
+              <!-- Auth section với dropdown menu -->
               <div class="auth_header">
-                <button class="login_btn" onclick="location.href='auth.html'">Đăng Nhập</button>
-                <button class="register_btn" onclick="location.href='auth.html'">Đăng Ký</button>
+                <button class="login_btn" onclick="handleAuthRedirect('login')">Đăng Nhập</button>
+                <button class="register_btn" onclick="handleAuthRedirect('register')">Đăng Ký</button>
+              </div>
+              
+              <!-- User dropdown menu (ẩn ban đầu) -->
+              <div class="user_menu" id="user_menu" style="display: none;">
+                <div class="user_info_header">
+                  <div class="user_avatar_small" id="user_avatar_small">U</div>
+                  <div class="user_details">
+                    <span class="user_name" id="user_name_header">User</span>
+                    <span class="user_role">CodeQuest Member</span>
+                  </div>
+                  <button class="dropdown_toggle" id="dropdown_toggle">
+                    <i class="fas fa-chevron-down"></i>
+                  </button>
+                </div>
+                
+                <div class="dropdown_menu" id="dropdown_menu">
+                  <a href="/dashboard" class="dropdown_item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                  </a>
+                  <a href="/profile" class="dropdown_item">
+                    <i class="fas fa-user-edit"></i>
+                    <span>Cập nhật thông tin</span>
+                  </a>
+                  <button class="dropdown_item logout_btn" id="logout_btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Đăng xuất</span>
+                  </button>
+                </div>
               </div>
            </div> 
         </header>
@@ -38,7 +68,7 @@
               <div class="hero_section_text">
                 <h1>Học cùng CodeQuest vừa chơi vừa giỏi code</h1>
                 <p>CodeQuest là trải nghiệm học lập trình độc đáo giúp bạn tiếp cận lập trình một cách hiệu quả. Học thông qua các thử thách bằng AI và nhận đánh giá, nhận điểm thông minh và được khuyến khích hoàn thành.</p>
-                <button class="cta_btn">Thử Ngay CodeQuest</button>
+                <button class="cta_btn" onclick="handleTryNow()">Thử Ngay CodeQuest</button>
               </div>
               <img src="../assets/image/hero_section.gif" alt="Hero Section" class="hero_section_img">
             </section>
@@ -267,7 +297,7 @@
                   Miễn phí hoàn toàn cho người mới bắt đầu!
                 </p>
                 <div class="cta_buttons">
-                  <button class="cta_primary">Bắt đầu miễn phí</button>
+                  <button class="cta_primary" onclick="handleTryNow()">Bắt đầu miễn phí</button>
                 </div>
               </div>
             </section>
@@ -292,48 +322,173 @@
               <div class="footer-links">
                 <div class="footer-column">
                   <h4>Sản phẩm</h4>
-                  <ul>
-                    <li><a href="home.html">Trang Chủ</a></li>
-                    <li><a href="about.html">Giới Thiệu</a></li>
-                    <li><a href="features.html">Đặc Trưng</a></li>
-                    <li><a href="contact.html">Liên Hệ</a></li>
-                  </ul>
+                <ul>
+                    <li><a href="/home">Trang Chủ</a></li>
+                    <li><a href="/about">Giới Thiệu</a></li>
+                    <li><a href="/features">Đặc Trưng</a></li>
+                    <li><a href="/contact">Liên Hệ</a></li>
+                </ul>
                 </div>
                 
                 <div class="footer-column">
                   <h4>Công ty</h4>
-                  <ul>
-                    <li><a href="about.html">Về chúng tôi</a></li>
-                    <li><a href="careers.html">Cơ hội nghề nghiệp</a></li>
-                    <li><a href="clients.html">Khách hàng</a></li>
-                  </ul>
+                <ul>
+                    <li><a href="/about">Về chúng tôi</a></li>
+                    <li><a href="/careers">Cơ hội nghề nghiệp</a></li>
+                    <li><a href="/clients">Khách hàng</a></li>
+                </ul>
                 </div>
                 <div class="footer-column">
                   <h4>Pháp lý</h4>
-                  <ul>
-                    <li><a href="terms.html">Điều khoản</a></li>
-                    <li><a href="privacy.html">Chính sách bảo mật</a></li>
-                    <li><a href="security.html">Bảo mật</a></li>
-                  </ul>
+                <ul>
+                    <li><a href="/legal">Pháp lý</a></li>
+                </ul>
                 </div>
               </div>
 
-              <!-- Phần dưới -->
-              <div class="footer-bottom">
-                <select class="footer-language">
-                  <option value="en">English</option>
-                  <option value="vi">Tiếng Việt</option>
-                </select>
-                <div class="footer-theme">
-                  <button>🌞</button>
-                  <button>🌙</button>
-                </div>
-                <p class="footer-certification">Chứng nhận SOC 2</p>
-                <p class="footer-copyright">&copy; 2025 Được tạo bởi CodeQuest</p>
-              </div>
+
             </div>
           </footer>
             
     </div>
+
+    <script>
+      // Check login status and redirect accordingly
+      async function handleTryNow() {
+        try {
+          const response = await fetch("/api/auth/check-session");
+          const data = await response.json();
+
+          if (data.success && data.authenticated) {
+            // Đã đăng nhập, chuyển thẳng đến dashboard
+            window.location.href = "/dashboard";
+          } else {
+            // Chưa đăng nhập, chuyển đến trang auth với tab register
+            window.location.href = "/auth?tab=register";
+          }
+        } catch (error) {
+          console.error("Error checking session:", error);
+          // Nếu có lỗi, mặc định chuyển đến auth
+          window.location.href = "/auth?tab=register";
+        }
+      }
+
+      // Xử lý chuyển hướng auth với kiểm tra session
+      async function handleAuthRedirect(tab) {
+        try {
+          const response = await fetch("/api/auth/check-session");
+          const data = await response.json();
+
+          if (data.success && data.authenticated) {
+            // Đã đăng nhập, chuyển thẳng đến dashboard
+            window.location.href = "/dashboard";
+          } else {
+            // Chưa đăng nhập, chuyển đến trang auth với tab được chỉ định
+            window.location.href = `/auth?tab=${tab}`;
+          }
+        } catch (error) {
+          console.error("Error checking session:", error);
+          // Nếu có lỗi, mặc định chuyển đến auth
+          window.location.href = `/auth?tab=${tab}`;
+        }
+      }
+
+      // Check authentication status and update header
+      async function checkAuthAndUpdateHeader() {
+        try {
+          const response = await fetch('/api/auth/check-session');
+          const data = await response.json();
+          
+          if (data.success && data.authenticated) {
+            // User đã đăng nhập, hiển thị dropdown menu
+            document.querySelector('.auth_header').style.display = 'none';
+            document.getElementById('user_menu').style.display = 'flex';
+            
+            // Cập nhật thông tin user
+            document.getElementById('user_name_header').textContent = data.user.full_name || 'User';
+            const avatar = document.getElementById('user_avatar_small');
+            avatar.textContent = data.user.full_name ? data.user.full_name.charAt(0).toUpperCase() : 'U';
+            
+            setupDropdownEvents();
+          } else {
+            // User chưa đăng nhập, hiển thị login/register buttons
+            document.querySelector('.auth_header').style.display = 'flex';
+            document.getElementById('user_menu').style.display = 'none';
+          }
+        } catch (error) {
+          console.error('Error checking session:', error);
+          // Mặc định hiển thị login/register
+          document.querySelector('.auth_header').style.display = 'flex';
+          document.getElementById('user_menu').style.display = 'none';
+        }
+      }
+
+
+
+
+
+
+
+      // Set active navigation button
+      function setActiveNavButton() {
+        const currentPage = window.location.pathname;
+        const navButtons = document.querySelectorAll('.nav_btn');
+        
+        navButtons.forEach(btn => {
+          btn.classList.remove('active');
+          
+          // Check which page we're on and set active class
+          if (currentPage.includes('/home') && btn.textContent.trim() === 'Trang Chủ') {
+            btn.classList.add('active');
+          } else if (currentPage.includes('/about') && btn.textContent.trim() === 'Giới Thiệu') {
+            btn.classList.add('active');
+          } else if (currentPage.includes('/features') && btn.textContent.trim() === 'Đặc Trưng') {
+            btn.classList.add('active');
+          } else if (currentPage.includes('/contact') && btn.textContent.trim() === 'Liên Hệ') {
+            btn.classList.add('active');
+          }
+        });
+      }
+
+      function setupDropdownEvents() {
+        const dropdownToggle = document.getElementById('dropdown_toggle');
+        const dropdownMenu = document.getElementById('dropdown_menu');
+        const logoutBtn = document.getElementById('logout_btn');
+
+        // Toggle dropdown
+        dropdownToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdownMenu.classList.toggle('show');
+          dropdownToggle.classList.toggle('active');
+        });
+
+        // Đóng dropdown khi click ra ngoài
+        document.addEventListener('click', function() {
+          dropdownMenu.classList.remove('show');
+          dropdownToggle.classList.remove('active');
+        });
+
+        // Xử lý logout
+        logoutBtn.addEventListener('click', async function() {
+          try {
+            const response = await fetch('/api/auth/logout', {
+              method: 'POST'
+            });
+            
+            if (response.ok) {
+              window.location.href = '/home';
+            }
+          } catch (error) {
+            console.error('Logout error:', error);
+          }
+        });
+      }
+
+      // Initialize page
+      document.addEventListener('DOMContentLoaded', function() {
+        checkAuthAndUpdateHeader();
+        setActiveNavButton();
+      });
+    </script>
   </body>
 </html>

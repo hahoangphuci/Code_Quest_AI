@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập nhật thông tin | CodeQuest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+            background-color: #000000;
+            min-height: 100vh;
+            line-height: 1.6;
+            color: #ffffff;
+        }
+
+        /* Header giống hệt website chính */
+        .container_header {
+            max-width: 1808px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .site_header {
+            background-color: #000000;
+            border-bottom: 1px solid #333;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .container_header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 200px;
+            padding: 15px 15px;
+        }
+
+        .logo_header {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .logo_header img {
+            height: 60px;
+            width: auto;
+            transition: transform 200ms ease, filter 200ms ease;
+            transform-origin: center;
+            cursor: pointer;
+            filter: brightness(0) invert(1);
+        }
+
+        .logo-animate {
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-4px) scale(1.02);
+            }
+        }
+
+        .logo_header a {
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 34px;
+            text-decoration: none;
+            font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .back_btn {
+            padding: 10px 30px;
+            background-color: #ffffff;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            color: #000000;
+            text-decoration: none;
+            font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back_btn:hover {
+            background-color: #dedede;
+        }
+
+        /* Main content với style giống website */
+        .site_main {
+            padding-top: 10px;
+            border-radius: 12px;
+            width: 90%;
+            margin: 0 auto;
+            max-width: 1660px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero section giống website */
+        .profile_hero {
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 40px;
+            background: radial-gradient(circle at top left, #9333ea, transparent 40%),
+                        radial-gradient(circle at bottom left, #22c55e, transparent 40%),
+                        radial-gradient(circle at bottom right, #3b82f6, transparent 40%);
+            background-color: #0f172a;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .profile_hero h1 {
+            font-size: 3.1rem;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.1;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+        }
+
+        .profile_hero p {
+            font-size: 1.25rem;
+            color: #e2e8f0;
+            line-height: 1.7;
+            max-width: 600px;
+            font-weight: 400;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Profile content */
+        .profile_content {
+            padding: 30px 0;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+        }
+
+        .profile_container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .profile_grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        /* User info sidebar */
+        .user_sidebar {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 20px 20px 60px #0f0f1a, -20px -20px 60px #2a2a4e,
+                        inset 5px 5px 10px #0f0f1a, inset -5px -5px 10px #2a2a4e;
+            position: sticky;
+            top: 120px;
+        }
+
+        .user_avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            margin: 0 auto 24px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .user_avatar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+        }
+
+        .user_info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .user_info h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .user_info p {
+            color: #e2e8f0;
+            font-size: 0.9rem;
+        }
+
+        .user_stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stat_item {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .stat_number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat_label {
+            font-size: 0.8rem;
+            color: #e2e8f0;
+            margin-top: 4px;
+        }
+
+        /* Form content */
+        .form_content {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 20px 20px 60px #0f0f1a, -20px -20px 60px #2a2a4e,
+                        inset 5px 5px 10px #0f0f1a, inset -5px -5px 10px #2a2a4e;
+        }
+
+        .form_section {
+            margin-bottom: 40px;
+        }
+
+        .section_title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .section_title i {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form_row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form_group {
+            margin-bottom: 24px;
+        }
+
+        .form_label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+        }
+
+        .form_input {
+            width: 100%;
+            padding: 16px 20px;
+            background: #000000;
+            border: 2px solid #333;
+            border-radius: 12px;
+            font-size: 16px;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            font-family: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+        }
+
+        .form_input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .form_input[readonly] {
+            background: #1a1a1a;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        .form_note {
+            color: #888;
+            font-size: 13px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+        }
+
+        /* Password strength */
+        .password_strength {
+            margin-top: 12px;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .password_strength_bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength_weak { background: linear-gradient(135deg, #ef4444, #dc2626); width: 25%; }
+        .strength_fair { background: linear-gradient(135deg, #f59e0b, #d97706); width: 50%; }
+        .strength_good { background: linear-gradient(135deg, #10b981, #059669); width: 75%; }
+        .strength_strong { background: linear-gradient(135deg, #06d6a0, #10b981); width: 100%; }
+
+        .strength_text {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+        }
+
+        /* Buttons */
+        .form_actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .btn_primary {
+            border-radius: 12px;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+        }
+
+        .btn_primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+        }
+
+        .btn_secondary {
+            border-radius: 6px;
+            padding: 16px 32px;
+            background-color: transparent;
+            cursor: pointer;
+            border: 2px solid #a6a6a6;
+            font-size: 16px;
+            color: #ffffff;
+            font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn_secondary:hover {
+            background-color: rgb(227, 227, 227);
+            color: #000000;
+        }
+
+        /* Loading state */
+        .loading .btn_primary {
+            background: #333;
+            cursor: not-allowed;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            max-width: 400px;
+            transform: translateX(500px);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .profile_grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .user_sidebar {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container_header {
+                gap: 50px;
+                flex-wrap: wrap;
+            }
+            
+            .profile_hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .form_row {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .profile_container {
+                padding: 0 20px;
+            }
+            
+            .form_content, .user_sidebar {
+                padding: 24px;
+            }
+            
+            .form_actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile_content {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header giống hệt website chính -->
+    <header class="site_header">
+        <div class="container_header">
+            <div class="logo_header">
+                <img onclick="location.href='/home'" src="../assets/image/logo.png" alt="Logo" class="logo-animate" />
+                <a href="/home" class="">CodeQuest</a>
+            </div>
+            <a href="/home" class="back_btn">
+                <i class="fas fa-arrow-left"></i> Về trang chủ
+            </a>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="site_main">
+        <!-- Hero section giống website -->
+        <section class="profile_hero">
+            <h1>Quản lý tài khoản</h1>
+            <p>Cập nhật thông tin cá nhân và bảo mật tài khoản của bạn. Học cùng CodeQuest vừa chơi vừa giỏi code với thông tin được bảo vệ an toàn.</p>
+        </section>
+
+        <!-- Profile content -->
+        <section class="profile_content">
+            <div class="profile_container">
+                <div class="profile_grid">
+                    <!-- User info sidebar -->
+                    <aside class="user_sidebar">
+                        <div class="user_avatar" id="user_avatar">U</div>
+                        <div class="user_info">
+                            <h2 id="user_name">Người dùng</h2>
+                            <p id="user_email">user@example.com</p>
+                        </div>
+                        
+                        <div class="user_stats">
+                            <div class="stat_item">
+                                <div class="stat_number">15</div>
+                                <div class="stat_label">Ngày tham gia</div>
+                            </div>
+                            <div class="stat_item">
+                                <div class="stat_number">42</div>
+                                <div class="stat_label">Thử thách</div>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Form content -->
+                    <div class="form_content">
+                        <form id="profile_form">
+                            <!-- Thông tin cá nhân -->
+                            <div class="form_section">
+                                <h3 class="section_title">
+                                    <i class="fas fa-user-circle"></i>
+                                    Thông tin cá nhân
+                                </h3>
+                                
+                                <div class="form_row">
+                                    <div class="form_group">
+                                        <label class="form_label">Họ và tên</label>
+                                        <input type="text" id="full_name" class="form_input" placeholder="Nhập họ và tên" required>
+                                    </div>
+                                    <div class="form_group">
+                                        <label class="form_label">Email</label>
+                                        <input type="email" id="email" class="form_input" placeholder="Email của bạn" readonly>
+                                        <div class="form_note">
+                                            <i class="fas fa-lock"></i>
+                                            Email không thể thay đổi vì lý do bảo mật
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bảo mật -->
+                            <div class="form_section">
+                                <h3 class="section_title">
+                                    <i class="fas fa-shield-alt"></i>
+                                    Bảo mật tài khoản
+                                </h3>
+                                
+                                <div class="form_row">
+                                    <div class="form_group">
+                                        <label class="form_label">Mật khẩu hiện tại</label>
+                                        <input type="password" id="current_password" class="form_input" placeholder="Nhập mật khẩu hiện tại">
+                                    </div>
+                                    <div class="form_group">
+                                        <label class="form_label">Mật khẩu mới</label>
+                                        <input type="password" id="new_password" class="form_input" placeholder="Nhập mật khẩu mới (tối thiểu 8 ký tự)">
+                                        <div class="password_strength">
+                                            <div class="password_strength_bar" id="strength_bar"></div>
+                                        </div>
+                                        <div class="strength_text" id="strength_text">Nhập mật khẩu để xem độ mạnh</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form_group">
+                                    <label class="form_label">Xác nhận mật khẩu mới</label>
+                                    <input type="password" id="confirm_password" class="form_input" placeholder="Nhập lại mật khẩu mới">
+                                </div>
+                            </div>
+
+                            <!-- Action buttons -->
+                            <div class="form_actions">
+                                <button type="button" class="btn_secondary" onclick="resetForm()">
+                                    <i class="fas fa-undo"></i> Đặt lại
+                                </button>
+                                <button type="submit" class="btn_primary">
+                                    <i class="fas fa-save"></i> Cập nhật thông tin
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let currentUser = null;
+
+        // Load user data on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadUserData();
+            setupPasswordStrength();
+        });
+
+        async function loadUserData() {
+            try {
+                const response = await fetch('/api/auth/check-session');
+                const data = await response.json();
+                
+                if (data.success && data.authenticated) {
+                    currentUser = data.user;
+                    
+                    // Update form fields
+                    document.getElementById('full_name').value = currentUser.full_name || '';
+                    document.getElementById('email').value = currentUser.email || '';
+                    
+                    // Update sidebar info
+                    document.getElementById('user_name').textContent = currentUser.full_name || 'Người dùng';
+                    document.getElementById('user_email').textContent = currentUser.email || '';
+                    
+                    // Update avatar
+                    const avatar = document.getElementById('user_avatar');
+                    avatar.textContent = currentUser.full_name ? currentUser.full_name.charAt(0).toUpperCase() : 'U';
+                } else {
+                    window.location.href = '/auth';
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                window.location.href = '/auth';
+            }
+        }
+
+        function setupPasswordStrength() {
+            const newPasswordInput = document.getElementById('new_password');
+            const strengthBar = document.getElementById('strength_bar');
+            const strengthText = document.getElementById('strength_text');
+
+            newPasswordInput.addEventListener('input', function() {
+                const password = this.value;
+                const strength = calculatePasswordStrength(password);
+                updatePasswordStrengthUI(strength, strengthBar, strengthText);
+            });
+        }
+
+        function calculatePasswordStrength(password) {
+            if (!password) return { level: 0, text: 'Nhập mật khẩu để xem độ mạnh', class: '' };
+            
+            let score = 0;
+            const checks = {
+                length: password.length >= 8,
+                lowercase: /[a-z]/.test(password),
+                uppercase: /[A-Z]/.test(password),
+                numbers: /\d/.test(password),
+                special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+            };
+
+            Object.values(checks).forEach(check => check && score++);
+
+            if (score <= 2) return { level: 1, text: 'Mật khẩu yếu', class: 'strength_weak' };
+            if (score === 3) return { level: 2, text: 'Mật khẩu trung bình', class: 'strength_fair' };
+            if (score === 4) return { level: 3, text: 'Mật khẩu tốt', class: 'strength_good' };
+            return { level: 4, text: 'Mật khẩu rất mạnh', class: 'strength_strong' };
+        }
+
+        function updatePasswordStrengthUI(strength, strengthBar, strengthText) {
+            strengthBar.className = 'password_strength_bar';
+            if (strength.class) {
+                strengthBar.classList.add(strength.class);
+            }
+            strengthText.textContent = strength.text;
+            strengthText.className = 'strength_text ' + strength.class;
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${message}`;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        function resetForm() {
+            document.getElementById('current_password').value = '';
+            document.getElementById('new_password').value = '';
+            document.getElementById('confirm_password').value = '';
+            
+            // Reset password strength
+            const strengthBar = document.getElementById('strength_bar');
+            const strengthText = document.getElementById('strength_text');
+            strengthBar.className = 'password_strength_bar';
+            strengthText.textContent = 'Nhập mật khẩu để xem độ mạnh';
+            strengthText.className = 'strength_text';
+        }
+
+        // Handle form submission
+        document.getElementById('profile_form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('full_name').value.trim();
+            const currentPassword = document.getElementById('current_password').value;
+            const newPassword = document.getElementById('new_password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            // Validate
+            if (!fullName) {
+                showNotification('Vui lòng nhập họ và tên', 'error');
+                return;
+            }
+
+            // Check if changing password
+            if (currentPassword || newPassword || confirmPassword) {
+                if (!currentPassword) {
+                    showNotification('Vui lòng nhập mật khẩu hiện tại', 'error');
+                    return;
+                }
+                if (!newPassword) {
+                    showNotification('Vui lòng nhập mật khẩu mới', 'error');
+                    return;
+                }
+                if (newPassword.length < 8) {
+                    showNotification('Mật khẩu mới phải có ít nhất 8 ký tự', 'error');
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    showNotification('Mật khẩu xác nhận không khớp', 'error');
+                    return;
+                }
+            }
+
+            // Show loading state
+            const form = document.getElementById('profile_form');
+            const button = document.querySelector('.btn_primary');
+            const originalText = button.innerHTML;
+            
+            form.classList.add('loading');
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang cập nhật...';
+
+            try {
+                const response = await fetch('/api/auth/update-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        full_name: fullName,
+                        current_password: currentPassword,
+                        new_password: newPassword
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showNotification('Cập nhật thông tin thành công!', 'success');
+                    
+                    // Update sidebar info
+                    document.getElementById('user_name').textContent = fullName;
+                    const avatar = document.getElementById('user_avatar');
+                    avatar.textContent = fullName.charAt(0).toUpperCase();
+                    
+                    // Reset password fields
+                    resetForm();
+                } else {
+                    showNotification(result.message || 'Có lỗi xảy ra', 'error');
+                }
+            } catch (error) {
+                console.error('Update error:', error);
+                showNotification('Có lỗi xảy ra, vui lòng thử lại', 'error');
+            } finally {
+                // Remove loading state
+                form.classList.remove('loading');
+                button.innerHTML = originalText;
+            }
+        });
+    </script>
+</body>
+</html>

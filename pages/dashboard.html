@@ -104,25 +104,6 @@
             </div>
           </div>
         </div>
-
-        <!-- User Profile AI -->
-        <div class="user-profile-ai">
-          <div class="profile-avatar">
-            <img
-              src="../assets/image/avatar-default.png"
-              alt="Avatar"
-              class="avatar-img"
-            />
-            <div class="ai-status-ring"></div>
-          </div>
-          <div class="profile-info">
-            <span class="username" id="username">CodeWarrior</span>
-            <span class="user-rank" id="user-rank">AI Student</span>
-          </div>
-          <div class="ai-voice-control">
-            <button class="voice-btn" onclick="toggleAIVoice()">🎤</button>
-          </div>
-        </div>
       </div>
     </header>
 
@@ -605,6 +586,104 @@
           </div>
         </div>
       </section>
+
+      <!-- Chức năng thú vị -->
+      <section class="fun-zone">
+        <div class="section-title">
+          <h2>🎉 Khu vực giải trí</h2>
+          <p>Những hoạt động thú vị để học lập trình không chán!</p>
+        </div>
+
+        <div class="fun-activities">
+          <!-- Code Battle -->
+          <div class="activity-card battle-card" onclick="startCodeBattle()">
+            <div class="card-header">
+              <div class="activity-icon">⚔️</div>
+              <h3>Code Battle</h3>
+              <div class="live-indicator">LIVE</div>
+            </div>
+            <p>Thách đấu lập trình 1v1 với bạn bè</p>
+            <div class="stats">
+              <span>🏆 12 thắng</span>
+              <span>🔥 Streak: 5</span>
+            </div>
+            <button class="action-btn">Bắt đầu đấu!</button>
+          </div>
+
+          <!-- Code Art -->
+          <div class="activity-card art-card" onclick="openCodeArt()">
+            <div class="card-header">
+              <div class="activity-icon">🎨</div>
+              <h3>Code Art</h3>
+              <div class="new-badge">MỚI</div>
+            </div>
+            <p>Tạo ra nghệ thuật từ code - vẽ hình bằng lập trình</p>
+            <div class="stats">
+              <span>🖼️ 8 tác phẩm</span>
+              <span>❤️ 45 lượt thích</span>
+            </div>
+            <button class="action-btn">Sáng tạo</button>
+          </div>
+
+          <!-- Speed Coding -->
+          <div class="activity-card speed-card" onclick="startSpeedCoding()">
+            <div class="card-header">
+              <div class="activity-icon">⚡</div>
+              <h3>Speed Coding</h3>
+              <div class="hot-badge">HOT</div>
+            </div>
+            <p>Thử thách tốc độ gõ code - càng nhanh càng tốt!</p>
+            <div class="stats">
+              <span>⏱️ Best: 85 WPM</span>
+              <span>🎯 94% độ chính xác</span>
+            </div>
+            <button class="action-btn">Thử thách!</button>
+          </div>
+
+          <!-- Code Quiz -->
+          <div class="activity-card quiz-card" onclick="startCodeQuiz()">
+            <div class="card-header">
+              <div class="activity-icon">🧩</div>
+              <h3>Code Quiz</h3>
+            </div>
+            <p>Kiểm tra kiến thức qua câu hỏi thú vị</p>
+            <div class="stats">
+              <span>🏅 Level 12</span>
+              <span>💡 89% đúng</span>
+            </div>
+            <button class="action-btn">Làm quiz</button>
+          </div>
+
+          <!-- Debugging Game -->
+          <div class="activity-card debug-card" onclick="playDebuggingGame()">
+            <div class="card-header">
+              <div class="activity-icon">🐞</div>
+              <h3>Debugging Game</h3>
+            </div>
+            <p>Tìm và sửa lỗi trong code như thám tử!</p>
+            <div class="stats">
+              <span>🔍 67 bugs đã sửa</span>
+              <span>⏰ Thời gian: 2m 15s</span>
+            </div>
+            <button class="action-btn">Bắt bug!</button>
+          </div>
+
+          <!-- Code Story -->
+          <div class="activity-card story-card" onclick="createCodeStory()">
+            <div class="card-header">
+              <div class="activity-icon">📚</div>
+              <h3>Code Story</h3>
+              <div class="creative-badge">SÁNG TẠO</div>
+            </div>
+            <p>Viết câu chuyện bằng code - kết hợp lập trình và văn học</p>
+            <div class="stats">
+              <span>✍️ 4 câu chuyện</span>
+              <span>🌟 156 đọc giả</span>
+            </div>
+            <button class="action-btn">Viết chuyện</button>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- AI Assistant Widget -->
@@ -642,61 +721,17 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
     <script>
-      // Initialize Monaco Editor for AI
-      function initializeAIEditor() {
-        require.config({
-          paths: {
-            vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs",
-          },
-        });
-        require(["vs/editor/editor.main"], function () {
-          window.aiEditor = monaco.editor.create(
-            document.getElementById("ai-code-editor"),
-            {
-              value:
-                '# AI sẽ hướng dẫn bạn viết code ở đây\nprint("Xin chào CodeQuest AI!")',
-              language: "python",
-              theme: "vs-dark",
-              automaticLayout: true,
-              fontSize: 14,
-              minimap: { enabled: false },
-              scrollBeyondLastLine: false,
-            }
-          );
-
-          // AI Real-time feedback
-          window.aiEditor.onDidChangeModelContent(() => {
-            clearTimeout(window.aiTypingTimeout);
-            window.aiTypingTimeout = setTimeout(() => {
-              analyzeCodeWithAI();
-            }, 1000);
-          });
-        });
-      }
-
-      // AI Functions
-      function analyzeCodeWithAI() {
-        const code = window.aiEditor.getValue();
-        const feedback = document.getElementById("ai-feedback");
-
-        // Simulate AI analysis
-        setTimeout(() => {
-          feedback.innerHTML = `
-          <div class="ai-analysis">
-            <p>🤖 <strong>AI phân tích:</strong> Code của bạn trông tốt!</p>
-            <p>💡 <strong>Gợi ý:</strong> Thử thêm comments để code dễ hiểu hơn</p>
-          </div>
-        `;
-        }, 500);
-      }
-
+      // Language selection function
       function selectLanguageWithAI(language) {
-        showAINotification(
-          `🤖 AI đã chuyển sang ${language}! Tôi sẽ điều chỉnh nội dung phù hợp`,
-          "info"
-        );
+        console.log(`🤖 AI switching to ${language}!`);
+
+        // Update currentLanguage in dashboard.js
+        if (typeof window.currentLanguage !== "undefined") {
+          window.currentLanguage = language.toLowerCase();
+        }
+
         // Update editor language
-        if (window.aiEditor) {
+        if (window.aiEditor && window.aiEditor.getModel) {
           const languageMap = {
             Python: "python",
             JavaScript: "javascript",
@@ -704,57 +739,21 @@
             "C++": "cpp",
             Rust: "rust",
           };
-          monaco.editor.setModelLanguage(
-            window.aiEditor.getModel(),
-            languageMap[language] || "python"
-          );
+          try {
+            monaco.editor.setModelLanguage(
+              window.aiEditor.getModel(),
+              languageMap[language] || "python"
+            );
+          } catch (error) {
+            console.log(
+              "Language change will apply on next editor initialization"
+            );
+          }
         }
       }
 
-      function activateAIMode(mode) {
-        // Update active nav
-        document
-          .querySelectorAll(".nav-mode")
-          .forEach((btn) => btn.classList.remove("active"));
-        document.querySelector(`[data-mode="${mode}"]`).classList.add("active");
-
-        // Show section
-        document
-          .querySelectorAll(".ai-section")
-          .forEach((section) => section.classList.remove("active"));
-        document.getElementById(`${mode}-section`).classList.add("active");
-
-        // AI notification
-        const modeNames = {
-          learning: "Chế độ giảng dạy",
-          practice: "Chế độ thách đấu",
-          quiz: "Chế độ kiểm tra",
-          analysis: "Chế độ phân tích",
-          leaderboard: "Bảng xếp hạng",
-        };
-
-        showAINotification(`🤖 Đã kích hoạt ${modeNames[mode]}!`, "success");
-      }
-
-      function showAINotification(message, type = "info") {
-        const notification = document.createElement("div");
-        notification.className = `ai-notification ${type}`;
-        notification.innerHTML = `
-        <div class="notification-content">
-          <span>${message}</span>
-          <button onclick="this.parentElement.parentElement.remove()">×</button>
-        </div>
-      `;
-
-        document.getElementById("ai-notifications").appendChild(notification);
-
-        // Auto remove after 5 seconds
-        setTimeout(() => {
-          if (notification.parentElement) {
-            notification.remove();
-          }
-        }, 5000);
-      }
+      // These functions are now handled by dashboard.js
+      // Keeping only essential HTML-specific functions here
 
       function toggleAIAssistant() {
         const panel = document.getElementById("assistant-panel");
@@ -834,24 +833,211 @@
         }, 3000);
       }
 
-      // Additional AI functions will be added here
-      function startAILesson(topic) {
-        showAINotification(
-          `🤖 AI đang chuẩn bị bài học về ${topic}...`,
-          "info"
-        );
-        // Implement AI lesson logic
+      // ==================== FUN ZONE FUNCTIONS ====================
+
+      function startCodeBattle() {
+        showNotification("⚔️ Đang tìm kiếm đối thủ xứng tầm...", "info");
+
+        setTimeout(() => {
+          const opponents = [
+            "DevNinja",
+            "CodeMaster",
+            "AlgoWizard",
+            "BugSlayer",
+            "SyntaxHero",
+          ];
+          const randomOpponent =
+            opponents[Math.floor(Math.random() * opponents.length)];
+          showNotification(
+            `🎯 Đối thủ tìm thấy: ${randomOpponent}! Battle bắt đầu!`,
+            "success"
+          );
+
+          // Simulate battle countdown
+          let countdown = 3;
+          const countdownInterval = setInterval(() => {
+            showNotification(
+              `🚀 Battle bắt đầu trong ${countdown}...`,
+              "warning"
+            );
+            countdown--;
+            if (countdown < 0) {
+              clearInterval(countdownInterval);
+              showNotification("⚡ GO! Code như gió thôi!", "success");
+            }
+          }, 1000);
+        }, 2000);
       }
 
-      function generateAIChallenge(difficulty) {
-        showAINotification(`🤖 AI đang tạo thử thách ${difficulty}...`, "info");
-        // Implement AI challenge generation
+      function openCodeArt() {
+        showNotification("🎨 Mở CodeArt Studio...", "info");
+
+        setTimeout(() => {
+          const artTypes = [
+            "Vẽ mandala bằng vòng lặp for",
+            "Tạo fracttal Sierpinski triangle",
+            "Code một bông hoa hướng dương xoay",
+            "Vẽ sóng sine đầy màu sắc",
+          ];
+          const randomArt =
+            artTypes[Math.floor(Math.random() * artTypes.length)];
+          showNotification(`✨ Ý tưởng hôm nay: ${randomArt}`, "success");
+        }, 1500);
       }
 
-      function startAIQuiz() {
-        showAINotification("🤖 AI Quiz đang bắt đầu...", "info");
-        // Implement AI quiz logic
+      function startSpeedCoding() {
+        showNotification("⚡ Chuẩn bị Speed Coding Challenge...", "info");
+
+        setTimeout(() => {
+          showNotification(
+            "🏁 Đề bài: Viết hàm tìm số nguyên tố trong 60 giây!",
+            "warning"
+          );
+
+          // Simulate typing test
+          let timeLeft = 60;
+          const timer = setInterval(() => {
+            if (timeLeft > 0) {
+              showNotification(
+                `⏰ Còn ${timeLeft} giây! Gõ nhanh lên!`,
+                "info"
+              );
+              timeLeft -= 10;
+            } else {
+              clearInterval(timer);
+              const wpm = Math.floor(Math.random() * 30) + 60;
+              showNotification(`🎉 Hoàn thành! Tốc độ: ${wpm} WPM`, "success");
+            }
+          }, 10000);
+        }, 1000);
       }
+
+      function startCodeQuiz() {
+        showNotification("🧠 Tải câu hỏi quiz...", "info");
+
+        const questions = [
+          "Python được tạo ra bởi ai?",
+          "Big O của Binary Search là gì?",
+          "Sự khác biệt giữa == và === trong JavaScript?",
+          "Stack và Queue khác nhau như thế nào?",
+        ];
+
+        setTimeout(() => {
+          const randomQ =
+            questions[Math.floor(Math.random() * questions.length)];
+          showNotification(`❓ Câu hỏi: ${randomQ}`, "warning");
+
+          setTimeout(() => {
+            const correct = Math.random() > 0.3;
+            if (correct) {
+              showNotification("✅ Chính xác! +10 điểm", "success");
+            } else {
+              showNotification("❌ Sai rồi! Học thêm nhé", "error");
+            }
+          }, 3000);
+        }, 1000);
+      }
+
+      function playDebuggingGame() {
+        showNotification("🔍 Khởi động Detective Mode...", "info");
+
+        const bugs = [
+          "Missing semicolon ở dòng 23",
+          "Variable 'user' chưa được khai báo",
+          "Infinite loop trong hàm calculateSum()",
+          "Array index out of bounds",
+        ];
+
+        setTimeout(() => {
+          const randomBug = bugs[Math.floor(Math.random() * bugs.length)];
+          showNotification(`🐛 Bug phát hiện: ${randomBug}`, "error");
+
+          setTimeout(() => {
+            showNotification("🔧 Bug đã được fix! +15 XP", "success");
+          }, 2500);
+        }, 1500);
+      }
+
+      function createCodeStory() {
+        showNotification("📚 Mở Code Story Editor...", "info");
+
+        const storyPrompts = [
+          "Viết về cuộc phiêu lưu của một array đi tìm missing element",
+          "Câu chuyện tình yêu giữa HTML và CSS",
+          "Hành trình của một bug từ lúc được sinh ra đến khi bị fix",
+          "Cuộc sống bí mật trong một database",
+        ];
+
+        setTimeout(() => {
+          const randomPrompt =
+            storyPrompts[Math.floor(Math.random() * storyPrompts.length)];
+          showNotification(`✍️ Chủ đề hôm nay: ${randomPrompt}`, "success");
+
+          setTimeout(() => {
+            showNotification(
+              "📖 Story được lưu! Chia sẻ với cộng đồng nhé",
+              "success"
+            );
+          }, 3000);
+        }, 1000);
+      }
+
+      // Notification helper
+      function showNotification(message, type = "info") {
+        const notification = document.createElement("div");
+        notification.className = `notification ${type}`;
+
+        const colors = {
+          info: "var(--ai-secondary)",
+          success: "var(--ai-success)",
+          warning: "var(--ai-warning)",
+          error: "var(--ai-danger)",
+        };
+
+        notification.innerHTML = `
+          <div class="notification-content">
+            <span>${message}</span>
+            <button onclick="this.parentElement.parentElement.remove()" class="close-btn">×</button>
+          </div>
+        `;
+
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: ${colors[type]};
+          color: var(--primary-white);
+          padding: var(--spacing-md);
+          border-radius: var(--radius-md);
+          box-shadow: var(--ai-glow-accent);
+          z-index: 10000;
+          max-width: 350px;
+          font-family: var(--font-sans);
+          font-size: 0.9rem;
+          animation: slideInRight 0.3s ease;
+          margin-bottom: var(--spacing-sm);
+        `;
+
+        // Stack multiple notifications
+        const existingNotifications =
+          document.querySelectorAll(".notification");
+        if (existingNotifications.length > 0) {
+          const topOffset = 20 + existingNotifications.length * 80;
+          notification.style.top = topOffset + "px";
+        }
+
+        document.body.appendChild(notification);
+
+        // Auto remove after 4 seconds
+        setTimeout(() => {
+          if (notification.parentElement) {
+            notification.style.animation = "slideOutRight 0.3s ease";
+            setTimeout(() => notification.remove(), 300);
+          }
+        }, 4000);
+      }
+
+      // All AI functions are now handled by dashboard.js
     </script>
     <script src="../assets/js/dashboard.js"></script>
   </body>

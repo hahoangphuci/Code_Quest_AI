@@ -83,19 +83,43 @@ body {
   padding: 10px 0;
 }
 .nav_btn {
-  border-radius: 6px;
-  padding: 10px 20px;
+  border-radius: 8px;
+  padding: 12px 24px;
   background-color: transparent;
   cursor: pointer;
-  border: 2px !important;
+  border: 2px solid transparent;
   font-size: 16px;
   color: #ffffff;
   font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
   font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
 }
+
 .nav_btn:hover {
-  background-color: rgb(227, 227, 227);
-  color: #000000;
+  background: linear-gradient(
+    135deg,
+    rgba(102, 126, 234, 0.1),
+    rgba(118, 75, 162, 0.1)
+  );
+  border-color: rgba(102, 126, 234, 0.3);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.nav_btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.nav_btn.active:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(15px);
 }
 .auth_header {
   display: flex;
@@ -556,44 +580,138 @@ body {
 .footer-column ul li a:hover {
   color: #ffffff;
 }
-.footer-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.footer-language {
-  background: #1f2937;
-  color: #ffffff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-.footer-theme {
-  display: flex;
-  gap: 10px;
-}
-.footer-theme button {
-  background: #1f2937;
-  color: #ffffff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.footer-theme button:hover {
-  background: #374151;
-}
-.footer-copyright {
-  font-size: 0.9rem;
-  color: #9ca3af;
-  text-align: center;
-}
+
 .footer-socials img {
   width: 20px;
   height: 20px;
   background-color: transparent !important;
   border: none;
   border-radius: 0;
+}
+
+/* ============ USER DROPDOWN MENU ============ */
+.user_menu {
+  display: none;
+  align-items: center;
+  margin-left: auto;
+  position: relative;
+}
+
+.user_info_header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.user_info_header:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.user_avatar_small {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.user_details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user_name {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+}
+
+.user_role {
+  color: #9ca3af;
+  font-size: 12px;
+  font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+}
+
+.dropdown_toggle {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.dropdown_toggle:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown_toggle.active {
+  transform: rotate(180deg);
+}
+
+.dropdown_menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  min-width: 200px;
+  padding: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(20px);
+  z-index: 1000;
+}
+
+.dropdown_menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown_item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+  font-size: 14px;
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+}
+
+.dropdown_item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #667eea;
+}
+
+.dropdown_item i {
+  width: 16px;
+  text-align: center;
 }

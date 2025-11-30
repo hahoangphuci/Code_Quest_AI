@@ -22,30 +22,66 @@
     <header class="site_header">
       <div class="container_header">
         <div class="logo_header">
-          <img src="../assets/image/logo.png" alt="Logo" class="logo-animate" />
-          <a href="#" class="">CodeQuest</a>
+          <img
+            onclick="location.href='/home'"
+            src="../assets/image/logo.png"
+            alt="Logo"
+            class="logo-animate"
+          />
+          <a href="/home" class="">CodeQuest</a>
         </div>
         <nav class="nav_header">
-          <button class="nav_btn" onclick="location.href='home.html'">
+          <button class="nav_btn" onclick="location.href='/home'">
             Trang Chủ
           </button>
           <button
             id="about-btn"
             class="nav_btn"
-            onclick="location.href='about.html'"
+            onclick="location.href='/about'"
           >
             Giới Thiệu
           </button>
-          <button class="nav_btn" onclick="location.href='features.html'">
+          <button class="nav_btn" onclick="location.href='/features'">
             Đặc Trưng
           </button>
-          <button class="nav_btn" onclick="location.href='contact.html'">
+          <button class="nav_btn" onclick="location.href='/contact'">
             Liên Hệ
           </button>
         </nav>
+
+        <!-- Auth section với dropdown menu -->
         <div class="auth_header">
-          <button class="login_btn">Đăng Nhập</button>
-          <button class="register_btn">Đăng Ký</button>
+          <button class="login_btn" onclick="handleAuthRedirect('login')">
+            Đăng Nhập
+          </button>
+          <button class="register_btn" onclick="handleAuthRedirect('register')">
+            Đăng Ký
+          </button>
+        </div>
+
+        <!-- User dropdown menu (ẩn ban đầu) -->
+        <div class="user_menu" id="user_menu" style="display: none">
+          <div class="user_info_header">
+            <div class="user_avatar_small" id="user_avatar_small">U</div>
+            <div class="user_details">
+              <span class="user_name" id="user_name_header">User</span>
+              <span class="user_role">CodeQuest Member</span>
+            </div>
+            <button class="dropdown_toggle" id="dropdown_toggle">
+              <i class="fas fa-chevron-down"></i>
+            </button>
+          </div>
+
+          <div class="dropdown_menu" id="dropdown_menu">
+            <a href="/profile" class="dropdown_item">
+              <i class="fas fa-user-edit"></i>
+              <span>Cập nhật thông tin</span>
+            </a>
+            <button class="dropdown_item logout_btn" id="logout_btn">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Đăng xuất</span>
+            </button>
+          </div>
         </div>
       </div>
     </header>
@@ -321,27 +357,139 @@
           <div class="footer-column">
             <h4>Pháp lý</h4>
             <ul>
-              <li><a href="terms.html">Điều khoản</a></li>
-              <li><a href="privacy.html">Chính sách bảo mật</a></li>
-              <li><a href="security.html">Bảo mật</a></li>
+              <li><a href="/legal">Pháp lý</a></li>
             </ul>
           </div>
         </div>
-
-        <!-- Phần dưới -->
-        <div class="footer-bottom">
-          <select class="footer-language">
-            <option value="en">English</option>
-            <option value="vi">Tiếng Việt</option>
-          </select>
-          <div class="footer-theme">
-            <button>🌞</button>
-            <button>🌙</button>
-          </div>
-          <p class="footer-certification">Chứng nhận SOC 2</p>
-          <p class="footer-copyright">&copy; 2025 Được tạo bởi CodeQuest</p>
-        </div>
       </div>
     </footer>
+
+    <script>
+      // Xử lý chuyển hướng auth với kiểm tra session
+      async function handleAuthRedirect(tab) {
+        try {
+          const response = await fetch("/api/auth/check-session");
+          const data = await response.json();
+
+          if (data.success && data.authenticated) {
+            // Đã đăng nhập, chuyển thẳng đến dashboard
+            window.location.href = "/dashboard";
+          } else {
+            // Chưa đăng nhập, chuyển đến trang auth với tab được chỉ định
+            window.location.href = `/auth?tab=${tab}`;
+          }
+        } catch (error) {
+          console.error("Error checking session:", error);
+          // Nếu có lỗi, mặc định chuyển đến auth
+          window.location.href = `/auth?tab=${tab}`;
+        }
+      }
+
+      // Kiểm tra session và cập nhật header
+      async function checkSessionAndUpdateHeader() {
+        try {
+          const response = await fetch("/api/auth/check-session");
+          const data = await response.json();
+
+          if (data.success && data.authenticated) {
+            // User đã đăng nhập, hiển thị dropdown menu
+            document.querySelector(".auth_header").style.display = "none";
+            document.getElementById("user_menu").style.display = "flex";
+
+            // Cập nhật thông tin user
+            document.getElementById("user_name_header").textContent =
+              data.user.full_name || "User";
+            const avatar = document.getElementById("user_avatar_small");
+            avatar.textContent = data.user.full_name
+              ? data.user.full_name.charAt(0).toUpperCase()
+              : "U";
+
+            setupDropdownEvents();
+          } else {
+            // User chưa đăng nhập, hiển thị login/register buttons
+            document.querySelector(".auth_header").style.display = "flex";
+            document.getElementById("user_menu").style.display = "none";
+          }
+        } catch (error) {
+          console.error("Error checking session:", error);
+          // Mặc định hiển thị login/register
+          document.querySelector(".auth_header").style.display = "flex";
+          document.getElementById("user_menu").style.display = "none";
+        }
+      }
+
+      function setupDropdownEvents() {
+        const dropdownToggle = document.getElementById("dropdown_toggle");
+        const dropdownMenu = document.getElementById("dropdown_menu");
+        const logoutBtn = document.getElementById("logout_btn");
+
+        // Toggle dropdown
+        dropdownToggle.addEventListener("click", function (e) {
+          e.stopPropagation();
+          dropdownMenu.classList.toggle("show");
+          dropdownToggle.classList.toggle("active");
+        });
+
+        // Đóng dropdown khi click ra ngoài
+        document.addEventListener("click", function () {
+          dropdownMenu.classList.remove("show");
+          dropdownToggle.classList.remove("active");
+        });
+
+        // Xử lý logout
+        logoutBtn.addEventListener("click", async function () {
+          try {
+            const response = await fetch("/api/auth/logout", {
+              method: "POST",
+            });
+
+            if (response.ok) {
+              window.location.href = "/home";
+            }
+          } catch (error) {
+            console.error("Logout error:", error);
+          }
+        });
+      }
+
+      // Set active navigation button
+      function setActiveNavButton() {
+        const currentPage = window.location.pathname;
+        const navButtons = document.querySelectorAll(".nav_btn");
+
+        navButtons.forEach((btn) => {
+          btn.classList.remove("active");
+
+          // Check which page we're on and set active class
+          if (
+            currentPage.includes("/home") &&
+            btn.textContent.trim() === "Trang Chủ"
+          ) {
+            btn.classList.add("active");
+          } else if (
+            currentPage.includes("/about") &&
+            btn.textContent.trim() === "Giới Thiệu"
+          ) {
+            btn.classList.add("active");
+          } else if (
+            currentPage.includes("/features") &&
+            btn.textContent.trim() === "Đặc Trưng"
+          ) {
+            btn.classList.add("active");
+          } else if (
+            currentPage.includes("/contact") &&
+            btn.textContent.trim() === "Liên Hệ"
+          ) {
+            btn.classList.add("active");
+          }
+        });
+      }
+
+      // Chạy khi trang load
+      document.addEventListener("DOMContentLoaded", function () {
+        checkSessionAndUpdateHeader();
+        setActiveNavButton();
+      });
+    </script>
   </body>
 </html>
