@@ -610,21 +610,6 @@
             <button class="action-btn">Bắt đầu đấu!</button>
           </div>
 
-          <!-- Code Art -->
-          <div class="activity-card art-card" onclick="openCodeArt()">
-            <div class="card-header">
-              <div class="activity-icon">🎨</div>
-              <h3>Code Art</h3>
-              <div class="new-badge">MỚI</div>
-            </div>
-            <p>Tạo ra nghệ thuật từ code - vẽ hình bằng lập trình</p>
-            <div class="stats">
-              <span>🖼️ 8 tác phẩm</span>
-              <span>❤️ 45 lượt thích</span>
-            </div>
-            <button class="action-btn">Sáng tạo</button>
-          </div>
-
           <!-- Speed Coding -->
           <div class="activity-card speed-card" onclick="startSpeedCoding()">
             <div class="card-header">
@@ -836,206 +821,133 @@
       // ==================== FUN ZONE FUNCTIONS ====================
 
       function startCodeBattle() {
-        showNotification("⚔️ Đang tìm kiếm đối thủ xứng tầm...", "info");
-
-        setTimeout(() => {
-          const opponents = [
-            "DevNinja",
-            "CodeMaster",
-            "AlgoWizard",
-            "BugSlayer",
-            "SyntaxHero",
-          ];
-          const randomOpponent =
-            opponents[Math.floor(Math.random() * opponents.length)];
-          showNotification(
-            `🎯 Đối thủ tìm thấy: ${randomOpponent}! Battle bắt đầu!`,
-            "success"
-          );
-
-          // Simulate battle countdown
-          let countdown = 3;
-          const countdownInterval = setInterval(() => {
-            showNotification(
-              `🚀 Battle bắt đầu trong ${countdown}...`,
-              "warning"
-            );
-            countdown--;
-            if (countdown < 0) {
-              clearInterval(countdownInterval);
-              showNotification("⚡ GO! Code như gió thôi!", "success");
-            }
-          }, 1000);
-        }, 2000);
-      }
-
-      function openCodeArt() {
-        showNotification("🎨 Mở CodeArt Studio...", "info");
-
-        setTimeout(() => {
-          const artTypes = [
-            "Vẽ mandala bằng vòng lặp for",
-            "Tạo fracttal Sierpinski triangle",
-            "Code một bông hoa hướng dương xoay",
-            "Vẽ sóng sine đầy màu sắc",
-          ];
-          const randomArt =
-            artTypes[Math.floor(Math.random() * artTypes.length)];
-          showNotification(`✨ Ý tưởng hôm nay: ${randomArt}`, "success");
-        }, 1500);
+        window.location.href = "/games/code-battle";
       }
 
       function startSpeedCoding() {
-        showNotification("⚡ Chuẩn bị Speed Coding Challenge...", "info");
-
-        setTimeout(() => {
-          showNotification(
-            "🏁 Đề bài: Viết hàm tìm số nguyên tố trong 60 giây!",
-            "warning"
-          );
-
-          // Simulate typing test
-          let timeLeft = 60;
-          const timer = setInterval(() => {
-            if (timeLeft > 0) {
-              showNotification(
-                `⏰ Còn ${timeLeft} giây! Gõ nhanh lên!`,
-                "info"
-              );
-              timeLeft -= 10;
-            } else {
-              clearInterval(timer);
-              const wpm = Math.floor(Math.random() * 30) + 60;
-              showNotification(`🎉 Hoàn thành! Tốc độ: ${wpm} WPM`, "success");
-            }
-          }, 10000);
-        }, 1000);
+        window.location.href = "/games/speed-coding";
       }
 
       function startCodeQuiz() {
-        showNotification("🧠 Tải câu hỏi quiz...", "info");
-
-        const questions = [
-          "Python được tạo ra bởi ai?",
-          "Big O của Binary Search là gì?",
-          "Sự khác biệt giữa == và === trong JavaScript?",
-          "Stack và Queue khác nhau như thế nào?",
-        ];
-
+        showNotification("🧠 Khởi động Code Quiz...", "info");
         setTimeout(() => {
-          const randomQ =
-            questions[Math.floor(Math.random() * questions.length)];
-          showNotification(`❓ Câu hỏi: ${randomQ}`, "warning");
-
-          setTimeout(() => {
-            const correct = Math.random() > 0.3;
-            if (correct) {
-              showNotification("✅ Chính xác! +10 điểm", "success");
-            } else {
-              showNotification("❌ Sai rồi! Học thêm nhé", "error");
-            }
-          }, 3000);
+          window.location.href = "/games/code-quiz";
         }, 1000);
       }
 
       function playDebuggingGame() {
-        showNotification("🔍 Khởi động Detective Mode...", "info");
-
-        const bugs = [
-          "Missing semicolon ở dòng 23",
-          "Variable 'user' chưa được khai báo",
-          "Infinite loop trong hàm calculateSum()",
-          "Array index out of bounds",
-        ];
-
-        setTimeout(() => {
-          const randomBug = bugs[Math.floor(Math.random() * bugs.length)];
-          showNotification(`🐛 Bug phát hiện: ${randomBug}`, "error");
-
-          setTimeout(() => {
-            showNotification("🔧 Bug đã được fix! +15 XP", "success");
-          }, 2500);
-        }, 1500);
+        window.location.href = "/games/debugging-game";
       }
 
       function createCodeStory() {
-        showNotification("📚 Mở Code Story Editor...", "info");
-
-        const storyPrompts = [
-          "Viết về cuộc phiêu lưu của một array đi tìm missing element",
-          "Câu chuyện tình yêu giữa HTML và CSS",
-          "Hành trình của một bug từ lúc được sinh ra đến khi bị fix",
-          "Cuộc sống bí mật trong một database",
-        ];
-
-        setTimeout(() => {
-          const randomPrompt =
-            storyPrompts[Math.floor(Math.random() * storyPrompts.length)];
-          showNotification(`✍️ Chủ đề hôm nay: ${randomPrompt}`, "success");
-
-          setTimeout(() => {
-            showNotification(
-              "📖 Story được lưu! Chia sẻ với cộng đồng nhé",
-              "success"
-            );
-          }, 3000);
-        }, 1000);
+        window.location.href = "/games/code-story";
       }
 
-      // Notification helper
-      function showNotification(message, type = "info") {
-        const notification = document.createElement("div");
-        notification.className = `notification ${type}`;
+      // Load leaderboard from games API
+      async function loadGameLeaderboard() {
+        try {
+          const response = await fetch("/api/games/leaderboard");
+          const data = await response.json();
 
-        const colors = {
-          info: "var(--ai-secondary)",
-          success: "var(--ai-success)",
-          warning: "var(--ai-warning)",
-          error: "var(--ai-danger)",
-        };
+          if (data.success) {
+            updateLeaderboardDisplay(data.leaderboard);
+          }
+        } catch (error) {
+          console.error("Error loading leaderboard:", error);
+        }
+      }
 
-        notification.innerHTML = `
-          <div class="notification-content">
-            <span>${message}</span>
-            <button onclick="this.parentElement.parentElement.remove()" class="close-btn">×</button>
-          </div>
-        `;
+      function updateLeaderboardDisplay(leaderboard) {
+        // Update podium (top 3)
+        const podium = document.querySelector(".podium");
+        if (podium && leaderboard.length >= 3) {
+          const places = podium.querySelectorAll(".podium-place");
 
-        notification.style.cssText = `
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          background: ${colors[type]};
-          color: var(--primary-white);
-          padding: var(--spacing-md);
-          border-radius: var(--radius-md);
-          box-shadow: var(--ai-glow-accent);
-          z-index: 10000;
-          max-width: 350px;
-          font-family: var(--font-sans);
-          font-size: 0.9rem;
-          animation: slideInRight 0.3s ease;
-          margin-bottom: var(--spacing-sm);
-        `;
+          // First place
+          if (places[1]) {
+            places[1].querySelector(".place-name").textContent =
+              leaderboard[0].name;
+            places[1].querySelector(".place-score").textContent =
+              leaderboard[0].score;
+          }
 
-        // Stack multiple notifications
-        const existingNotifications =
-          document.querySelectorAll(".notification");
-        if (existingNotifications.length > 0) {
-          const topOffset = 20 + existingNotifications.length * 80;
-          notification.style.top = topOffset + "px";
+          // Second place
+          if (places[0]) {
+            places[0].querySelector(".place-name").textContent =
+              leaderboard[1].name;
+            places[0].querySelector(".place-score").textContent =
+              leaderboard[1].score;
+          }
+
+          // Third place
+          if (places[2]) {
+            places[2].querySelector(".place-name").textContent =
+              leaderboard[2].name;
+            places[2].querySelector(".place-score").textContent =
+              leaderboard[2].score;
+          }
         }
 
-        document.body.appendChild(notification);
+        // Update ranking list
+        const rankingList = document.querySelector(".ranking-list");
+        if (rankingList) {
+          const listItems = leaderboard
+            .slice(3, 10)
+            .map(
+              (user, index) => `
+            <div class="ranking-item">
+              <span class="rank">${index + 4}</span>
+              <span class="name">${user.name}</span>
+              <span class="score">${user.score}</span>
+              <span class="level">${Math.floor(user.score / 100)}</span>
+            </div>
+          `
+            )
+            .join("");
 
-        // Auto remove after 4 seconds
-        setTimeout(() => {
-          if (notification.parentElement) {
-            notification.style.animation = "slideOutRight 0.3s ease";
-            setTimeout(() => notification.remove(), 300);
+          // Find existing list content and update
+          const existingList =
+            rankingList.querySelector(".ranking-content") || rankingList;
+          if (existingList !== rankingList) {
+            existingList.innerHTML = listItems;
+          } else {
+            // Add after header if no content container exists
+            const header = rankingList.querySelector(".ranking-header");
+            if (header) {
+              header.insertAdjacentHTML(
+                "afterend",
+                `<div class="ranking-content">${listItems}</div>`
+              );
+            }
           }
-        }, 4000);
+        }
       }
+
+      function filterRanking(type) {
+        // Update active filter button
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+
+        // In a real app, you would fetch filtered data
+        showNotification(
+          `📊 Hiển thị bảng xếp hạng: ${
+            type === "all"
+              ? "Tổng thể"
+              : type === "weekly"
+              ? "Tuần này"
+              : "Tháng này"
+          }`,
+          "info"
+        );
+        loadGameLeaderboard();
+      }
+
+      // Initialize leaderboard when page loads
+      document.addEventListener("DOMContentLoaded", () => {
+        loadGameLeaderboard();
+      });
 
       // All AI functions are now handled by dashboard.js
     </script>

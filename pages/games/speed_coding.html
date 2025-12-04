@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speed Coding Arena - CodeQuest AI</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Import CSS Files -->
+    <link href="../../assets/css/code_battle.css" rel="stylesheet" />
+    <link href="../../assets/css/speed_coding.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-container">
+        <a href="#" class="logo">
+          <i class="fas fa-brain"></i>
+          <span>CodeQuest AI</span>
+        </a>
+        <a href="/dashboard" class="back-btn">
+          <i class="fas fa-arrow-left"></i>
+          <span>Quay lại Dashboard</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="speed-coding-container">
+      <!-- Challenge Selection Screen -->
+      <div id="challenge-selection" class="section">
+        <div class="section-header">
+          <h1>⚡ Speed Coding Arena</h1>
+          <p>
+            AI sẽ tạo đề bài coding độc đáo cho từng cấp độ. Chọn thử thách và
+            thể hiện tốc độ typing của bạn!
+          </p>
+        </div>
+
+        <div class="ai-grid">
+          <!-- Beginner Challenge -->
+          <div class="ai-card" onclick="selectChallenge('beginner')">
+            <div class="difficulty-badge easy">Dễ Dàng</div>
+            <div class="ai-avatar">🐣</div>
+            <div class="ai-info">
+              <h3>Sprint Rookie</h3>
+              <div class="ai-level">Cấp độ: Người mới bắt đầu</div>
+              <div class="ai-stats">
+                <span>Thời gian: 2 phút</span>
+                <span>WPM mục tiêu: 15+</span>
+              </div>
+              <p class="ai-description">
+                Challenge hoàn hảo cho người mới. Các bài tập cơ bản với syntax
+                đơn giản và thời gian thoải mái.
+              </p>
+            </div>
+          </div>
+
+          <!-- Intermediate Challenge -->
+          <div class="ai-card" onclick="selectChallenge('intermediate')">
+            <div class="difficulty-badge medium">Trung Bình</div>
+            <div class="ai-avatar">🚀</div>
+            <div class="ai-info">
+              <h3>Code Racer</h3>
+              <div class="ai-level">Cấp độ: Trung cấp</div>
+              <div class="ai-stats">
+                <span>Thời gian: 3 phút</span>
+                <span>WPM mục tiêu: 25+</span>
+              </div>
+              <p class="ai-description">
+                Thách thức với algorithms phức tạp hơn. Cần tốc độ và độ chính
+                xác cao để chiến thắng.
+              </p>
+            </div>
+          </div>
+
+          <!-- Expert Challenge -->
+          <div class="ai-card" onclick="selectChallenge('expert')">
+            <div class="difficulty-badge hard">Khó</div>
+            <div class="ai-avatar">⚡</div>
+            <div class="ai-info">
+              <h3>Lightning Coder</h3>
+              <div class="ai-level">Cấp độ: Chuyên gia</div>
+              <div class="ai-stats">
+                <span>Thời gian: 4 phút</span>
+                <span>WPM mục tiêu: 40+</span>
+              </div>
+              <p class="ai-description">
+                Chỉ dành cho các cao thủ! Code phức tạp với thời gian giới hạn
+                nghiêm ngặt.
+              </p>
+            </div>
+          </div>
+
+          <!-- Tournament Mode -->
+          <div class="ai-card special" onclick="selectChallenge('tournament')">
+            <div class="difficulty-badge legendary">Giải Đấu</div>
+            <div class="ai-avatar">🏆</div>
+            <div class="ai-info">
+              <h3>Speed Championship</h3>
+              <div class="ai-level">Cấp độ: Huyền thoại</div>
+              <div class="ai-stats">
+                <span>Thời gian: 5 phút</span>
+                <span>WPM mục tiêu: 60+</span>
+              </div>
+              <p class="ai-description">
+                Giải đấu tối cao cho những master coder. Algorithms nâng cao và
+                pressure cực đại!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Speed Coding Arena -->
+      <div id="speed-arena" class="section">
+        <div class="arena-container">
+          <div class="arena-header">
+            <h2>⚡ Speed Arena</h2>
+          </div>
+
+          <!-- Challenge Information -->
+          <div id="challenge-info" class="challenge-info-panel">
+            <!-- Dynamic content will be inserted here -->
+          </div>
+
+          <!-- Arena Content -->
+          <div class="arena-content">
+            <!-- Target Code Display -->
+            <div class="arena-section">
+              <div class="section-title">
+                <i class="fas fa-target"></i>
+                <span>🎯 Code Mẫu</span>
+              </div>
+              <div class="code-display">
+                <pre id="code-target"></pre>
+              </div>
+            </div>
+
+            <!-- Code Editor -->
+            <div class="arena-section">
+              <div class="section-title">
+                <i class="fas fa-keyboard"></i>
+                <span>⌨️ Code Của Bạn</span>
+              </div>
+              <div class="code-editor-container">
+                <textarea
+                  id="speed-code-editor"
+                  class="code-editor"
+                  placeholder="Bắt đầu gõ code phía trên..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Display -->
+          <div class="arena-stats">
+            <div class="stat-item">
+              <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">⏰ Thời Gian</div>
+                <div id="timer-display" class="stat-value">00:00</div>
+              </div>
+            </div>
+
+            <div class="stat-item">
+              <div class="stat-icon">
+                <i class="fas fa-tachometer-alt"></i>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">🚀 Tốc Độ</div>
+                <div id="wpm-display" class="stat-value">0</div>
+              </div>
+            </div>
+
+            <div class="stat-item">
+              <div class="stat-icon">
+                <i class="fas fa-bullseye"></i>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">🎯 Chính Xác</div>
+                <div id="accuracy-display" class="stat-value">100%</div>
+              </div>
+            </div>
+
+            <div class="stat-item">
+              <div class="stat-icon">
+                <i class="fas fa-fire"></i>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">🔥 Chuỗi Thắng</div>
+                <div id="streak-display" class="stat-value">0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Arena Controls -->
+          <div class="arena-controls">
+            <button class="btn-secondary start-btn" onclick="startGame()">
+              <i class="fas fa-play"></i>
+              🚀 Bắt Đầu
+            </button>
+            <button class="btn-warning reset-btn" onclick="resetGame()">
+              <i class="fas fa-redo"></i>
+              🔄 Làm Lại
+            </button>
+            <button class="btn-secondary" onclick="backToSelection()">
+              <i class="fas fa-arrow-left"></i>
+              🏠 Về Menu
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Screen -->
+      <div id="results-screen" class="section">
+        <div class="results-container">
+          <div class="results-header">
+            <h2>🏆 Challenge Complete!</h2>
+          </div>
+
+          <div class="results-stats">
+            <div class="result-item">
+              <h4>⏰ Thời Gian</h4>
+              <div id="final-time" class="value">--:--</div>
+            </div>
+            <div class="result-item">
+              <h4>🚀 Tốc Độ Gõ</h4>
+              <div id="final-wpm" class="value">-- WPM</div>
+            </div>
+            <div class="result-item">
+              <h4>🎯 Độ Chính Xác</h4>
+              <div id="final-accuracy" class="value">--%</div>
+            </div>
+            <div class="result-item">
+              <h4>⭐ Điểm Số</h4>
+              <div id="final-score" class="value">--</div>
+            </div>
+          </div>
+
+          <div id="performance-level" class="performance-section">
+            <!-- Dynamic performance message -->
+          </div>
+
+          <div class="achievements-section">
+            <h4>🎖️ Achievements</h4>
+            <div id="achievements-list" class="achievements-list">
+              <!-- Dynamic achievements -->
+            </div>
+          </div>
+
+          <div class="results-actions">
+            <button class="btn-primary" onclick="playAgain()">
+              <i class="fas fa-redo"></i>
+              🔄 Chơi Lại
+            </button>
+            <button
+              class="btn-secondary"
+              onclick="selectChallenge(currentChallenge?.level?.toLowerCase() || 'beginner')"
+            >
+              <i class="fas fa-random"></i>
+              🎲 Đề Mới
+            </button>
+            <button class="btn-secondary" onclick="backToSelection()">
+              <i class="fas fa-home"></i>
+              🏠 Về Menu
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Notification System -->
+    <div id="notification" class="notification">
+      <!-- Dynamic notifications -->
+    </div>
+
+    <!-- Import JavaScript -->
+    <script src="../../assets/js/speed_coding.js"></script>
+  </body>
+</html>

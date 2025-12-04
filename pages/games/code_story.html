@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Story - CodeQuest AI</title>
+    <link rel="stylesheet" href="/assets/css/dashboard.css" />
+    <link rel="stylesheet" href="/assets/css/games.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="game-container">
+      <header class="game-header">
+        <div class="header-content">
+          <h1><i class="fas fa-book"></i> Code Story</h1>
+          <p>Viết câu chuyện bằng code!</p>
+          <button class="btn-back" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i> Quay lại
+          </button>
+        </div>
+      </header>
+
+      <div class="story-container">
+        <!-- Story Menu -->
+        <div class="story-menu" id="story-menu">
+          <div class="menu-options">
+            <div class="option-card" onclick="createNewStory()">
+              <div class="option-icon">
+                <i class="fas fa-plus-circle"></i>
+              </div>
+              <h3>Tạo câu chuyện mới</h3>
+              <p>Viết một câu chuyện mới bằng code</p>
+            </div>
+
+            <div class="option-card" onclick="viewStoryLibrary()">
+              <div class="option-icon">
+                <i class="fas fa-library"></i>
+              </div>
+              <h3>Thư viện câu chuyện</h3>
+              <p>Xem các câu chuyện đã viết</p>
+            </div>
+
+            <div class="option-card" onclick="exploreStoryTemplates()">
+              <div class="option-icon">
+                <i class="fas fa-magic"></i>
+              </div>
+              <h3>Template câu chuyện</h3>
+              <p>Sử dụng template có sẵn</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Story Creator -->
+        <div class="story-creator" id="story-creator" style="display: none">
+          <div class="creator-header">
+            <div class="header-info">
+              <h3><i class="fas fa-pen-fancy"></i> Story Creator</h3>
+              <p>Kết hợp code và câu chuyện để tạo nên tác phẩm độc đáo!</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn-secondary" onclick="backToStoryMenu()">
+                <i class="fas fa-arrow-left"></i> Quay lại
+              </button>
+              <button class="btn-success" onclick="saveStory()">
+                <i class="fas fa-save"></i> Lưu câu chuyện
+              </button>
+            </div>
+          </div>
+
+          <div class="story-workspace">
+            <div class="story-info">
+              <div class="info-group">
+                <label>Tiêu đề câu chuyện:</label>
+                <input
+                  type="text"
+                  id="story-title"
+                  placeholder="Nhập tiêu đề câu chuyện..."
+                />
+              </div>
+              <div class="info-group">
+                <label>Thể loại:</label>
+                <select id="story-genre">
+                  <option value="adventure">Phiêu lưu</option>
+                  <option value="mystery">Bí ẩn</option>
+                  <option value="comedy">Hài hước</option>
+                  <option value="fantasy">Fantasy</option>
+                  <option value="education">Giáo dục</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="story-content">
+              <div class="content-section">
+                <h4><i class="fas fa-align-left"></i> Nội dung câu chuyện</h4>
+                <textarea
+                  id="story-text"
+                  placeholder="Viết câu chuyện của bạn tại đây...
+
+Ví dụ: 
+Ngày xửa ngày xưa, có một lập trình viên tên là Alice. Cô ấy đang học cách sử dụng vòng lặp để giải quyết các bài toán phức tạp..."
+                ></textarea>
+              </div>
+
+              <div class="code-section">
+                <h4><i class="fas fa-code"></i> Code minh họa</h4>
+                <textarea
+                  id="story-code"
+                  placeholder="Viết code minh họa cho câu chuyện...
+
+# Ví dụ:
+def alice_adventure():
+    for day in range(7):
+        print(f'Ngày {day + 1}: Alice học được điều mới!')
+    
+alice_adventure()"
+                ></textarea>
+
+                <div class="code-actions">
+                  <button class="btn-primary" onclick="runStoryCode()">
+                    <i class="fas fa-play"></i> Chạy code
+                  </button>
+                  <button class="btn-secondary" onclick="formatStoryCode()">
+                    <i class="fas fa-magic"></i> Format code
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="story-preview">
+              <h4><i class="fas fa-eye"></i> Xem trước</h4>
+              <div class="preview-content" id="story-preview">
+                <p class="preview-placeholder">
+                  Viết câu chuyện và code để xem trước...
+                </p>
+              </div>
+              <div class="code-output" id="story-code-output">
+                <!-- Code output will appear here -->
+              </div>
+            </div>
+          </div>
+
+          <div class="story-tools">
+            <div class="tool-group">
+              <h5><i class="fas fa-tools"></i> Công cụ hỗ trợ</h5>
+              <button class="tool-btn" onclick="insertCharacterTemplate()">
+                <i class="fas fa-user"></i> Thêm nhân vật
+              </button>
+              <button class="tool-btn" onclick="insertCodeTemplate()">
+                <i class="fas fa-code"></i> Template code
+              </button>
+              <button class="tool-btn" onclick="insertDialogTemplate()">
+                <i class="fas fa-comments"></i> Hội thoại
+              </button>
+              <button class="tool-btn" onclick="generateStoryIdea()">
+                <i class="fas fa-lightbulb"></i> Gợi ý ý tưởng
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Story Library -->
+        <div class="story-library" id="story-library" style="display: none">
+          <div class="library-header">
+            <h3><i class="fas fa-library"></i> Thư viện Code Story</h3>
+            <button class="btn-secondary" onclick="backToStoryMenu()">
+              <i class="fas fa-arrow-left"></i> Quay lại
+            </button>
+          </div>
+
+          <div class="library-filters">
+            <select id="genre-filter">
+              <option value="all">Tất cả thể loại</option>
+              <option value="adventure">Phiêu lưu</option>
+              <option value="mystery">Bí ẩn</option>
+              <option value="comedy">Hài hước</option>
+              <option value="fantasy">Fantasy</option>
+              <option value="education">Giáo dục</option>
+            </select>
+            <input
+              type="text"
+              id="search-stories"
+              placeholder="Tìm kiếm câu chuyện..."
+            />
+          </div>
+
+          <div class="stories-grid" id="stories-grid">
+            <!-- Stories will be loaded here -->
+          </div>
+        </div>
+
+        <!-- Story Reader -->
+        <div class="story-reader" id="story-reader" style="display: none">
+          <div class="reader-header">
+            <h3 id="reader-title">Story Title</h3>
+            <div class="reader-actions">
+              <button class="btn-secondary" onclick="backToLibrary()">
+                <i class="fas fa-arrow-left"></i> Quay lại thư viện
+              </button>
+              <button class="btn-primary" onclick="editCurrentStory()">
+                <i class="fas fa-edit"></i> Chỉnh sửa
+              </button>
+            </div>
+          </div>
+
+          <div class="reader-content">
+            <div class="story-metadata">
+              <span class="genre-badge" id="reader-genre">Adventure</span>
+              <span class="date-info" id="reader-date">Tạo: --/--/----</span>
+            </div>
+
+            <div class="story-text-content" id="reader-story-text">
+              <!-- Story content will be loaded here -->
+            </div>
+
+            <div class="story-code-content">
+              <h4><i class="fas fa-code"></i> Code minh họa</h4>
+              <pre><code id="reader-code" class="language-python"></code></pre>
+              <button class="btn-primary" onclick="runReaderCode()">
+                <i class="fas fa-play"></i> Chạy code
+              </button>
+            </div>
+
+            <div class="code-execution-result" id="reader-code-output">
+              <!-- Code output will appear here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script>
+      let currentStory = null;
+      let stories = [];
+
+      function showNotification(message, type = "info") {
+        const notification = document.getElementById("notification");
+        notification.textContent = message;
+        notification.className = `notification ${type} show`;
+
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 3000);
+      }
+
+      function createNewStory() {
+        document.getElementById("story-menu").style.display = "none";
+        document.getElementById("story-creator").style.display = "block";
+
+        // Clear form
+        document.getElementById("story-title").value = "";
+        document.getElementById("story-text").value = "";
+        document.getElementById("story-code").value = "";
+        document.getElementById("story-genre").value = "adventure";
+        document.getElementById("story-preview").innerHTML =
+          '<p class="preview-placeholder">Viết câu chuyện và code để xem trước...</p>';
+        document.getElementById("story-code-output").innerHTML = "";
+
+        currentStory = null;
+      }
+
+      function viewStoryLibrary() {
+        document.getElementById("story-menu").style.display = "none";
+        document.getElementById("story-library").style.display = "block";
+        loadStories();
+      }
+
+      function exploreStoryTemplates() {
+        createNewStory();
+
+        // Load a sample template
+        const template = {
+          title: "Cuộc phiêu lưu của Python Bot",
+          genre: "adventure",
+          story: `Ngày xửa ngày xưa, trong thế giới số, có một robot tên là PyBot. PyBot có khả năng đặc biệt: cậu có thể thực hiện bất kỳ tác vụ nào bằng code Python!
+
+Một ngày nọ, PyBot nhận được nhiệm vụ tạo ra 10 ngôi sao để trang trí bầu trời đêm. Với sự háo hức, PyBot bắt đầu viết code...`,
+          code: `# PyBot tạo ngôi sao
+def create_stars():
+    for i in range(10):
+        print(f"⭐ Ngôi sao {i + 1} đã được tạo!")
+    print("\\n🌟 PyBot đã hoàn thành nhiệm vụ!")
+
+create_stars()`,
+        };
+
+        document.getElementById("story-title").value = template.title;
+        document.getElementById("story-genre").value = template.genre;
+        document.getElementById("story-text").value = template.story;
+        document.getElementById("story-code").value = template.code;
+
+        updateStoryPreview();
+        showNotification("Đã tải template mẫu!", "success");
+      }
+
+      function backToStoryMenu() {
+        document.getElementById("story-creator").style.display = "none";
+        document.getElementById("story-library").style.display = "none";
+        document.getElementById("story-reader").style.display = "none";
+        document.getElementById("story-menu").style.display = "block";
+      }
+
+      function updateStoryPreview() {
+        const title = document.getElementById("story-title").value;
+        const text = document.getElementById("story-text").value;
+        const genre = document.getElementById("story-genre").value;
+
+        if (!title && !text) {
+          document.getElementById("story-preview").innerHTML =
+            '<p class="preview-placeholder">Viết câu chuyện và code để xem trước...</p>';
+          return;
+        }
+
+        const previewHTML = `
+                <div class="preview-story">
+                    <h3>${title || "Câu chuyện chưa có tiêu đề"}</h3>
+                    <div class="preview-genre">
+                        <span class="genre-badge">${getGenreText(genre)}</span>
+                    </div>
+                    <div class="preview-text">
+                        ${
+                          text
+                            .split("\n")
+                            .map((p) => (p.trim() ? `<p>${p}</p>` : ""))
+                            .join("") || "<p><em>Chưa có nội dung...</em></p>"
+                        }
+                    </div>
+                </div>
+            `;
+
+        document.getElementById("story-preview").innerHTML = previewHTML;
+      }
+
+      function getGenreText(genre) {
+        const genres = {
+          adventure: "Phiêu lưu",
+          mystery: "Bí ẩn",
+          comedy: "Hài hước",
+          fantasy: "Fantasy",
+          education: "Giáo dục",
+        };
+        return genres[genre] || genre;
+      }
+
+      function runStoryCode() {
+        const code = document.getElementById("story-code").value;
+        const outputElement = document.getElementById("story-code-output");
+
+        if (!code.trim()) {
+          outputElement.innerHTML =
+            '<div class="code-output-warning">Vui lòng viết code trước khi chạy</div>';
+          return;
+        }
+
+        // Simulate code execution (in real app, use sandboxed environment)
+        let output = "";
+
+        try {
+          if (code.includes("create_stars") || code.includes("⭐")) {
+            output =
+              "⭐ Ngôi sao 1 đã được tạo!\n⭐ Ngôi sao 2 đã được tạo!\n⭐ Ngôi sao 3 đã được tạo!\n...\n🌟 PyBot đã hoàn thành nhiệm vụ!";
+          } else if (code.includes("for") && code.includes("print")) {
+            output =
+              "Đang thực hiện vòng lặp...\nKết quả 1\nKết quả 2\nKết quả 3\n...";
+          } else if (code.includes("input")) {
+            output = "Chương trình đang chờ input từ người dùng...";
+          } else {
+            output =
+              "Code đã chạy thành công!\nKết quả sẽ hiển thị tùy thuộc vào logic của code.";
+          }
+
+          outputElement.innerHTML = `<div class="code-output-success"><pre>${output}</pre></div>`;
+        } catch (error) {
+          outputElement.innerHTML = `<div class="code-output-error">Lỗi: ${error.message}</div>`;
+        }
+      }
+
+      function formatStoryCode() {
+        const codeTextarea = document.getElementById("story-code");
+        let code = codeTextarea.value;
+
+        // Simple formatting
+        code = code.replace(/;/g, "\n");
+        code = code.replace(/\n\s*\n/g, "\n");
+
+        codeTextarea.value = code;
+        showNotification("Code đã được format!", "success");
+      }
+
+      function insertCharacterTemplate() {
+        const textarea = document.getElementById("story-text");
+        const template = `
+
+Nhân vật mới: [Tên nhân vật]
+- Tuổi: [tuổi]
+- Tính cách: [mô tả tính cách]
+- Kỹ năng đặc biệt: [kỹ năng lập trình]
+
+[Tên nhân vật] bước vào câu chuyện và...`;
+
+        textarea.value += template;
+        updateStoryPreview();
+      }
+
+      function insertCodeTemplate() {
+        const textarea = document.getElementById("story-code");
+        const template = `
+
+# Hàm mới cho câu chuyện
+def new_function():
+    # Thêm logic tại đây
+    for i in range(5):
+        print(f"Bước {i + 1}: Thực hiện hành động...")
+    
+new_function()`;
+
+        textarea.value += template;
+      }
+
+      function insertDialogTemplate() {
+        const textarea = document.getElementById("story-text");
+        const template = `
+
+"Câu nói của nhân vật A," nhân vật A nói.
+
+"Phản hồi của nhân vật B," nhân vật B trả lời.
+
+Và cuộc hội thoại tiếp tục...`;
+
+        textarea.value += template;
+        updateStoryPreview();
+      }
+
+      function generateStoryIdea() {
+        const ideas = [
+          "Một robot học cách yêu thương thông qua việc debug code",
+          "Cuộc phiêu lưu trong thế giới của các thuật toán sắp xếp",
+          "Câu chuyện về một AI muốn trở thành nghệ sĩ",
+          "Hành trình tìm kiếm bug trong một chương trình cổ",
+          "Cuộc thi lập trình giữa các sinh vật trong rừng",
+          "Một cô bé học code để cứu thế giới khỏi virus",
+          "Chuyện tình giữa hai function trong một chương trình",
+          "Cuộc phiêu lưu của một biến qua các scope khác nhau",
+        ];
+
+        const randomIdea = ideas[Math.floor(Math.random() * ideas.length)];
+        showNotification(`💡 Ý tưởng: ${randomIdea}`, "info");
+      }
+
+      async function saveStory() {
+        const title = document.getElementById("story-title").value.trim();
+        const story = document.getElementById("story-text").value.trim();
+        const code = document.getElementById("story-code").value.trim();
+        const genre = document.getElementById("story-genre").value;
+
+        if (!title) {
+          showNotification("Vui lòng nhập tiêu đề câu chuyện", "warning");
+          return;
+        }
+
+        if (!story) {
+          showNotification("Vui lòng viết nội dung câu chuyện", "warning");
+          return;
+        }
+
+        try {
+          const response = await fetch("/api/games/story/save", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              title: title,
+              story: story,
+              code: code,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showNotification("Code Story đã được lưu!", "success");
+            currentStory = {
+              id: data.story_id,
+              title: title,
+              story: story,
+              code: code,
+              genre: genre,
+            };
+          } else {
+            showNotification(
+              data.message || "Không thể lưu câu chuyện",
+              "error"
+            );
+          }
+        } catch (error) {
+          console.error("Error saving story:", error);
+          showNotification("Có lỗi xảy ra khi lưu", "error");
+        }
+      }
+
+      async function loadStories() {
+        try {
+          const response = await fetch("/api/games/story/list");
+          const data = await response.json();
+
+          if (data.success) {
+            stories = data.stories;
+            displayStories(stories);
+          }
+        } catch (error) {
+          console.error("Error loading stories:", error);
+          showNotification("Không thể tải danh sách câu chuyện", "error");
+        }
+      }
+
+      function displayStories(storiesToShow) {
+        const grid = document.getElementById("stories-grid");
+
+        if (storiesToShow.length === 0) {
+          grid.innerHTML =
+            '<div class="no-stories">Chưa có câu chuyện nào được lưu</div>';
+          return;
+        }
+
+        grid.innerHTML = storiesToShow
+          .map(
+            (story) => `
+                <div class="story-card" onclick="readStory('${story.id}')">
+                    <div class="story-card-header">
+                        <h4>${story.title}</h4>
+                        <span class="genre-badge">${getGenreText(
+                          story.genre || "adventure"
+                        )}</span>
+                    </div>
+                    <div class="story-card-content">
+                        <p>${story.story.substring(0, 150)}${
+              story.story.length > 150 ? "..." : ""
+            }</p>
+                    </div>
+                    <div class="story-card-footer">
+                        <small><i class="fas fa-calendar"></i> ${new Date(
+                          story.created_at * 1000
+                        ).toLocaleDateString()}</small>
+                        <div class="story-actions">
+                            <button class="btn-sm btn-primary" onclick="event.stopPropagation(); editStory('${
+                              story.id
+                            }')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      function readStory(storyId) {
+        const story = stories.find((s) => s.id === storyId);
+        if (!story) return;
+
+        document.getElementById("story-library").style.display = "none";
+        document.getElementById("story-reader").style.display = "block";
+
+        // Load story into reader
+        document.getElementById("reader-title").textContent = story.title;
+        document.getElementById("reader-genre").textContent = getGenreText(
+          story.genre || "adventure"
+        );
+        document.getElementById("reader-date").textContent = `Tạo: ${new Date(
+          story.created_at * 1000
+        ).toLocaleDateString()}`;
+        document.getElementById("reader-story-text").innerHTML = story.story
+          .split("\n")
+          .map((p) => (p.trim() ? `<p>${p}</p>` : ""))
+          .join("");
+        document.getElementById("reader-code").textContent =
+          story.code || "# Không có code";
+
+        currentStory = story;
+        Prism.highlightAll();
+      }
+
+      function backToLibrary() {
+        document.getElementById("story-reader").style.display = "none";
+        document.getElementById("story-library").style.display = "block";
+      }
+
+      function editCurrentStory() {
+        if (!currentStory) return;
+
+        document.getElementById("story-reader").style.display = "none";
+        document.getElementById("story-creator").style.display = "block";
+
+        // Load story into editor
+        document.getElementById("story-title").value = currentStory.title;
+        document.getElementById("story-text").value = currentStory.story;
+        document.getElementById("story-code").value = currentStory.code || "";
+        document.getElementById("story-genre").value =
+          currentStory.genre || "adventure";
+
+        updateStoryPreview();
+      }
+
+      function runReaderCode() {
+        if (!currentStory || !currentStory.code) return;
+
+        const outputElement = document.getElementById("reader-code-output");
+
+        // Simulate code execution
+        let output =
+          "Code đã chạy thành công!\nKết quả hiển thị tùy thuộc vào logic code.";
+
+        if (currentStory.code.includes("create_stars")) {
+          output =
+            "⭐ Ngôi sao 1 đã được tạo!\n⭐ Ngôi sao 2 đã được tạo!\n🌟 Hoàn thành!";
+        }
+
+        outputElement.innerHTML = `<div class="code-output-success"><pre>${output}</pre></div>`;
+      }
+
+      // Add event listeners
+      document.addEventListener("DOMContentLoaded", () => {
+        // Auto-update preview when typing
+        ["story-title", "story-text", "story-genre"].forEach((id) => {
+          const element = document.getElementById(id);
+          if (element) {
+            element.addEventListener("input", updateStoryPreview);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

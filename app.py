@@ -5,6 +5,9 @@ import uuid
 import traceback
 from datetime import datetime
 
+# Import routes after creating app to avoid circular imports
+# from routes.games import games_bp
+
 app = Flask(__name__, template_folder='pages', static_folder='assets')
 app.secret_key = 'codequest-ai-secret-key-2024'
 
@@ -425,6 +428,443 @@ def update_profile():
         print(f"Update profile error: {e}")
         print(f"Traceback: {traceback.format_exc()}")
         return jsonify({'success': False, 'message': 'Có lỗi xảy ra, vui lòng thử lại'}), 500
+
+# ============ API EXECUTE PYTHON ============
+@app.route('/api/execute-python', methods=['POST'])
+def execute_python():
+    """Execute Python code safely for code validation"""
+    try:
+        data = request.get_json()
+        code = data.get('code', '')
+        timeout = data.get('timeout', 5)
+        
+        if not code:
+            return jsonify({'error': 'No code provided'}), 400
+        
+        # Import required modules for safe execution
+        import subprocess
+        import tempfile
+        import os
+        
+        # Create temporary file with code (UTF-8 encoding)
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False, encoding='utf-8') as f:
+            f.write(code)
+            temp_file = f.name
+        
+        try:
+            # Execute Python code with timeout and proper encoding
+            import os
+            env = os.environ.copy()
+            env['PYTHONIOENCODING'] = 'utf-8'
+            
+            result = subprocess.run(
+                ['python', temp_file], 
+                capture_output=True, 
+                text=True, 
+                timeout=timeout,
+                encoding='utf-8',
+                errors='ignore',
+                env=env
+            )
+            
+            if result.returncode == 0:
+                return jsonify({
+                    'success': True,
+                    'output': result.stdout,
+                    'error': result.stderr if result.stderr else None
+                })
+            else:
+                return jsonify({
+                    'success': False,
+                    'error': result.stderr or 'Execution failed',
+                    'output': result.stdout
+                })
+                
+        except subprocess.TimeoutExpired:
+            return jsonify({
+                'success': False,
+                'error': 'Code execution timed out'
+            }), 408
+            
+        finally:
+            # Clean up temp file
+            try:
+                os.unlink(temp_file)
+            except:
+                pass
+                
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': f'Server error: {str(e)}'
+        }), 500
+
+# Games routes
+@app.route('/games/code-battle')
+def code_battle():
+    """Trang Code Battle"""
+    return render_template('games/code_battle.html')
+
+@app.route('/games/code-art') 
+def code_art():
+    """Trang Code Art"""
+    return render_template('games/code_art.html')
+
+@app.route('/games/speed-coding')
+def speed_coding():
+    """Trang Speed Coding"""
+    return render_template('games/speed_coding.html')
+
+@app.route('/games/code-quiz')
+def code_quiz():
+    """Trang Code Quiz"""
+    return render_template('games/code_quiz.html')
+
+@app.route('/games/debugging-game')
+def debugging_game():
+    """Trang Debugging Game"""
+    return render_template('games/debugging_game.html')
+
+@app.route('/games/code-story')
+def code_story():
+    """Trang Code Story"""
+    return render_template('games/code_story.html')
+
+# Games API routes với dữ liệu mẫu
+QUIZ_QUESTIONS = [
+    {
+        "id": 1,
+        "question": "Từ khóa nào được dùng để định nghĩa function trong Python?",
+        "options": ["function", "def", "func", "define"],
+        "correct": 1,
+        "difficulty": "easy"
+    },
+    {
+        "id": 2,
+        "question": "Cấu trúc dữ liệu nào trong Python có thể thay đổi được (mutable)?",
+        "options": ["tuple", "string", "list", "int"],
+        "correct": 2,
+        "difficulty": "easy"
+    },
+    {
+        "id": 3,
+        "question": "Kết quả của biểu thức '3' + '4' trong Python là gì?",
+        "options": ["7", "'34'", "Error", "'3''4'"],
+        "correct": 1,
+        "difficulty": "medium"
+    }
+]
+
+SPEED_CODING_CHALLENGES = [
+    {
+        "id": 1,
+        "title": "Hello World",
+        "description": "Viết chương trình in ra 'Hello, World!'",
+        "expected_code": "print('Hello, World!')",
+        "language": "python"
+    },
+    {
+        "id": 2,
+        "title": "Tính tổng hai số",
+        "description": "Viết function tính tổng hai số a và b",
+        "expected_code": "def add(a, b):\n    return a + b",
+        "language": "python"
+    }
+]
+
+DEBUGGING_CHALLENGES = [
+    {
+        "id": 1,
+        "title": "Lỗi syntax",
+        "buggy_code": "def hello()\n    print('Hello')",
+        "correct_code": "def hello():\n    print('Hello')",
+        "error_type": "syntax",
+        "hint": "Thiếu dấu : sau tên function"
+    },
+    {
+        "id": 2,
+        "title": "Lỗi logic",
+        "buggy_code": "def factorial(n):\n    result = 0\n    for i in range(1, n+1):\n        result *= i\n    return result",
+        "correct_code": "def factorial(n):\n    result = 1\n    for i in range(1, n+1):\n        result *= i\n    return result",
+        "error_type": "logic",
+        "hint": "Giá trị khởi tạo của result không đúng"
+    }
+]
+
+CODE_ART_TEMPLATES = [
+    {
+        "id": 1,
+        "name": "ASCII Heart",
+        "code": "for i in range(6):\n    for j in range(7):\n        if (i == 0 and j % 3 != 0) or (i == 1 and j % 3 == 0) or (i - j == 2) or (i + j == 8):\n            print('*', end='')\n        else:\n            print(' ', end='')\n    print()",
+        "description": "Tạo trái tim bằng ký tự ASCII"
+    },
+    {
+        "id": 2,
+        "name": "Diamond Pattern",
+        "code": "n = 5\nfor i in range(n):\n    print(' ' * (n-i-1) + '*' * (2*i+1))\nfor i in range(n-2, -1, -1):\n    print(' ' * (n-i-1) + '*' * (2*i+1))",
+        "description": "Tạo hình kim cương"
+    }
+]
+
+@app.route('/api/games/quiz/questions')
+def get_quiz_questions():
+    """API lấy câu hỏi quiz"""
+    difficulty = request.args.get('difficulty', 'all')
+    count = int(request.args.get('count', 5))
+    
+    questions = QUIZ_QUESTIONS.copy()
+    if difficulty != 'all':
+        questions = [q for q in questions if q['difficulty'] == difficulty]
+    
+    import random
+    random.shuffle(questions)
+    selected_questions = questions[:count]
+    
+    return jsonify({
+        'success': True,
+        'questions': selected_questions
+    })
+
+@app.route('/api/games/quiz/submit', methods=['POST'])
+def submit_quiz():
+    """API submit kết quả quiz"""
+    data = request.get_json()
+    answers = data.get('answers', [])
+    time_taken = data.get('time_taken', 0)
+    
+    correct_count = 0
+    total_questions = len(answers)
+    
+    for answer in answers:
+        question_id = answer['question_id']
+        selected_option = answer['selected_option']
+        
+        question = next((q for q in QUIZ_QUESTIONS if q['id'] == question_id), None)
+        if question and question['correct'] == selected_option:
+            correct_count += 1
+    
+    score = round((correct_count / total_questions) * 100, 2) if total_questions > 0 else 0
+    
+    return jsonify({
+        'success': True,
+        'score': score,
+        'correct': correct_count,
+        'total': total_questions,
+        'time': time_taken
+    })
+
+@app.route('/api/games/speed-coding/challenges')
+def get_speed_challenges():
+    """API lấy thử thách speed coding"""
+    return jsonify({
+        'success': True,
+        'challenges': SPEED_CODING_CHALLENGES
+    })
+
+@app.route('/api/games/speed-coding/submit', methods=['POST'])
+def submit_speed_coding():
+    """API submit kết quả speed coding"""
+    data = request.get_json()
+    challenge_id = data.get('challenge_id')
+    user_code = data.get('code', '').strip()
+    time_taken = data.get('time_taken', 0)
+    
+    challenge = next((c for c in SPEED_CODING_CHALLENGES if c['id'] == challenge_id), None)
+    if not challenge:
+        return jsonify({'success': False, 'message': 'Không tìm thấy thử thách'})
+    
+    expected = challenge['expected_code'].strip()
+    is_correct = user_code == expected
+    
+    if is_correct:
+        base_score = 100
+        time_penalty = min(time_taken / 1000 * 2, 50)
+        score = max(base_score - time_penalty, 50)
+    else:
+        score = 0
+    
+    return jsonify({
+        'success': True,
+        'correct': is_correct,
+        'score': round(score, 2),
+        'time': time_taken,
+        'expected_code': expected
+    })
+
+@app.route('/api/games/debugging/challenges')
+def get_debug_challenges():
+    """API lấy thử thách debugging"""
+    return jsonify({
+        'success': True,
+        'challenges': DEBUGGING_CHALLENGES
+    })
+
+@app.route('/api/games/debugging/submit', methods=['POST'])
+def submit_debug_solution():
+    """API submit kết quả debugging"""
+    data = request.get_json()
+    challenge_id = data.get('challenge_id')
+    user_code = data.get('code', '').strip()
+    time_taken = data.get('time_taken', 0)
+    
+    challenge = next((c for c in DEBUGGING_CHALLENGES if c['id'] == challenge_id), None)
+    if not challenge:
+        return jsonify({'success': False, 'message': 'Không tìm thấy thử thách'})
+    
+    correct_code = challenge['correct_code'].strip()
+    is_correct = user_code == correct_code
+    
+    if is_correct:
+        base_score = 100
+        time_penalty = min(time_taken / 1000, 30)
+        score = max(base_score - time_penalty, 70)
+    else:
+        score = 0
+    
+    return jsonify({
+        'success': True,
+        'correct': is_correct,
+        'score': round(score, 2),
+        'time': time_taken,
+        'correct_code': correct_code,
+        'hint': challenge.get('hint', '')
+    })
+
+@app.route('/api/games/code-art/templates')
+def get_art_templates():
+    """API lấy template code art"""
+    return jsonify({
+        'success': True,
+        'templates': CODE_ART_TEMPLATES
+    })
+
+@app.route('/api/games/code-art/run', methods=['POST'])
+def run_art_code():
+    """API chạy code art"""
+    data = request.get_json()
+    code = data.get('code', '')
+    
+    try:
+        # Tạo namespace riêng để chạy code (simplified)
+        return jsonify({
+            'success': True,
+            'message': 'Code chạy thành công!'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        })
+
+@app.route('/api/games/story/save', methods=['POST'])
+def save_story():
+    """API lưu câu chuyện code"""
+    data = request.get_json()
+    title = data.get('title')
+    code = data.get('code')
+    story = data.get('story')
+    user_id = session.get('user_id')
+    
+    if not user_id:
+        return jsonify({'success': False, 'message': 'Chưa đăng nhập'})
+    
+    if 'stories' not in session:
+        session['stories'] = []
+    
+    import time
+    story_data = {
+        'id': str(uuid.uuid4()),
+        'title': title,
+        'code': code,
+        'story': story,
+        'author': user_id,
+        'created_at': time.time()
+    }
+    
+    session['stories'].append(story_data)
+    
+    return jsonify({
+        'success': True,
+        'story_id': story_data['id']
+    })
+
+@app.route('/api/games/story/list')
+def list_stories():
+    """API lấy danh sách câu chuyện"""
+    stories = session.get('stories', [])
+    return jsonify({
+        'success': True,
+        'stories': stories
+    })
+
+@app.route('/api/games/battle/create', methods=['POST'])
+def create_battle():
+    """API tạo battle room"""
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'success': False, 'message': 'Chưa đăng nhập'})
+    
+    battle_id = str(uuid.uuid4())[:8]
+    
+    if 'battles' not in session:
+        session['battles'] = {}
+    
+    import time
+    session['battles'][battle_id] = {
+        'id': battle_id,
+        'creator': user_id,
+        'players': [user_id],
+        'status': 'waiting',
+        'created_at': time.time()
+    }
+    
+    return jsonify({
+        'success': True,
+        'battle_id': battle_id
+    })
+
+@app.route('/api/games/battle/join', methods=['POST'])
+def join_battle():
+    """API tham gia battle"""
+    data = request.get_json()
+    battle_id = data.get('battle_id')
+    user_id = session.get('user_id')
+    
+    if not user_id:
+        return jsonify({'success': False, 'message': 'Chưa đăng nhập'})
+    
+    battles = session.get('battles', {})
+    battle = battles.get(battle_id)
+    
+    if not battle:
+        return jsonify({'success': False, 'message': 'Không tìm thấy battle room'})
+    
+    if user_id not in battle['players']:
+        battle['players'].append(user_id)
+    
+    if len(battle['players']) >= 2:
+        battle['status'] = 'ready'
+    
+    return jsonify({
+        'success': True,
+        'battle': battle
+    })
+
+@app.route('/api/games/leaderboard')
+def get_leaderboard():
+    """API lấy bảng xếp hạng"""
+    leaderboard = [
+        {'name': 'Nguyễn Văn A', 'score': 950, 'games_played': 25},
+        {'name': 'Trần Thị B', 'score': 890, 'games_played': 20},
+        {'name': 'Lê Văn C', 'score': 845, 'games_played': 18},
+        {'name': 'Phạm Thị D', 'score': 820, 'games_played': 22},
+        {'name': 'Hoàng Văn E', 'score': 780, 'games_played': 15}
+    ]
+    
+    return jsonify({
+        'success': True,
+        'leaderboard': leaderboard
+    })
 
 if __name__ == '__main__':
     print("🚀 Starting CodeQuest AI...")

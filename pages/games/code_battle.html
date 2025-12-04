@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Battle - CodeQuest AI</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="../../assets/css/code_battle.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-brain"></i>
+                <span>CodeQuest AI</span>
+            </a>
+            <a href="/dashboard" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                <span>Quay lại Dashboard</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title"> Đấu Trường Code </h1>
+            <p class="hero-subtitle">Thách đấu với các AI Masters và chứng minh kỹ năng coding của bạn!</p>
+        </div>
+
+        <!-- AI Selection -->
+        <div id="ai-selection">
+            <div class="ai-grid">
+                <!-- Beginner AI -->
+                <div class="ai-card" onclick="selectAI('beginner')">
+                    <div class="difficulty-badge easy">Dễ Dàng</div>
+                    <div class="ai-avatar"></div>
+                    <div class="ai-info">
+                        <h3>CodeBot Junior</h3>
+                        <div class="ai-level">Cấp độ: Người mới bắt đầu</div>
+                        <div class="ai-stats">
+                            <span>Tốc độ: Chậm</span>
+                            <span>Độ khó: </span>
+                        </div>
+                        <p class="ai-description">AI thân thiện và kiên nhẫn, phù hợp cho người mới học lập trình. Tốc độ coding chậm và thường mắc lỗi nhỏ.</p>
+                    </div>
+                </div>
+
+                <!-- Intermediate AI -->
+                <div class="ai-card" onclick="selectAI('intermediate')">
+                    <div class="difficulty-badge medium">Trung Bình</div>
+                    <div class="ai-avatar"></div>
+                    <div class="ai-info">
+                        <h3>AlgoMaster</h3>
+                        <div class="ai-level">Cấp độ: Trung cấp</div>
+                        <div class="ai-stats">
+                            <span>Tốc độ: Vừa phải</span>
+                            <span>Độ khó: </span>
+                        </div>
+                        <p class="ai-description">AI có phương pháp tiếp cận có hệ thống và chính xác. Code clean và tối ưu, thích hợp cho thử thách trung bình.</p>
+                    </div>
+                </div>
+
+                <!-- Expert AI -->
+                <div class="ai-card" onclick="selectAI('expert')">
+                    <div class="difficulty-badge hard">Khó Nhặn</div>
+                    <div class="ai-avatar"></div>
+                    <div class="ai-info">
+                        <h3>CodeNinja Pro</h3>
+                        <div class="ai-level">Cấp độ: Chuyên gia</div>
+                        <div class="ai-stats">
+                            <span>Tốc độ: Cực nhanh</span>
+                            <span>Độ khó: </span>
+                        </div>
+                        <p class="ai-description">Ninja lập trình với tốc độ ánh sáng! Code tối ưu và hiệu quả cao. Thử thách dành cho cao thủ!</p>
+                    </div>
+                </div>
+
+                <!-- Mystery AI -->
+                <div class="ai-card" onclick="selectAI('mystery')">
+                    <div class="difficulty-badge mystery">Siêu Boss</div>
+                    <div class="ai-avatar"></div>
+                    <div class="ai-info">
+                        <h3>??? Mystery Boss</h3>
+                        <div class="ai-level">Cấp độ: Không thể đoán trước</div>
+                        <div class="ai-stats">
+                            <span>Tốc độ: ???</span>
+                            <span>Độ khó: </span>
+                        </div>
+                        <p class="ai-description">AI bí ẩn với sức mạnh không thể dự đoán! Có thể rất nhanh hoặc rất chậm. Bạn có dám thử thách?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Start Battle Button -->
+            <div class="battle-section">
+                <button id="start-battle-btn" class="battle-btn" onclick="startBattle()" disabled>
+                    <i class="fas fa-sword"></i>
+                    Chọn đối thủ để bắt đầu
+                </button>
+            </div>
+        </div>
+
+        <!-- Battle Arena -->
+        <div id="battle-arena" style="display: none;">
+            <!-- Battle Header -->
+            <div class="battle-header">
+                <div class="battle-timer" id="battle-timer">05:00</div>
+                <p>Thời gian còn lại</p>
+            </div>
+
+            <!-- Battle Container -->
+            <div class="battle-container">
+                <!-- User Code Panel -->
+                <div class="code-panel">
+                    <div class="panel-header">
+                        <i class="fas fa-user"></i>
+                        <span class="panel-title">Code của bạn</span>
+                    </div>
+                    <textarea 
+                        id="user-code" 
+                        class="code-editor" 
+                        placeholder="# Viết giải pháp của bạn ở đây...
+def solution():
+    # Code của bạn
+    pass"
+                    ></textarea>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="runCode()">
+                            <i class="fas fa-play"></i> Test Code
+                        </button>
+                        <button class="action-btn submit" onclick="submitCode()">
+                            <i class="fas fa-check"></i> Nộp Bài
+                        </button>
+                        <button class="action-btn" onclick="getHint()">
+                            <i class="fas fa-lightbulb"></i> Gợi Ý
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI Progress Panel -->
+                <div class="code-panel">
+                    <div class="panel-header">
+                        <i class="fas fa-robot"></i>
+                        <span class="panel-title" id="ai-name">AI Coding...</span>
+                        <span class="difficulty-badge" id="difficulty-level">Easy</span>
+                    </div>
+                    <div class="ai-progress-container">
+                        <div class="ai-status" id="ai-status">AI đang chuẩn bị...</div>
+                        <div class="ai-progress">
+                            <div class="ai-progress-bar" id="ai-progress-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Problem Panel -->
+            <div class="problem-panel glass-card">
+                <div class="problem-content">
+                    <h2 class="problem-title" id="problem-title">Đang tải bài toán...</h2>
+                    <p class="problem-description" id="problem-description">Mô tả bài toán sẽ hiện ở đây...</p>
+                    <div class="problem-example" id="problem-example">Ví dụ sẽ được hiển thị ở đây...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Countdown Overlay -->
+    <div id="countdown" class="countdown-overlay" style="display: none;">
+        <div class="countdown-number" id="countdown-number">3</div>
+        <div class="countdown-text">Chuẩn bị chiến đấu!</div>
+    </div>
+
+    <script src="../../assets/js/code_battle.js"></script>
+</body>
+</html>

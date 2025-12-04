@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debugging Game - CodeQuest AI</title>
+    <link rel="stylesheet" href="/assets/css/dashboard.css" />
+    <link rel="stylesheet" href="/assets/css/games.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="game-container">
+      <header class="game-header">
+        <div class="header-content">
+          <h1><i class="fas fa-bug"></i> Debugging Game</h1>
+          <p>Tìm và sửa lỗi trong code!</p>
+          <button class="btn-back" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i> Quay lại
+          </button>
+        </div>
+      </header>
+
+      <div class="debug-container">
+        <!-- Challenge Selection -->
+        <div class="debug-selection" id="debug-selection">
+          <div class="selection-header">
+            <h3>Chọn thử thách Debug</h3>
+            <p>Tìm lỗi trong code và sửa chúng!</p>
+          </div>
+
+          <div class="debug-stats">
+            <div class="stat-item">
+              <i class="fas fa-search"></i>
+              <span>Tìm lỗi syntax, logic, indentation</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-tools"></i>
+              <span>Sửa code để chạy đúng</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-lightbulb"></i>
+              <span>Có gợi ý khi cần thiết</span>
+            </div>
+          </div>
+
+          <div class="challenges-list" id="challenges-list">
+            <!-- Challenges will be loaded here -->
+          </div>
+        </div>
+
+        <!-- Debug Game -->
+        <div class="debug-game" id="debug-game" style="display: none">
+          <div class="game-header-info">
+            <div class="challenge-info">
+              <h3 id="debug-challenge-title">Challenge Title</h3>
+              <div class="error-type" id="error-type">
+                <i class="fas fa-tag"></i>
+                <span>Loại lỗi: --</span>
+              </div>
+            </div>
+            <div class="debug-timer">
+              <i class="fas fa-stopwatch"></i>
+              <span id="debug-timer">00:00</span>
+            </div>
+          </div>
+
+          <div class="debug-workspace">
+            <div class="code-section">
+              <div class="code-header">
+                <h4><i class="fas fa-exclamation-triangle"></i> Code có lỗi</h4>
+                <button class="btn-sm btn-hint" onclick="showDebugHint()">
+                  <i class="fas fa-lightbulb"></i> Gợi ý
+                </button>
+              </div>
+              <div class="code-display">
+                <pre><code id="buggy-code" class="language-python"></code></pre>
+              </div>
+            </div>
+
+            <div class="editor-section">
+              <div class="editor-header">
+                <h4><i class="fas fa-edit"></i> Sửa code tại đây</h4>
+                <div class="editor-actions">
+                  <button class="btn-sm" onclick="resetCode()">
+                    <i class="fas fa-undo"></i> Reset
+                  </button>
+                  <button class="btn-sm" onclick="clearCode()">
+                    <i class="fas fa-trash"></i> Xóa hết
+                  </button>
+                </div>
+              </div>
+              <textarea
+                id="debug-editor"
+                placeholder="Sửa code tại đây..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="debug-controls">
+            <button class="btn-primary" onclick="testCode()">
+              <i class="fas fa-play"></i> Test Code
+            </button>
+            <button class="btn-success" onclick="submitDebugSolution()">
+              <i class="fas fa-check"></i> Submit Solution
+            </button>
+            <button class="btn-warning" onclick="skipChallenge()">
+              <i class="fas fa-forward"></i> Bỏ qua
+            </button>
+          </div>
+
+          <div class="debug-feedback" id="debug-feedback">
+            <!-- Feedback will be shown here -->
+          </div>
+        </div>
+
+        <!-- Debug Result -->
+        <div class="debug-result" id="debug-result" style="display: none">
+          <div class="result-container">
+            <div class="result-header">
+              <div class="result-icon" id="debug-result-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <h3 id="debug-result-title">Kết quả Debug</h3>
+            </div>
+
+            <div class="solution-comparison">
+              <div class="solution-section">
+                <h4>Code của bạn:</h4>
+                <pre><code id="user-solution" class="language-python"></code></pre>
+              </div>
+
+              <div class="solution-section">
+                <h4>Đáp án đúng:</h4>
+                <pre><code id="correct-solution" class="language-python"></code></pre>
+              </div>
+            </div>
+
+            <div class="debug-metrics">
+              <div class="metric-item">
+                <i class="fas fa-clock"></i>
+                <span>Thời gian: <strong id="debug-time">--</strong></span>
+              </div>
+              <div class="metric-item">
+                <i class="fas fa-star"></i>
+                <span>Điểm số: <strong id="debug-score">--</strong></span>
+              </div>
+              <div class="metric-item">
+                <i class="fas fa-bullseye"></i>
+                <span
+                  >Kết quả: <strong id="debug-result-status">--</strong></span
+                >
+              </div>
+            </div>
+
+            <div class="debug-explanation" id="debug-explanation">
+              <!-- Explanation will be shown here -->
+            </div>
+
+            <div class="result-actions">
+              <button class="btn-primary" onclick="nextDebugChallenge()">
+                <i class="fas fa-forward"></i> Thử thách tiếp theo
+              </button>
+              <button class="btn-secondary" onclick="retryDebugChallenge()">
+                <i class="fas fa-redo"></i> Thử lại
+              </button>
+              <button class="btn-secondary" onclick="backToDebugSelection()">
+                <i class="fas fa-list"></i> Chọn thử thách khác
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script>
+      let debugChallenges = [];
+      let currentDebugChallenge = null;
+      let debugStartTime = null;
+
+      function showNotification(message, type = "info") {
+        const notification = document.getElementById("notification");
+        notification.textContent = message;
+        notification.className = `notification ${type} show`;
+
+        setTimeout(() => {
+          notification.classList.remove("show");
+        }, 3000);
+      }
+
+      async function loadDebugChallenges() {
+        try {
+          const response = await fetch("/api/games/debugging/challenges");
+          const data = await response.json();
+
+          if (data.success) {
+            debugChallenges = data.challenges;
+            displayDebugChallenges();
+          }
+        } catch (error) {
+          console.error("Error loading debug challenges:", error);
+          showNotification("Không thể tải thử thách debug", "error");
+        }
+      }
+
+      function displayDebugChallenges() {
+        const list = document.getElementById("challenges-list");
+        list.innerHTML = "";
+
+        debugChallenges.forEach((challenge, index) => {
+          const challengeItem = document.createElement("div");
+          challengeItem.className = "challenge-item";
+
+          // Error type icon
+          let errorIcon = "fas fa-bug";
+          let errorColor = "#e74c3c";
+
+          switch (challenge.error_type) {
+            case "syntax":
+              errorIcon = "fas fa-exclamation-triangle";
+              errorColor = "#f39c12";
+              break;
+            case "logic":
+              errorIcon = "fas fa-brain";
+              errorColor = "#9b59b6";
+              break;
+            case "indentation":
+              errorIcon = "fas fa-align-left";
+              errorColor = "#3498db";
+              break;
+          }
+
+          challengeItem.innerHTML = `
+                    <div class="challenge-icon" style="color: ${errorColor}">
+                        <i class="${errorIcon}"></i>
+                    </div>
+                    <div class="challenge-content">
+                        <h4>${challenge.title}</h4>
+                        <p>Loại lỗi: <strong style="color: ${errorColor}">${
+            challenge.error_type
+          }</strong></p>
+                        <div class="challenge-difficulty">
+                            <span class="difficulty-badge level-${
+                              index + 1
+                            }">Level ${index + 1}</span>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="startDebugChallenge(${
+                      challenge.id
+                    })">
+                        <i class="fas fa-play"></i> Bắt đầu
+                    </button>
+                `;
+
+          list.appendChild(challengeItem);
+        });
+      }
+
+      function startDebugChallenge(challengeId) {
+        currentDebugChallenge = debugChallenges.find(
+          (c) => c.id === challengeId
+        );
+        if (!currentDebugChallenge) return;
+
+        document.getElementById("debug-selection").style.display = "none";
+        document.getElementById("debug-game").style.display = "block";
+
+        // Setup challenge
+        document.getElementById("debug-challenge-title").textContent =
+          currentDebugChallenge.title;
+        document.getElementById("error-type").innerHTML = `
+                <i class="fas fa-tag"></i>
+                <span>Loại lỗi: ${currentDebugChallenge.error_type}</span>
+            `;
+
+        // Display buggy code
+        document.getElementById("buggy-code").textContent =
+          currentDebugChallenge.buggy_code;
+        document.getElementById("debug-editor").value =
+          currentDebugChallenge.buggy_code;
+
+        // Highlight syntax
+        Prism.highlightAll();
+
+        // Clear feedback
+        document.getElementById("debug-feedback").innerHTML = "";
+
+        // Start timer
+        debugStartTime = Date.now();
+        startDebugTimer();
+
+        showNotification("Thử thách debug bắt đầu!", "success");
+      }
+
+      function startDebugTimer() {
+        setInterval(() => {
+          if (!debugStartTime) return;
+
+          const elapsed = Date.now() - debugStartTime;
+          const seconds = Math.floor(elapsed / 1000);
+          const minutes = Math.floor(seconds / 60);
+          const secs = seconds % 60;
+
+          document.getElementById("debug-timer").textContent = `${minutes
+            .toString()
+            .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+        }, 1000);
+      }
+
+      function showDebugHint() {
+        if (!currentDebugChallenge) return;
+
+        const hint =
+          currentDebugChallenge.hint || "Không có gợi ý cho thử thách này.";
+        showNotification(`💡 Gợi ý: ${hint}`, "info");
+      }
+
+      function resetCode() {
+        document.getElementById("debug-editor").value =
+          currentDebugChallenge.buggy_code;
+      }
+
+      function clearCode() {
+        document.getElementById("debug-editor").value = "";
+      }
+
+      function testCode() {
+        const userCode = document.getElementById("debug-editor").value.trim();
+        const feedback = document.getElementById("debug-feedback");
+
+        if (!userCode) {
+          feedback.innerHTML =
+            '<div class="feedback-warning"><i class="fas fa-exclamation-triangle"></i> Hãy nhập code để test!</div>';
+          return;
+        }
+
+        // Simple syntax check
+        if (currentDebugChallenge.error_type === "syntax") {
+          if (
+            userCode.includes(":") &&
+            !currentDebugChallenge.buggy_code.includes(":")
+          ) {
+            feedback.innerHTML =
+              '<div class="feedback-success"><i class="fas fa-check-circle"></i> Syntax đã được sửa!</div>';
+          } else {
+            feedback.innerHTML =
+              '<div class="feedback-error"><i class="fas fa-times-circle"></i> Vẫn còn lỗi syntax!</div>';
+          }
+        } else if (currentDebugChallenge.error_type === "indentation") {
+          if (userCode.includes("    ")) {
+            // 4 spaces indentation
+            feedback.innerHTML =
+              '<div class="feedback-success"><i class="fas fa-check-circle"></i> Indentation đã đúng!</div>';
+          } else {
+            feedback.innerHTML =
+              '<div class="feedback-error"><i class="fas fa-times-circle"></i> Vẫn còn lỗi indentation!</div>';
+          }
+        } else if (currentDebugChallenge.error_type === "logic") {
+          if (
+            userCode.includes("result = 1") &&
+            currentDebugChallenge.buggy_code.includes("result = 0")
+          ) {
+            feedback.innerHTML =
+              '<div class="feedback-success"><i class="fas fa-check-circle"></i> Logic đã được sửa!</div>';
+          } else {
+            feedback.innerHTML =
+              '<div class="feedback-error"><i class="fas fa-times-circle"></i> Vẫn còn lỗi logic!</div>';
+          }
+        }
+      }
+
+      async function submitDebugSolution() {
+        if (!currentDebugChallenge || !debugStartTime) return;
+
+        const endTime = Date.now();
+        const timeTaken = endTime - debugStartTime;
+        const userCode = document.getElementById("debug-editor").value.trim();
+
+        try {
+          const response = await fetch("/api/games/debugging/submit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              challenge_id: currentDebugChallenge.id,
+              code: userCode,
+              time_taken: timeTaken,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            showDebugResult(data, timeTaken, userCode);
+          } else {
+            showNotification("Có lỗi xảy ra khi submit", "error");
+          }
+        } catch (error) {
+          console.error("Error submitting debug solution:", error);
+          showNotification("Có lỗi xảy ra khi submit", "error");
+        }
+      }
+
+      function skipChallenge() {
+        if (confirm("Bạn có chắc muốn bỏ qua thử thách này?")) {
+          showDebugResult(
+            {
+              correct: false,
+              score: 0,
+              time: Date.now() - debugStartTime,
+              correct_code: currentDebugChallenge.correct_code,
+              hint: currentDebugChallenge.hint,
+            },
+            Date.now() - debugStartTime,
+            document.getElementById("debug-editor").value
+          );
+        }
+      }
+
+      function showDebugResult(resultData, timeTaken, userCode) {
+        document.getElementById("debug-game").style.display = "none";
+        document.getElementById("debug-result").style.display = "block";
+
+        // Update result display
+        const isCorrect = resultData.correct;
+        const score = Math.round(resultData.score);
+        const timeSeconds = Math.floor(timeTaken / 1000);
+        const timeDisplay = `${Math.floor(timeSeconds / 60)}:${(
+          timeSeconds % 60
+        )
+          .toString()
+          .padStart(2, "0")}`;
+
+        // Update icon and title
+        const resultIcon = document.getElementById("debug-result-icon");
+        const resultTitle = document.getElementById("debug-result-title");
+
+        if (isCorrect) {
+          resultIcon.innerHTML =
+            '<i class="fas fa-check-circle" style="color: #27ae60;"></i>';
+          resultTitle.textContent = "Debug thành công!";
+        } else {
+          resultIcon.innerHTML =
+            '<i class="fas fa-times-circle" style="color: #e74c3c;"></i>';
+          resultTitle.textContent = "Debug chưa đúng";
+        }
+
+        // Update code comparison
+        document.getElementById("user-solution").textContent = userCode;
+        document.getElementById("correct-solution").textContent =
+          resultData.correct_code;
+
+        // Update metrics
+        document.getElementById("debug-time").textContent = timeDisplay;
+        document.getElementById("debug-score").textContent = score;
+        document.getElementById("debug-result-status").textContent = isCorrect
+          ? "Chính xác"
+          : "Chưa đúng";
+
+        // Update explanation
+        const explanation = document.getElementById("debug-explanation");
+        if (resultData.hint) {
+          explanation.innerHTML = `
+                    <div class="explanation-card">
+                        <h4><i class="fas fa-lightbulb"></i> Giải thích:</h4>
+                        <p>${resultData.hint}</p>
+                    </div>
+                `;
+        }
+
+        // Highlight syntax
+        Prism.highlightAll();
+      }
+
+      function nextDebugChallenge() {
+        const currentIndex = debugChallenges.findIndex(
+          (c) => c.id === currentDebugChallenge.id
+        );
+        const nextIndex = (currentIndex + 1) % debugChallenges.length;
+        startDebugChallenge(debugChallenges[nextIndex].id);
+      }
+
+      function retryDebugChallenge() {
+        if (currentDebugChallenge) {
+          startDebugChallenge(currentDebugChallenge.id);
+        }
+      }
+
+      function backToDebugSelection() {
+        document.getElementById("debug-result").style.display = "none";
+        document.getElementById("debug-selection").style.display = "block";
+        currentDebugChallenge = null;
+        debugStartTime = null;
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        loadDebugChallenges();
+      });
+    </script>
+  </body>
+</html>
